@@ -1,0 +1,90 @@
+{
+    "entities": {
+        "users": {
+            "entities": {
+                "someUserId": {
+                    "userId": "someId",
+                    "name": "someName",
+                    "description": "someDescription",
+                    "avatarURL": "someProfileImageURL",
+                    "backgroundURL": "someImageURL",
+                    "location": "someLocation",
+                    "followersCount": "someCount",
+                    "followingsCount": "someCount",
+                    "createdAt": "comeDate",
+                    "following": "boolean"
+                }
+            },
+            "errors": {},
+            "fetchStatus": {
+                "someUserId": "e.g loaded"
+            }
+        },
+        "tweets": {
+            "entities": {
+                "someTweetId": {
+                    "tweetId": "someId",
+                    "userId": "someId",
+                    "createdAt": "someDate",
+                    "text": "someText",
+                    "likesCount": "someCount",
+                    "liked": "boolean",
+                    "repliesCount": "someCount",
+                    "replyingToUserId": "someUserId",
+                    "replyingToUserName": "someUserName",
+                    "replyingToTweetId": "someTweetId"
+                }
+            },
+            "errors": {},
+            "fetchStatus": {
+                "someTweetId": "e.g loaded"
+            }
+        }
+    },
+    "profile": {
+        "email": "someEmail",
+        "phone": "somePhone",
+        "error": "someError",
+        "fetchStatus": "e.g loaded"
+    },
+    "compositeData": {
+        "home": {
+            "entities": [{
+                "id": "someTweetId",
+                "sortIndex": "someNumber"
+            }],
+            "fetchStatus": "e.g loaded",
+            "lastTopFetchTimestamp": "someNumber",
+            "error" : "someError"
+        },
+        "conversation-someTweetId": {
+            "entities": [
+                {
+                    "id": "someTweetId",
+                    "sortIndex": "someNumber",
+                    "type": "mainTweet"
+                },
+                {
+                    "id": "someTweetId",
+                    "sortIndex": "someNumber",
+                    "type": "reply"
+                }
+            ],
+            "fetchStatus": "e.g loaded",
+            "lastTopFetchTimestamp": "someNumber",
+            "error" : "someError"
+        },
+        "likes-someTweetId": {},
+        "userTweets-someUserId": {},
+        "followers-someUserId": {},
+        "followings-someUserId": {},
+        "likes-someUserId": {}
+    },
+    "session": {
+        "userId": "someUserId"
+    },
+    "errors": {
+        "someActionName": "someErrorMessage"
+    }
+}
+

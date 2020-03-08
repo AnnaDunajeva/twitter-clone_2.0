@@ -1,0 +1,386 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+.app-container {
+  margin-bottom: 40px;
+}
+a {
+  text-decoration: none;
+  color: #424242;
+}
+a:hover {
+  color: #0994d4;
+}
+a:focus {
+  color: #0994d4;
+}
+li {
+  list-style-type: none;
+}
+.align-right {
+  text-align: right;
+}
+.nav {
+  background-color: white;
+  margin: 0 auto;
+  padding-top: 15px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
+  border-bottom: 1px solid #333232;  
+  position: sticky;
+  position: -webkit-sticky; /* Safari */
+  top: 0;
+  z-index: 1;
+}
+.nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-decoration: none;
+  font-size: 18px;
+}
+.active {
+  font-weight: 600;
+}
+.nav li {
+  padding: 10px;
+}
+.header {
+  text-align: center;
+  font-size: 22px;
+}
+.header-small {
+  text-align: center;
+  font-size: 18px;
+  margin: 15px 0
+}
+.position-relative {
+  position: relative;
+}
+.margin-bottom {
+  margin-bottom: 15px;
+}
+.btn {
+  border: 1px solid #c7c4c4;
+  color: #d3d0d0;
+  border-radius: 2px;
+  font-weight: 500;
+  width: 250px;
+  background: #333232;
+  text-transform: uppercase;
+  padding: 10px 0;
+  font-size: 20px;
+  margin: 20px auto;
+  cursor: pointer;
+}
+.btn:disabled {
+  color: #e2dede;
+  background: #a7a5a5;
+  cursor: default;
+}
+.btn:focus {
+  background: #161616;
+}
+.btn-clear {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+.btn-clear:hover {
+  cursor: pointer;
+}
+.separator-line{
+  border-left: 1px solid  #9b9999;
+}
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.clickable {
+  cursor: pointer;
+}
+.hover-blue:hover {
+  color: #0994d4;
+}
+/* =========profile============ */
+.background-container {
+  max-width: 900px;
+  height: 170px;
+  /* border: 1px solid #c7c4c4; */
+  border-radius: 2px;
+  margin: 0 auto;
+  position: relative;
+  background: #97bad1;
+}
+.under-avatar {
+  position: absolute;
+  top: 90px;
+  left: 20px;
+  min-height: 150px;
+  min-width: 150px;
+  max-height: 150px;
+  max-width: 150px;
+  border-radius: 75px;
+  font-size: 75px;
+  border: 7px solid white;
+  font-size: 11px;
+  background: white;
+}
+.profile-avatar {
+  position: absolute;
+  top: 90px;
+  left: 20px;
+  min-height: 150px;
+  min-width: 150px;
+  max-height: 150px;
+  max-width: 150px;
+  border-radius: 75px;
+  font-size: 75px;
+  border: 7px solid white;
+  font-size: 11px;
+}
+.profile-name {
+  position: absolute;
+  top: 125px;
+  left: 182px;
+  font-size: 35px;
+  font-weight: 600;
+  color: white;
+}
+.data-container {
+  display: flex;
+  margin: 0 auto;
+  max-width: 900px;
+  border-radius: 2px;
+  /* border: 1px solid #c7c4c4; */
+}
+.profile-meta {
+  background: #f3f4f5;
+  width: 330px;
+  align-self: start;
+  padding: 20px 20px 40px 20px;
+  margin: 7px 10px 0 0;
+  border-radius: 2px;
+}
+.profile-meta-text {
+  font-size: 18px;
+  margin: 7px 0;
+}
+.profile-meta-text-first {
+  padding-top: 45px;
+}
+.profile-tweets {
+  margin: 15px auto;
+}
+.profile-settings {
+  text-align: right;
+}
+.profile-setting-wheel {
+  color: #b6c6ce;
+}
+
+/* =============== follow button =========== */
+.btn-follow-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.btn-usercard {
+  border-radius: 2px;
+  font-size: 20px;
+  font-weight: 500;
+  border: 1px solid #333232;
+  width: 120px;
+  padding: 10px 0;
+  margin: 20px;
+}
+.btn-follow {
+  background: transparent;
+}
+.btn-follow:hover {
+  cursor: pointer;
+  background: #1fa7dd;
+  border: 1px solid #1fa7dd;
+  color: white;
+}
+/* .btn-follow:focus {
+  cursor: pointer;
+  background: #161616;
+  color: #eceaea;
+} */
+.btn-unfollow {
+  background: #333232;
+  color: #eceaea;
+}
+.btn-unfollow:hover {
+  cursor: pointer;
+  background: #5a5858;
+  color: #eceaea;  
+}
+/* .btn-unfollow:focus {
+  cursor: pointer;
+  background: transparent;
+  color: #424242;
+} */
+/* =========FORM======================== */
+.form-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 70px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: auto 30px;
+  align-items: center;
+}
+.form-header {
+  font-size: 25px;
+  margin: 25px 0;
+  text-align: center;
+}
+.form label {
+  font-size: 21px;
+  margin: 15px 0 5px 0;
+}
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.form input {
+  padding: 5px;
+  font-size: 17px;
+  border-radius: 2px;
+  border: 1px solid #9b9999;
+  width: 300px;
+}
+/* =========FORM======================== */
+
+/* =========TWEET======================== */
+.tweet-container {
+  display: flex;
+  width: 550px;
+  border: 1px solid #c7c4c4;
+  border-radius: 2px;
+  margin: 20px auto;
+  position: relative;
+}
+.tweet-container:hover {
+  background: #faf8f8ec;
+  box-shadow: 0 0 0 0.05rem #9b9999;
+}
+.tweet-container:focus-within {
+  background: #faf8f8ec;
+  box-shadow: 0 0 0 0.05rem #9b9999;
+}
+
+.pseudo-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.avatar {
+  min-height: 60px;
+  min-width: 60px;
+  max-height: 60px;
+  max-width: 60px;
+  border-radius: 30px;
+  margin: 15px;
+  font-size: 10px;
+}
+.tweet-meta {
+  margin: 15px 10px 15px 0;
+}
+.tweet-meta a {
+  position: relative;
+}
+.tweet-meta .user-name {
+  font-size: 19px;
+  font-weight: 600;
+}
+.meta-text {
+  color: #9b9999;
+  font-size: 14px;
+  margin: 4px 0;
+}
+.text {
+  font-size: 16px;
+  margin: 10px 10px 10px 0;
+  line-height: 1.3em;
+}
+.respons-container {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+.respons {
+  font-size: 17px;
+  color: #9b9999;
+  margin: 0 10px 0 5px;
+  padding-top: 2px;
+}
+.icon {
+  font-size: 25px;
+  color: #444343;
+}
+.tweet-meta .icon {
+  position: relative;
+}
+.icon:hover {
+  cursor: pointer;
+  color: #0994d4;
+}
+
+.liked {
+  color: #d61851;
+}
+.new-tweet {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.textarea {
+  height: 140px;
+  resize: none;
+  margin: 20px 0 10px 0;
+  padding: 10px;
+  border: 1px solid #c7c4c4;
+  border-radius: 2px;
+  font-size: 16px;
+}
+.emoji-container {
+  height: 138px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.emoji {
+  font-size: 25px;
+}
+.emoji:hover {
+  cursor: pointer;
+}
+/* =========TWEET======================== */
+
+.btn-logout {
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 18px;  
+  color: #424242;
+  cursor: pointer;
+  margin-right: 15px;
+}
