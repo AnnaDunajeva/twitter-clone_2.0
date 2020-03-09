@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {toggleTweetsLike} from '../redux-store-2.0/api/tweets'
+import {toggleUserFollow} from '../redux-store-2.0/api/users'
 import {getUserById} from '../redux-store-2.0/entities/users/selectors'
 
 const UserCard = ({userId}) => {
@@ -15,9 +15,10 @@ const UserCard = ({userId}) => {
                 userId: localStorage.getItem('userId'),
                 token: localStorage.getItem('token')
             },
-            userId: userId
+            userId: userId,
+            following: user.following
         }
-        await dispatch(toggleTweetsLike(data)) 
+        await dispatch(toggleUserFollow(data)) 
 
         console.log('user: ', user) //user is still not updated here for some reason..idk
         // console.log('isFollowing: ', user.followers.includes(authedUser))

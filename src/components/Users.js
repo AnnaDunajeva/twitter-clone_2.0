@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {useSelector} from 'react-redux'
 import UserCard from './UserCard'
 import ScrollUtil from './ScrollUtil'
@@ -16,7 +16,7 @@ const Users = () => {
         token: localStorage.getItem('token')
     }}
     
-    const usersSelector = useSelector(getDiscoverUsersIds())
+    const usersSelector = useCallback(getDiscoverUsersIds(), [])
 
     return (
         <ScrollUtil 

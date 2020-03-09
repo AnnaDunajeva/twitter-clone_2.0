@@ -4,20 +4,18 @@ import {
     COMPOSITE_DATA_ENTITIES_FETCH_SUCCESS, 
     COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
     SESSION_END_SUCCESS,
-    NEW_TWEET_ADD_TO_FEED
+    NEW_TWEET_ADD_TO_FEED,
+    NEW_TWEET_ADD_TO_REPLIES,
+    NEW_TWEET_ADD_TO_USER_TWEETS
 } 
 from '../action-types'
-import { homeKey } from '../utils/compositeDataStateKeys'
+import { homeKey, conversationKey, userTweetsKey } from '../utils/compositeDataStateKeys'
 
 const initialState = {
     entities: [],
     fetchStatus: null,
     lastTopFetchTimestamp: null,
-    error: null,
-    paginationConfig: {
-        hasMore: true,
-        previousIdsLength: 0
-    }
+    error: null
 }
 
 const compositeData = (state = initialState, action) => {//keyedReducer chooses part of state with key value of stateKey
@@ -49,7 +47,8 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             if (action.stateKey === homeKey()) {
                 const tweet = {
                     ...action.tweet,
-                    sortindex: state.entities[0].sortindex - 1
+                    sortindex: state.entities[0]?.sortindex - 1 || Date.now() //in case feed is empty. After recent modification if
+                                                                                //feed is empty, then i dont add new tweet thereat all so no need for date.now
                 }
                 return {
                     ...state,
@@ -57,6 +56,35 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                     entities: [tweet].concat(state.entities)
                 }
             } else {
+                return state
+            }
+        case NEW_TWEET_ADD_TO_REPLIES: 
+            if (action.stateKey === conversationKey(action.parentId)) {
+                const tweet = {
+                    ...action.tweet,
+                    sortindex: state.entities[1]?.sortindex - 1 || Date.now(),  // 0 index for main tweet
+                    type: 'reply'
+                }
+                return {
+                    ...state,
+                    fetchStatus: action.fetchStatus,
+                    entities: [state.entities[0], tweet, ...state.entities.slice(1)]
+                }
+            }else {
+                return state
+            }
+        case NEW_TWEET_ADD_TO_USER_TWEETS:
+            if (action.stateKey === userTweetsKey(action.author)) {
+                const tweet = {
+                    ...action.tweet,
+                    sortindex: state.entities[0]?.sortindex - 1 || Date.now(), 
+                }
+                return {
+                    ...state,
+                    fetchStatus: action.fetchStatus,
+                    entities: [tweet, ...state.entities]
+                }
+            }else {
                 return state
             }
         case SESSION_END_SUCCESS:

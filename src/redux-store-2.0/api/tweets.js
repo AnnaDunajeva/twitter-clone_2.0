@@ -19,7 +19,9 @@ import {
     compositeDataEntitiesFetch, 
     compositeDataEntitiesFetchSuccess,
     compositeDataEntitiesFetchError,
-    newTweetAddToFeed } from '../composite-data/actions'
+    newTweetAddToFeed,
+    newTweetAddToReplies,
+    newTweetAddToUserTweets } from '../composite-data/actions'
 import { 
     conversationKey,
     homeKey,
@@ -56,7 +58,9 @@ export function getFeedPaginated(data) {
     
                 dispatch(tweetsFetchSuccess(feedData.tweets, tweetsFetchStatus))
                 dispatch(usersFetchSuccess(feedData.users, usersFetchStatus))
-                dispatch(compositeDataEntitiesFetchSuccess(homeKey(), feed, data.time))
+                dispatch(compositeDataEntitiesFetchSuccess(homeKey(), feed, data.time)) //it is important that composite data goes last
+                //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
+                //with stuff being undefined
 
             }
             dispatch(hideLoading())
@@ -80,7 +84,7 @@ export function getConversationPaginated (data) {
 
         try {
             console.log('inside action getRepliesPaginated')
-            const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true`, { 
+            const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getMainTweet=${data.skip === 0 ? true : false}`, { 
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -101,15 +105,15 @@ export function getConversationPaginated (data) {
                 const tweetsFetchStatus = mapValues(tweets, () => LOADED)
                 const usersFetchStatus = mapValues(users, () => LOADED)
                 
-                if (tweets[data.tweetId] === undefined) {
+                if (data.skip === 0 && tweets[data.tweetId] === undefined) {
                     dispatch(tweetsFetchError({[data.tweetId]: NOT_FOUND}, {[data.tweetId]:ERROR}))
                     dispatch(compositeDataEntitiesFetchError(stateKey, NOT_FOUND, data.time))
                 } else {
                     const conversation = Object.keys(tweets).filter(tweetId => data.skip !== 0 ? data.tweetId !== tweetId : true).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex', 'type'])).sort((a,b) => b.sortindex - a.sortindex)
                     console.log('conversation ', conversation) 
         
-                    dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
                     dispatch(usersFetchSuccess(users, usersFetchStatus))
+                    dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
                     dispatch(compositeDataEntitiesFetchSuccess(stateKey, conversation, data.time))
                 }
             }
@@ -185,8 +189,11 @@ export function toggleTweetsLike (data) {
                     'Authorization': `Bearer ${data.user.token}`
                 }
             })
-            const responseData = await response.json() //{message: 'success', tweet: {...}, parents:{...}} or {err: {...}}
-            
+            const responseData = await response.json() //{message: 'success', tweet: {...}, parents:{...}} or {error: {...}}
+            if (responseData.error) {
+                dispatch(tweetToggleLike(data.tweetId))
+                dispatch(globalErrorAdd(`${TWEET_TOGGLE_LIKE}/${data.tweetId}`, responseData.error))
+            }
             //maybe be I dont need to update tweet like this, because what if while request was being send somebody else
             //liked tweet so when you receive tweet back in UI insted of like being plus 1 it will be plus 2 or more,
             //this might be confusing to user
@@ -210,7 +217,7 @@ export function toggleTweetsLike (data) {
 }
 
 export function postTweet (data) {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_POST}`))
 
@@ -226,15 +233,33 @@ export function postTweet (data) {
             })
             const tweetData = await tweetResponse.json()
             console.log(tweetData)
-            const tweet = tweetData.tweet
-            const tweetId = Object.keys(tweet)[0]
-            const tweetFetchStatus = {[tweetId]: LOADED}
 
-            const tweetShort = pick(tweet[tweetId], ['id', 'sortindex']) //does not have sort index
 
-            dispatch(tweetsFetchSuccess(tweet, tweetFetchStatus))
-            dispatch(newTweetAddToFeed(tweetShort))
-            
+            if (tweetData.error) {
+                dispatch(globalErrorAdd(`${TWEET_POST}`, tweetData.error))
+            } else {
+                const tweet = tweetData.tweet
+                const tweetId = Object.keys(tweet)[0]
+                const tweetFetchStatus = {[tweetId]: LOADED}
+    
+                const tweetShort = pick(tweet[tweetId], ['id', 'sortindex']) //does not have sortindex
+
+                dispatch(tweetsFetchSuccess(tweet, tweetFetchStatus))
+
+                if (tweet[tweetId].replyingToTweetId) {
+                    dispatch(newTweetAddToReplies(tweetShort, tweet[tweetId].replyingToTweetId))
+                } 
+                const home = getState().compositeData[homeKey()]
+                if (home !== undefined) {
+                //if (home !== undefined && home.entities.length !== 0) {
+                    dispatch(newTweetAddToFeed(tweetShort))
+                }
+                const userTweets = getState().compositeData[userTweetsKey(tweet[tweetId].user)]
+                if (userTweets !== undefined) {
+                //if (userTweets !== undefined && userTweets.entities.length !== 0) {
+                    dispatch(newTweetAddToUserTweets(tweetShort, tweet[tweetId].user))
+                }
+            }
             dispatch(hideLoading())
         }
         catch (err) { 

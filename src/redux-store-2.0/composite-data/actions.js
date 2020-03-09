@@ -6,8 +6,10 @@ import {
     COMPOSITE_DATA_ENTITIES_FETCH, 
     COMPOSITE_DATA_ENTITIES_FETCH_SUCCESS, 
     COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
-    NEW_TWEET_ADD_TO_FEED } from '../action-types'
-import {homeKey} from '../utils/compositeDataStateKeys'
+    NEW_TWEET_ADD_TO_FEED,
+    NEW_TWEET_ADD_TO_REPLIES,
+    NEW_TWEET_ADD_TO_USER_TWEETS } from '../action-types'
+import {homeKey, conversationKey, userTweetsKey} from '../utils/compositeDataStateKeys'
 
 export const compositeDataEntitiesFetch = (stateKey) => {
     return {
@@ -42,16 +44,39 @@ export const newTweetAddToFeed = (tweet) => {
         type: NEW_TWEET_ADD_TO_FEED,
         tweet,
         stateKey: homeKey(),
-        fetchStatus: LOADING
+        fetchStatus: LOADED
     }
 }
 
-// export const setLastTopFetchTimestamp = (stateKey, lastTopFetchTimestamp) => {
+export const newTweetAddToReplies = (tweet, parentId) => {
+    return {
+        type: NEW_TWEET_ADD_TO_REPLIES,
+        tweet,
+        parentId,
+        stateKey: conversationKey(parentId),
+        fetchStatus: LOADED
+    }
+}
+
+export const newTweetAddToUserTweets = (tweet, author) => {
+    return {
+        type: NEW_TWEET_ADD_TO_USER_TWEETS,
+        tweet,
+        author,
+        stateKey: userTweetsKey(author),
+        fetchStatus: LOADED
+    }
+}
+
+// export const newTweetAddToUserTweets = (tweet, parentId) => {
 //     return {
-//         type: LAST_TOP_FETCH_TIMESTAMP_SET,
-//         lastTopFetchTimestamp,
-//         stateKey
+//         type: NEW_TWEET_ADD_TO_REPLIES,
+//         tweet,
+//         parentId,
+//         stateKey: conversationKey(parentId),
+//         fetchStatus: LOADING
 //     }
 // }
+
 
 

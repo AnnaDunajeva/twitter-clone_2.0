@@ -29,7 +29,7 @@ export const getUserTweetIds = (userId) => {
 }
 
 export const getDiscoverUsersIds = () => {
-    return (state) => state.compositeData[discoverUsersKey()].entities.map.map(userData => userData.userId)
+    return (state) => state.compositeData[discoverUsersKey()]?.entities.map(userData => userData.userId) || []
 }
 
 export const getConversationMainTweetId = (tweetId) => {

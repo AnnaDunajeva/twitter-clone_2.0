@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {useSelector} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import Tweet from './Tweet'
@@ -24,7 +24,7 @@ const ProfileCard = ({user, history}) => {
         },
         userId: user.userId
     }
-    const userTweetsSelector = getUserTweetIds(user.userId)
+    const userTweetsSelector = useCallback(getUserTweetIds(user.userId), []) //not sure if I need it
     
     return (
         <React.Fragment>

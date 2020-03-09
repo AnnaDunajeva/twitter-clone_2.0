@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import NewTweet from './NewTweet'
 import Tweet from './Tweet'
 import {useSelector} from 'react-redux'
@@ -13,11 +13,12 @@ import {LOADED, NOT_FOUND} from '../redux-store-2.0/constants'
 
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
-    const mainTweet = useSelector(getTweetById(tweetId))
+    // const mainTweet = useSelector(getTweetById(tweetId)) //created infinite rerender loop because when i fetch conversation
+    //I get always main tweet and then i add it to store so it changes with each fetch
     const mainTweetFetchStatus = useSelector(getTweetStatusById(tweetId))
     const mainTweetFetchError = useSelector(getTweetErrorById(tweetId))
 
-    const repliesSelector = getConversationRepliesIds((tweetId))
+    const repliesSelector = useCallback(getConversationRepliesIds((tweetId)), [])
 
     const take = 2
 
@@ -38,11 +39,17 @@ const TweetPage = (props) => {
     return (
         <React.Fragment>
             {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
-            {mainTweetFetchStatus === LOADED 
-                ? <React.Fragment>
-                    {console.log('parent tweet', mainTweet)}
-                    <Tweet id={tweetId}/>
-                    <NewTweet replyingTo={tweetId}/>
+            {/* {mainTweetFetchStatus === LOADED  */}
+                <React.Fragment>
+                    {console.log('parent tweet', tweetId)}
+                    {mainTweetFetchStatus === LOADED &&
+                        <React.Fragment>
+                            <Tweet id={tweetId}/>
+                            <NewTweet replyingTo={tweetId}/>
+                        </React.Fragment>
+                    }
+                    {/* <Tweet id={tweetId}/>
+                    <NewTweet replyingTo={tweetId}/> */}
                     <ScrollUtil getDataFetch={getConversationPaginated} 
                                 dispatchData={dispatchData} 
                                 stateSelector={repliesSelector}
@@ -54,8 +61,8 @@ const TweetPage = (props) => {
                                 {(ids) => ids.map((id) => <Tweet id={id} key={id}/>)}
                     </ScrollUtil>
                 </React.Fragment>
-                : <Loading text='Fetching' speed={200}/>
-            }
+                {/* : <Loading text='Fetching' speed={200}/> */}
+            {/* } */}
         </React.Fragment>
     )
 }

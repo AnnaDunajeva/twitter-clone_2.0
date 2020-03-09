@@ -51,8 +51,6 @@ const Tweet = ({id}) => {
 
     return (
         <React.Fragment>
-            {console.log('tweetId ', id)}
-
             <div className='tweet-container'>
                 <Link to={`/tweet/${id}`} className='pseudo-link'></Link>
 
@@ -85,6 +83,7 @@ const Tweet = ({id}) => {
                                         maxLine={2}
                                         minLine={1}
                                         url={urlObj.href}
+                                        key = {urlObj.href}
                                     />
                                 )
                             }
