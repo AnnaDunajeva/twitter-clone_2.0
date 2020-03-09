@@ -1,5 +1,6 @@
 import { omit } from 'lodash';
 import { SESSION_END_SUCCESS } from '../action-types';
+import {GLOBAL_ERROR_ADD, GLOBAL_ERROR_REMOVE} from '../action-types'
 
 //names of actions that can be here:
 // `COMPOSITE_DATA_ENTITIES_FETCH_ERROR/${stateKey}`

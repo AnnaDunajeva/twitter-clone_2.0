@@ -1,11 +1,14 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {handleGetAllUsersPaginated, deleteAllUsers} from '../redux-store/actions/users'
 import UserCard from './UserCard'
 import ScrollUtil from './ScrollUtil'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import {getDiscoverUsersIds} from '../redux-store-2.0/composite-data/selectors'
+import {getAllUsersPaginated} from '../redux-store-2.0/api/users'
+import {discoverUsersKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 
 const Users = () => {
-    const authedUser = useSelector(state => state.authedUser)
+    const authedUser = useSelector(getAuthedUserId())
     const take = 7
 
     const dispatchData = {user: {
@@ -13,21 +16,17 @@ const Users = () => {
         token: localStorage.getItem('token')
     }}
     
-    const usersSelector = ({users}) => {
-        const usersIds = Object.keys(users)
-        return usersIds.filter(id => id !== authedUser) //handleGetAllUsersPaginated does not return authed user
-    }
+    const usersSelector = useSelector(getDiscoverUsersIds())
 
     return (
         <ScrollUtil 
-            getDataFetch={handleGetAllUsersPaginated} 
+            getDataFetch={getAllUsersPaginated} 
             dispatchData={dispatchData} 
-            deleteDataDispatch={deleteAllUsers} 
             stateSelector={usersSelector} 
             take={take} 
-            isGetProfile={true} 
             headerText={'Find interesting people to follow!'} 
             noDataText={'No users joind yet!'}
+            stateKey={discoverUsersKey()}
             >
             {(ids)=>(
                 <ul>

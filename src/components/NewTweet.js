@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
-import {handleAddTweet} from '../redux-store/actions/tweets'
 import {useDispatch, useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Emoji from './Emoji'
 import {MdSentimentSatisfied} from "react-icons/md"
 import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io"
+import {postTweet} from '../redux-store-2.0/api/tweets'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 
 const emoji = [
     '😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊','😋','😎','😍','😘','🥰',
@@ -78,7 +79,7 @@ const NewTweet = ({replyingTo}) => {
     const [text, setText] = useState('')
     const [isEmojiVisible, setIsEmojiVisible] = useState(false)
     const [toHome, setToHome] = useState(false)
-    const authedUser = useSelector(state => state.authedUser)
+    const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
 
     const currentLength = text.length
@@ -86,7 +87,7 @@ const NewTweet = ({replyingTo}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await dispatch(handleAddTweet({
+        await dispatch(postTweet({
             tweet: { 
             text, 
             replyingTo: !replyingTo ? null : replyingTo

@@ -1,16 +1,18 @@
 import React, {useRef} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {formatDate, formatTweet} from '../utils/helpers'
+import {formatDate} from '../utils/helpers'
 import {Link, withRouter} from 'react-router-dom'
 import { TiArrowBackOutline } from "react-icons/ti";
 import { TiHeartOutline } from "react-icons/ti";
 import { TiHeart } from "react-icons/ti";
-import { handleToggleLike } from '../redux-store/actions/tweets'
 import Linkify from 'linkifyjs/react';
 import * as linkify from 'linkifyjs'
 import videoUrlParser from "js-video-url-parser";
 import YouTube from 'react-youtube'
 import { ReactTinyLink } from 'react-tiny-link'
+import {getTweetById} from '../redux-store-2.0/entities/tweets/selectors'
+import {getUserById} from '../redux-store-2.0/entities/users/selectors'
+import {toggleTweetsLike} from '../redux-store-2.0/api/tweets'
 
 const linkifyOptions = {
     validate: {
@@ -19,20 +21,11 @@ const linkifyOptions = {
     }
 }
 
-const Tweet = ({id, history}) => {
+const Tweet = ({id}) => {
     const dispatch = useDispatch()
 
-    const tweet = useSelector(({tweets, users, authedUser}) => {
-        const tweet = tweets[id]
-        const author = users[tweets[id].author]
-        const parentTweet = tweet.replyingTo 
-            ? tweets[tweet.replyingTo] //is parent tweet in store? (e.g in tweetpage all replies are to the same main tweet)
-                ? tweets[tweet.replyingTo] //take it
-                : tweet.replyingTo //otherwise it has to be attached to tweet
-            : null
-
-        return {authedUser, ...formatTweet(tweet, author, authedUser, parentTweet)}
-    })
+    const tweet = useSelector(getTweetById(id))
+    const author = useSelector(getUserById(tweet.user))
 
     const urlsInTweet = useRef(linkify.find(tweet.text).filter(urlObj => urlObj.type === 'url')) //maybe useMemo instead?
     const youtubeUrls = useRef(urlsInTweet.current
@@ -43,8 +36,7 @@ const Tweet = ({id, history}) => {
 
     const handleLike = (e) => {
         e.preventDefault()
-        dispatch(handleToggleLike({
-            hasLiked: !tweet.hasLiked,
+        dispatch(toggleTweetsLike({
             tweetId: id,
             user: {
                 userId: localStorage.getItem('userId'),
@@ -60,25 +52,24 @@ const Tweet = ({id, history}) => {
     return (
         <React.Fragment>
             {console.log('tweetId ', id)}
-            {console.log('urlsInTweet.current ', urlsInTweet.current)}
-            {console.log('outubeUrls.current ', youtubeUrls.current)}
+
             <div className='tweet-container'>
                 <Link to={`/tweet/${id}`} className='pseudo-link'></Link>
 
-                <img src={tweet.avatar} alt={`Avatar for ${tweet.name}`} className='avatar'/>
+                <img src={author.avatarURL} alt={`Avatar for ${author.name}`} className='avatar'/>
 
                 <div className='tweet-meta'>
-                    <Link to={`/user/${tweet.userId}`} className='user-name'>
-                        {tweet.name}
+                    <Link to={`/user/${author.userId}`} className='user-name'>
+                        {author.name}
                     </Link>
 
-                    <div className='meta-text'>{formatDate(tweet.timestamp)}</div>
+                    <div className='meta-text'>{formatDate(tweet.createdAt)}</div>
 
-                    {tweet.parent !== null && 
-                        <Link to={`/tweet/${tweet.parent.id}`} 
+                    {tweet.replyingToTweetId !== null && 
+                        <Link to={`/tweet/${tweet.replyingToTweetId}`} 
                             className='meta-text' 
                         >
-                            {`Replying to @${tweet.parent.author}`}
+                            {`Replying to @${tweet.replyingToUserId}`}
                         </Link>
                     }
                     <Linkify tagName="p" className='text' options={linkifyOptions}>{tweet.text}</Linkify>
@@ -115,16 +106,16 @@ const Tweet = ({id, history}) => {
                             <TiArrowBackOutline className='icon'/>
                         </Link>
 
-                        <div className='respons'>{tweet.replies !== 0 ? tweet.replies : null}</div>
+                        <div className='respons'>{tweet.repliesCount !== 0 ? tweet.repliesCount : null}</div>
 
                         <button className='btn-clear' onClick={handleLike}>
-                            {tweet.hasLiked 
+                            {tweet.liked 
                                 ? <TiHeart className='icon liked' />
                                 : <TiHeartOutline className='icon' />
                             }
                         </button>
 
-                        <div className='respons'>{tweet.likes !== 0 ? tweet.likes : null}</div>
+                        <div className='respons'>{tweet.likesCount !== 0 ? tweet.likesCount : null}</div>
 
                     </div>
                 </div>

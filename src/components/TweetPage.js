@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import NewTweet from './NewTweet'
 import Tweet from './Tweet'
-import {useSelector, useDispatch} from 'react-redux'
-import { handleGetTweetById, filterTweets, handleRepliesPaginated } from '../redux-store/actions/tweets'
+import {useSelector} from 'react-redux'
 import NotFound from './NotFound'
 import ScrollUtil from './ScrollUtil'
 import Loading from './Loading.js'
+import {getConversationRepliesIds} from '../redux-store-2.0/composite-data/selectors'
+import {conversationKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
+import {getConversationPaginated} from '../redux-store-2.0/api/tweets'
+import {getTweetStatusById, getTweetErrorById, getTweetById} from '../redux-store-2.0/entities/tweets/selectors'
+import {LOADED, NOT_FOUND} from '../redux-store-2.0/constants'
 
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
-    const mainTweet = useSelector(({tweets}) => tweets[tweetId])
-    // const parent = useSelector(({tweets}) => tweets[mainTweet.replyingTo])
-    // const parentTweetMemorized = useRef(null) //because ScrollUtil deletes all tweets before fetching, so if i fetcch parent tweet here it will bw deleted later by scrollutil
-    const dispatch = useDispatch()
+    const mainTweet = useSelector(getTweetById(tweetId))
+    const mainTweetFetchStatus = useSelector(getTweetStatusById(tweetId))
+    const mainTweetFetchError = useSelector(getTweetErrorById(tweetId))
+
+    const repliesSelector = getConversationRepliesIds((tweetId))
+
     const take = 2
-    const [mainTweetFetched, setMainTweetFetched] = useState(false)
 
     const dispatchData = {
         user: {
@@ -23,64 +28,26 @@ const TweetPage = (props) => {
         },
         tweetId
     }
-    const repliesSelector = ({tweets}) => {
-        const tweetIds = Object.keys(tweets)
-        return tweetIds.filter((id) => id !== tweetId && id !== mainTweet.replyingTo)
-    }
-
-    // useEffect(() => {
-    //     setMainTweetFetched(false)
-    //     const asyncDispatch = async () => {
-    //         await dispatch(filterTweets([tweetId]))
-    //         setDeleted(true)
-    //     }
-    //     asyncDispatch()
-    // }, [dispatch, tweetId])
-
-    useEffect(() => {
-        //in future needs to be redone using Suspense, which is not implemented in react yet
-        let didCancel = false;
-        // console.log('desiding weather to fetch main tweet', mainTweetFetched, mainTweet)
-        console.log('about to fetch tweet')
-        const asyncDispatch = async () => {
-            await dispatch(handleGetTweetById({
-                tweetId,
-                user: {
-                    userId: localStorage.getItem('userId'),
-                    token: localStorage.getItem('token')
-                }
-            }))
-            console.log('parent tweet fetched')
-            setMainTweetFetched(true)
-            if (!didCancel) {
-                console.log('not cancelled') //for some reason cancelled is true here
-                }
-        }
-        asyncDispatch();
-        return () => { didCancel = true; };
-    }, [dispatch, tweetId])
     
-    if (mainTweet === 'not found') {
+    if (mainTweetFetchError === NOT_FOUND) {
         return (
-            // <div className='header'>404. Could not find page requested.</div>
             <NotFound />
         )
     } 
 
     return (
         <React.Fragment>
-            {console.log('rendering tweet page', 'fetched', !!mainTweet && mainTweetFetched)}
-            {mainTweet && mainTweetFetched //there are situations where state saved that parent tweet was fetched already but parent tweet is undefined cause it was deleted from store
+            {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
+            {mainTweetFetchStatus === LOADED 
                 ? <React.Fragment>
                     {console.log('parent tweet', mainTweet)}
                     <Tweet id={tweetId}/>
                     <NewTweet replyingTo={tweetId}/>
-                    <ScrollUtil getDataFetch={handleRepliesPaginated} 
+                    <ScrollUtil getDataFetch={getConversationPaginated} 
                                 dispatchData={dispatchData} 
-                                deleteDataDispatch={()=>filterTweets([tweetId])} 
                                 stateSelector={repliesSelector}
+                                stateKey={conversationKey(tweetId)}
                                 take={take} 
-                                isGetProfile={false} 
                                 headerText={'Replies'} 
                                 noDataText={'No replies yet!'}  
                                 >

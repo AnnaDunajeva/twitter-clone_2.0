@@ -8,10 +8,8 @@ import {
 } from '../action-types'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { URL } from "../constants"
-
 import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
 
-import {showLoading, hideLoading} from 'react-redux-loading-bar'
 
 
 export function signUp (userData) {
@@ -81,7 +79,7 @@ export function login(userData) {
             else if (data.user) {
                 localStorage.setItem('userId', userData.userId)
                 localStorage.setItem('token', data.token)
-                dispatch({type: SESSION_START_SUCCESS, userId: data.userId})
+                dispatch({type: SESSION_START_SUCCESS, entities: data.user, userId: userData.userId})
             }
             dispatch(hideLoading())
         }
@@ -119,7 +117,7 @@ export function logOut(user) {
                 localStorage.removeItem('userId')
                 localStorage.removeItem('token')
 
-                dispatch(logoutUser({type: SESSION_END_SUCCESS}))
+                dispatch({type: SESSION_END_SUCCESS})
             }
             dispatch(hideLoading())
         }

@@ -1,7 +1,15 @@
 import { pick, pickBy } from 'lodash'
 
-export const getTweetById = (state, tweetId) => {
-    return state.entities.tweets.entities[tweetId]
+export const getTweetById = (tweetId) => {
+    return (state) => state.entities.tweets.entities[tweetId]
+}
+
+export const getTweetStatusById = (tweetId) => {
+    return (state) => state.entities.tweets.fetchStatus[tweetId]
+}
+
+export const getTweetErrorById = (tweetId) => {
+    return (state) => state.entities.tweets.errors[tweetId]
 }
 
 export const getTweetsByIdsReturnObject = (state, tweetIds) => {

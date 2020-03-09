@@ -4,7 +4,7 @@ import {
     TWEETS_FETCH,
     TWEETS_FETCH_ERROR
 } 
-from '../../../action-types'
+from '../../action-types'
 
 export const tweetsFetch = (ids, fetchStatus) => {
     return {
@@ -14,10 +14,10 @@ export const tweetsFetch = (ids, fetchStatus) => {
     }
 }
 
-export const tweetsFetchSuccess = (entities, fetchStatus) => {
+export const tweetsFetchSuccess = (tweets, fetchStatus) => {
     return {
         type: TWEETS_FETCH_SUCCESS,
-        entities,
+        tweets,
         fetchStatus
     }
 }

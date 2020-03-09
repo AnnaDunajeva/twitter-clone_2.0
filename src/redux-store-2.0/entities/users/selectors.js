@@ -1,7 +1,15 @@
 import { pick } from 'lodash'
 
-export const getUserById = (state, userId) => {
-    return state.entities.users.entities[userId]
+export const getUserById = (userId) => {
+    return (state) => state.entities.users.entities[userId]
+}
+
+export const getUserStatusById = (userId) => {
+    return (state) => state.entities.users.fetchStatus[userId]
+}
+
+export const getUserErrorById = (userId) => {
+    return (state) => state.entities.users.errors[userId]
 }
 
 export const getUsersByIdsReturnObject = (state, userIds) => {

@@ -26,7 +26,8 @@ li {
 .nav {
   background-color: white;
   margin: 0 auto;
-  padding-top: 15px;
+  margin-top: 3px;
+  padding-top: 12px;
   margin-bottom: 25px;
   display: flex;
   justify-content: space-between;
@@ -152,6 +153,12 @@ li {
   font-size: 35px;
   font-weight: 600;
   color: white;
+}
+.profile-icon {
+  /* margin-top: 5px; */
+  vertical-align: bottom;
+  margin-right: 5px;
+  color: #454849;
 }
 .data-container {
   display: flex;

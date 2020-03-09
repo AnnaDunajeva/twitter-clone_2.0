@@ -1,4 +1,6 @@
-export const globalErrorAdd = (actionName, errorMessage, ) => ({
+import {GLOBAL_ERROR_ADD, GLOBAL_ERROR_REMOVE} from '../action-types'
+
+export const globalErrorAdd = (actionName, errorMessage) => ({
     type: GLOBAL_ERROR_ADD,
     name: actionName,
     error: errorMessage

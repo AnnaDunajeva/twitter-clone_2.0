@@ -2,18 +2,19 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import { handleLogOut } from '../redux-store/actions/authedUser'
+import {logOut} from '../redux-store-2.0/api/session'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 
 const NavBar = () => {
-    const authedUser = useSelector(state => state.authedUser)
+    const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
 
-    const logOut = async () => {
+    const logOutUser = async () => {
         const user = {
             userId: localStorage.getItem('userId'),
             token: localStorage.getItem('token')
         }
-        await dispatch(handleLogOut(user))
+        await dispatch(logOut(user))
     }
     if (!authedUser) {
         return <Redirect to='/login'/>
@@ -42,7 +43,7 @@ const NavBar = () => {
                     </NavLink>
                 </li>
             </ul>
-            <button onClick={logOut} className='btn-logout hover-blue'>
+            <button onClick={logOutUser} className='btn-logout hover-blue'>
                 Log Out
             </button>
         </nav>

@@ -1,6 +1,6 @@
 export const LOADING = 'loading'
 export const LOADED = 'loaded'
-export const ERROR = 'errors'
+export const ERROR = 'error'
 
 export const NOT_FOUND = 'not found'
 

@@ -12,19 +12,13 @@ import NotFound from './NotFound'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
 import ProfileUpdate from './ProfileUpdate'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 
 const App = () => {
-    // const dispatch = useDispatch()
-    const authedUser = useSelector(state => state.authedUser)
+    const authedUser = useSelector(getAuthedUserId())
+
+    //fetch user profile
     
-    // useEffect(() => {
-    //     if (authedUser) {
-    //         dispatch(handleInitialData({
-    //             userId: authedUser,
-    //             token: localStorage.getItem('token')
-    //         }))
-    //     }
-    // }, [dispatch, authedUser])
     return (
         <Router>
             <React.Fragment>

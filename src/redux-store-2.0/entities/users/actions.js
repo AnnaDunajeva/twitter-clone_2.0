@@ -4,7 +4,7 @@ import {
     USERS_FETCH,
     USERS_FETCH_ERROR
 } 
-from '../../../action-types'
+from '../../action-types'
 
 export const usersFetch = (ids, fetchStatus) => {
     return {
@@ -14,10 +14,10 @@ export const usersFetch = (ids, fetchStatus) => {
     }
 }
 
-export const usersFetchSuccess = (entities, fetchStatus) => {
+export const usersFetchSuccess = (users, fetchStatus) => {
     return {
         type: USERS_FETCH_SUCCESS,
-        entities,
+        users,
         fetchStatus
     }
 }

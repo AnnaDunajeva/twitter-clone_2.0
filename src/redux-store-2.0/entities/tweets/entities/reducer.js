@@ -6,28 +6,28 @@ import {
 } 
 from '../../../action-types'
 
-export default function tweets () {
-    return (state = {}, action) => {
-        switch (action.type) {
-            case TWEETS_FETCH_SUCCESS :
-                return {
-                    ...state,
-                    ...action.entities
+export default function tweets (state = {}, action) {
+    switch (action.type) {
+        case TWEETS_FETCH_SUCCESS :
+            return {
+                ...state,
+                ...action.tweets
+            }
+        case TWEET_TOGGLE_LIKE: 
+            const tweetId = action.tweetId
+            return {
+                ...state,
+                [action.tweetId]: {
+                    ...state[tweetId],
+                    liked: !state[tweetId].liked,
+                    likesCount: !state[tweetId].liked ? state[tweetId].likesCount + 1 : state[tweetId].likesCount - 1,
                 }
-            case TWEET_TOGGLE_LIKE: 
-                return {
-                    ...state,
-                    [action.tweetId]: {
-                        ...state[tweetId],
-                        liked: !state[tweetId].liked,
-                        likesCount: !state[tweetId].liked ? state[tweetId].likesCount + 1 : state[tweetId].likesCount - 1,
-                    }
-                }
-            case TWEETS_REMOVE_ALL:
-            case SESSION_END_SUCCESS:
-                return {}
-            default :
-                return state
-        } 
-    }
+            }
+        case TWEETS_REMOVE_ALL:
+        case SESSION_END_SUCCESS:
+            return {}
+        default :
+            return state
+    } 
 }
+

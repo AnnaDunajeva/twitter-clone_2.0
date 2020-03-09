@@ -4,7 +4,8 @@ import {
     LOADED, 
     URL, 
     LOADING,
-    NOT_FOUND} from "../constants"
+    NOT_FOUND,
+    ERROR} from "../constants"
 
 import { 
         usersFetch,
@@ -14,7 +15,8 @@ import { userToggleFollow } from '../entities/users/entities/actions'
 import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
 import { 
         USERS_FETCH_ERROR,
-        USER_TOGGLE_FOLLOW } from '../action-types'
+        USER_TOGGLE_FOLLOW,
+        COMPOSITE_DATA_ENTITIES_FETCH_ERROR } from '../action-types'
 import { discoverUsersKey } from '../utils/compositeDataStateKeys'
 import { 
     compositeDataEntitiesFetch, 
@@ -24,15 +26,14 @@ import {
 export function getUser (data) {
     return async (dispatch) => {
         dispatch(showLoading())
-
-        const userFetchStatusSuccess = mapValues(user, LOADED)
-        const userFetchStatusError = mapValues(user, ERROR)
-
         dispatch(usersFetch([data.userId]), {[data.userId]: LOADING})
         dispatch(globalErrorRemove(`${USERS_FETCH_ERROR}/${data.userId}`))
 
+        const userFetchStatusSuccess = {[data.userId]: LOADED}
+        const userFetchStatusError = {[data.userId]: ERROR}
+
         try {
-            const userResponse = await fetch(`${URL}/users/${data.userId}`, {
+            const userResponse = await fetch(data.userId === data.user.userId ? `${URL}/user`:`${URL}/users/${data.userId}`, {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -106,10 +107,7 @@ export function getAllUsersPaginated (data) {
         dispatch(compositeDataEntitiesFetch(discoverUsers))
 
         try {
-            const allUsersResponse = await fetch(`${URL}/users
-                                                ?take=${data.take}
-                                                &skip=${data.skip}
-                                                &time=${data.time}`, {
+            const allUsersResponse = await fetch(`${URL}/users?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -120,20 +118,20 @@ export function getAllUsersPaginated (data) {
             const allUsers = await allUsersResponse.json()
             const users = allUsers.users
 
-            const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortIndex'])).sort((a,b) => b.sortIndex - a.sortIndex)
+            const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
             console.log('compositeDataUsers ', compositeDataUsers) 
            
-            const usersFetchStatus = mapValues(users, LOADED)
+            const usersFetchStatus = mapValues(users, () => LOADED)
 
-            dispatch(compositeDataEntitiesFetchSuccess(discoverUsers, compositeDataUsers, data.time))
             dispatch(usersFetchSuccess(users, usersFetchStatus))
+            dispatch(compositeDataEntitiesFetchSuccess(discoverUsers, compositeDataUsers, data.time))
 
             dispatch(hideLoading())
         }
         catch (err) { 
             console.log(err.message)
-            dispatch(compositeDataEntitiesFetchError(discoverUsers, err.message, data.time))
             dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${discoverUsers}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(discoverUsers, err.message, data.time))
                         
             dispatch(hideLoading())
         }

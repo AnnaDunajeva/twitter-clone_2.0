@@ -9,6 +9,10 @@ export function formatDate (timestamp) {
     // const localeDate = moment(d).local().format('L')
     // return `${localeTime} ${localeDate}`
   }
+
+  export const formatJoinDate = (timestamp) => {
+    return moment(timestamp).format('MMMM YYYY')
+  }
   
   export function formatTweet (tweet, author, authedUser, parentTweet) {
     const { id, likes, replies, text, timestamp } = tweet

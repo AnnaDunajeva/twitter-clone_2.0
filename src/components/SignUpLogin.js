@@ -1,39 +1,45 @@
 import React, {useState} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import { handleSignUp, handleLogin } from '../redux-store/actions/authedUser'
+import {signUp, login} from '../redux-store-2.0/api/session'
+// import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 
 const SignUpLogin = () => {
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
     const [avatarURL, setAvatarUrl] = useState('')
     const [password, setPassword] = useState('')
+
     const [loginUsername, setLoginUsername] = useState('')
     const [loginPassword, setLoginPassword] = useState('')
+
     const [authedUser, setAuthedUser] = useState(localStorage.getItem('userId'))
+
     const dispatch = useDispatch()
 
-    const SignUp = async (e) => {
+    const SignUpUser = async (e) => {
         e.preventDefault()
         const user = {
             userId: username.toLowerCase(),
             firstName,
             lastName,
             avatarURL,
-            password
+            password,
+            email
         }
-        await dispatch(handleSignUp(user))
-        // console.log(localStorage.getItem('userId'))
+        await dispatch(signUp(user))
+
         setAuthedUser(localStorage.getItem('userId'))
     }
-    const Login = async (e) => {
+    const LoginUser = async (e) => {
         e.preventDefault()
         const user = {
             userId: loginUsername.toLowerCase(),
             password: loginPassword
         }
-        await dispatch(handleLogin(user))
+        await dispatch(login(user))
         setAuthedUser(localStorage.getItem('userId'))
     }
 
@@ -43,7 +49,7 @@ const SignUpLogin = () => {
     return (
         <div className='form-container'>
             {console.log('rendering signup')}
-            <form onSubmit={SignUp} className='form'>
+            <form onSubmit={SignUpUser} className='form'>
                 <h3 className='form-header'>Sign Up to communicate with the World!</h3>
                 <div className='inputs-container'>
                     <label htmlFor='username'>Username</label>
@@ -70,6 +76,12 @@ const SignUpLogin = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         type='password'
                     />
+                    <label htmlFor='email'>e-mail</label>
+                    <input 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        type='text'
+                    />
                     <label htmlFor='avatarUrl'>Avatar URL</label>
                     <input 
                         value={avatarURL}
@@ -79,13 +91,13 @@ const SignUpLogin = () => {
                 </div>
                 <button
                     type='submit'
-                    disabled={username === '' || firstName === '' || lastName === '' || avatarURL === '' || password === ''}
+                    disabled={username === '' || firstName === '' || lastName === '' || avatarURL === '' || password === '' || email === ''}
                     className='btn'
                     >Sign Up
                 </button>
             </form>
             <div className='separator-line'></div>
-            <form onSubmit={Login} className='form'>
+            <form onSubmit={LoginUser} className='form'>
                 <h3 className='form-header'>Log In </h3>
                 <div className='inputs-container'>
                     <label htmlFor='loginUsername'>Username</label>

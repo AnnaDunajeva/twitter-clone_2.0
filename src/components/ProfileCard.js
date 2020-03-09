@@ -3,11 +3,19 @@ import {useSelector} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import Tweet from './Tweet'
 import {IoIosSettings} from "react-icons/io"
-import {handleGetUserTweetsPaginated, deleteAllTweets} from '../redux-store/actions/tweets'
 import ScrollUtil from './ScrollUtil'
+import {getUserTweetsPaginated} from '../redux-store-2.0/api/tweets'
+import {getUserTweetIds} from '../redux-store-2.0/composite-data/selectors'
+import {userTweetsKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import {formatJoinDate} from '../utils/helpers'
+import { MdLocationOn } from "react-icons/md"
+import { IoMdCalendar } from "react-icons/io"
+import { FaUser, FaUsers } from 'react-icons/fa'
 
-const ProfileCard = ({user, history, isAuthedUser}) => {
-    const authedUser = useSelector(state => state.authedUser)
+const ProfileCard = ({user, history}) => {
+    const authedUser = useSelector(getAuthedUserId())
+    const isAuthedUser = user.userId === authedUser ? true : false
 
     const dispatchData = {
         user: {
@@ -16,7 +24,7 @@ const ProfileCard = ({user, history, isAuthedUser}) => {
         },
         userId: user.userId
     }
-    const userTweetsSelector = ({tweets}) => Object.keys(tweets).sort((a,b) => tweets[b].timestamp - tweets[a].timestamp)
+    const userTweetsSelector = getUserTweetIds(user.userId)
     
     return (
         <React.Fragment>
@@ -35,18 +43,28 @@ const ProfileCard = ({user, history, isAuthedUser}) => {
                     </div>
                     : null
                 }
-                <div className='profile-meta-text profile-meta-text-first'>@{user.userId}</div>
-                <div className='profile-meta-text'>Joined Some Date</div>
-                <div className='profile-meta-text'>Location Maybe</div>
-                <div className='profile-meta-text'>Following {user.followings.length} | Followers {user.followers.length}</div>
+                <div className='profile-meta-text profile-meta-text-first'>
+                    <FaUser className='profile-icon' size={22}/>
+                    @{user.userId}
+                </div>
+                <div className='profile-meta-text'>
+                    <IoMdCalendar className='profile-icon' size={22}/>
+                    Joined {formatJoinDate(user.createdAt)}
+                </div>
+                <div className='profile-meta-text'>
+                    <MdLocationOn className='profile-icon' size={22}/>
+                    {user.location}
+                </div>
+                <div className='profile-meta-text'>
+                    <FaUsers className='profile-icon' size={22}/>
+                    Following {user.followingsCount} | Followers {user.followersCount}</div>
             </div>
             <div className='profile-tweets'>
-                <ScrollUtil getDataFetch={handleGetUserTweetsPaginated} 
+                <ScrollUtil getDataFetch={getUserTweetsPaginated} 
                             dispatchData={dispatchData} 
-                            deleteDataDispatch={deleteAllTweets} 
                             stateSelector={userTweetsSelector} 
+                            stateKey={userTweetsKey(user.userId)}
                             take={4} 
-                            isGetProfile={false} 
                             headerText={'Tweets'} 
                             noDataText={'No tweets to show yet!'}
                             >
