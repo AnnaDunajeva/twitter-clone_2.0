@@ -180,7 +180,7 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
         <React.Fragment>
             {console.log('rendering scroll', 'hasmore ', hasMore, savedIdsLength, 'skip ', skip, 'fetchStatus ', fetchStatus)}
             {console.log('ids ', ids)}
-            <h1 className='header'>{headerText}</h1> 
+            {ids.length !== 0 || fetchStatus === LOADED ? <h1 className='header'>{headerText}</h1> : null}
             {ids.length === 0
                 ?fetchStatus === LOADED && <div className='header-small'>{noDataText}</div> 
                 :<InfiniteScroll

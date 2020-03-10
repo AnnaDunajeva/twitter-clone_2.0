@@ -3,9 +3,10 @@ import {useSelector} from 'react-redux'
 import Tweet from './Tweet'
 import {getFeedPaginated} from '../redux-store-2.0/api/tweets'
 import ScrollUtil from './ScrollUtil'
-import {getFeedIds, getCompositeDataFetchStatus, getCompositeDataLastFetchTime} from '../redux-store-2.0/composite-data/selectors'
+import {getFeedIds } from '../redux-store-2.0/composite-data/selectors'
 import {homeKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import NewTweet from './NewTweet'
 
 const Home = () => {
     const authedUser = useSelector(getAuthedUserId())
@@ -27,27 +28,29 @@ const Home = () => {
     // const lastFetchTime = useCallback(getCompositeDataLastFetchTime(homeKey()), [])
     
     return (
-        // <div>Home</div>
-        <ScrollUtil getDataFetch={getFeedPaginated} 
-                    dispatchData={dispatchData} 
-                    stateSelector={feedIds}
-                    // fetchStatusSelector={feedFetchStatus}
-                    take={5} 
-                    headerText={'Your Timeline'} 
-                    noDataText={'No tweets to show yet!'}
-                    // getLastFetchTime = {lastFetchTime}
-                    stateKey={(homeKey())}
-                    >
-            {(ids)=>(
-                <ul>
-                    {ids.map((id) => (
-                        <li key={id}>
-                            <Tweet id={id}/>
-                        </li>
-                    ))}
-                </ul>  
-            )}
-        </ScrollUtil>
+        <React.Fragment>
+            <NewTweet showHeader={false}/>
+            <ScrollUtil getDataFetch={getFeedPaginated} 
+                        dispatchData={dispatchData} 
+                        stateSelector={feedIds}
+                        // fetchStatusSelector={feedFetchStatus}
+                        take={5} 
+                        headerText={'Your Timeline'} 
+                        noDataText={'No tweets to show yet!'}
+                        // getLastFetchTime = {lastFetchTime}
+                        stateKey={(homeKey())}
+                        >
+                {(ids)=>(
+                    <ul>
+                        {ids.map((id) => (
+                            <li key={id}>
+                                <Tweet id={id}/>
+                            </li>
+                        ))}
+                    </ul>  
+                )}
+            </ScrollUtil>
+        </React.Fragment>
     )
 }
 

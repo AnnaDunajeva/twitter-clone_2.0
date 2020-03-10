@@ -14,6 +14,7 @@ import LoadingBar from 'react-redux-loading-bar'
 import ProfileUpdate from './ProfileUpdate'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import {getUser} from '../redux-store-2.0/api/users'
+import Alert from './Alert'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
@@ -43,6 +44,7 @@ const App = () => {
                         ? <NavBar/> 
                         : null
                     }
+                    {authedUser && <Alert message={'Welcome to the coolest twitter clone out there!!! Hope you find tons of great content here <3'}/>}
                     <div>
                     <Switch>
                         <PrivateRoute path='/' exact component={Home}/>

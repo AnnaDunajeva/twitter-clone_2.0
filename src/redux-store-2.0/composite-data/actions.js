@@ -8,7 +8,8 @@ import {
     COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
     NEW_TWEET_ADD_TO_FEED,
     NEW_TWEET_ADD_TO_REPLIES,
-    NEW_TWEET_ADD_TO_USER_TWEETS } from '../action-types'
+    NEW_TWEET_ADD_TO_USER_TWEETS,
+    COMPOSITE_DATA_CLEAR } from '../action-types'
 import {homeKey, conversationKey, userTweetsKey} from '../utils/compositeDataStateKeys'
 
 export const compositeDataEntitiesFetch = (stateKey) => {
@@ -65,6 +66,13 @@ export const newTweetAddToUserTweets = (tweet, author) => {
         author,
         stateKey: userTweetsKey(author),
         fetchStatus: LOADED
+    }
+}
+
+export const compositeDataClear = (stateKey) => {
+    return {
+        type: COMPOSITE_DATA_CLEAR,
+        stateKey
     }
 }
 

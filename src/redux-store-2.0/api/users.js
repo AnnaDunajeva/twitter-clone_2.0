@@ -17,11 +17,12 @@ import {
         USERS_FETCH_ERROR,
         USER_TOGGLE_FOLLOW,
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR } from '../action-types'
-import { discoverUsersKey } from '../utils/compositeDataStateKeys'
+import { discoverUsersKey, homeKey } from '../utils/compositeDataStateKeys'
 import { 
     compositeDataEntitiesFetch, 
     compositeDataEntitiesFetchSuccess,
-    compositeDataEntitiesFetchError } from '../composite-data/actions'
+    compositeDataEntitiesFetchError,
+    compositeDataClear } from '../composite-data/actions'
 
 export function getUser (data) {
     return async (dispatch) => {
@@ -44,10 +45,15 @@ export function getUser (data) {
             const userData = await userResponse.json()
             const user = userData.user
 
-            if (Object.keys(user).length > 0) {
-                dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
+            if (userData.error) {
+                dispatch(usersFetchError({[data.userId]: userData.error}, userFetchStatusError))
+                dispatch(globalErrorAdd(`${USERS_FETCH_ERROR}/${data.userId}`), userData.error)
             } else {
-                dispatch(usersFetchError({[data.userId]: NOT_FOUND}, userFetchStatusError))
+                if (Object.keys(user).length > 0) {
+                    dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
+                } else {
+                    dispatch(usersFetchError({[data.userId]: NOT_FOUND}, userFetchStatusError))
+                }
             }
 
             dispatch(hideLoading())
@@ -81,6 +87,12 @@ export function toggleUserFollow (data) {
             })
             const users = await usersResponse.json()
 
+            if (users.error) {
+                dispatch(userToggleFollow(data.userId))
+                dispatch(globalErrorAdd(`${USER_TOGGLE_FOLLOW}/${data.userId}`, users.error))
+            } else {
+                dispatch(compositeDataClear(homeKey()))
+            }
             //maybe like with toggling like I should not update user profile rigth away so as to not confuse user If at the
             //same time somebody else followed same user and count will be more than plus 1...
 
@@ -90,6 +102,7 @@ export function toggleUserFollow (data) {
         catch (err) { 
             console.log(err.message)
 
+            dispatch(userToggleFollow(data.userId))
             dispatch(globalErrorAdd(`${USER_TOGGLE_FOLLOW}/${data.userId}`, err.message))
 
             dispatch(hideLoading())
@@ -116,15 +129,21 @@ export function getAllUsersPaginated (data) {
                 }
             })
             const allUsers = await allUsersResponse.json()
-            const users = allUsers.users
 
-            const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-            console.log('compositeDataUsers ', compositeDataUsers) 
-           
-            const usersFetchStatus = mapValues(users, () => LOADED)
+            if (allUsers.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${discoverUsers}`, allUsers.error))
+                dispatch(compositeDataEntitiesFetchError(discoverUsers, allUsers.error, data.time))
+            } else {
+                const users = allUsers.users
 
-            dispatch(usersFetchSuccess(users, usersFetchStatus))
-            dispatch(compositeDataEntitiesFetchSuccess(discoverUsers, compositeDataUsers, data.time))
+                const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('compositeDataUsers ', compositeDataUsers) 
+               
+                const usersFetchStatus = mapValues(users, () => LOADED)
+    
+                dispatch(usersFetchSuccess(users, usersFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(discoverUsers, compositeDataUsers, data.time))
+            }
 
             dispatch(hideLoading())
         }
@@ -132,6 +151,39 @@ export function getAllUsersPaginated (data) {
             console.log(err.message)
             dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${discoverUsers}`, err.message))
             dispatch(compositeDataEntitiesFetchError(discoverUsers, err.message, data.time))
+                        
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function updateUser (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+
+        try {
+            const userData = await fetch(`${URL}/user`, {
+                method: 'PATCH',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                },
+                body: JSON.stringify(data.userData)
+            })
+            const user = await userData.json()
+
+            if (user.error) {
+
+            } else {
+
+            }
+
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
                         
             dispatch(hideLoading())
         }

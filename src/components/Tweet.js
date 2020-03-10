@@ -54,11 +54,11 @@ const Tweet = ({id}) => {
             <div className='tweet-container'>
                 <Link to={`/tweet/${id}`} className='pseudo-link'></Link>
 
-                <img src={author.avatarURL} alt={`Avatar for ${author.name}`} className='avatar'/>
+                <img src={author.avatarURL} alt={`Avatar for ${author.firstName} ${author.lastName}`} className='avatar'/>
 
                 <div className='tweet-meta'>
                     <Link to={`/user/${author.userId}`} className='user-name'>
-                        {author.name}
+                        {`${author.firstName} ${author.lastName}`}
                     </Link>
 
                     <div className='meta-text'>{formatDate(tweet.createdAt)}</div>
@@ -101,13 +101,13 @@ const Tweet = ({id}) => {
                     }
 
                     <div className='respons-container'> 
-                        <Link to={`/tweet/${id}`} >
+                        <Link to={`/tweet/${id}`} className='icon-container'>
                             <TiArrowBackOutline className='icon'/>
                         </Link>
 
                         <div className='respons'>{tweet.repliesCount !== 0 ? tweet.repliesCount : null}</div>
 
-                        <button className='btn-clear' onClick={handleLike}>
+                        <button className='btn-clear icon-container' onClick={handleLike}>
                             {tweet.liked 
                                 ? <TiHeart className='icon liked' />
                                 : <TiHeartOutline className='icon' />

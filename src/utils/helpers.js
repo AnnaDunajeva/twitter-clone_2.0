@@ -34,3 +34,14 @@ export function formatDate (timestamp) {
       }
     }
   }
+
+  export const splitText = (text) => {
+    let formatedText = ''
+    const maxLineLength = 60
+    let currentLineLength = 0
+    let lineStartIndex = 0
+    let lineEndIndex = 0
+    for (let i = 0; i < text.length; i++) {
+      
+    }
+  }

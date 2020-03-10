@@ -1,4 +1,5 @@
 import { get, omit  } from 'lodash';
+import {SESSION_END_SUCCESS} from '../action-types'
 
 /**
  * Creates a super-reducer as a map of reducers over keyed objects
@@ -58,9 +59,13 @@ export const keyedReducer = ( keyPath, reducer ) => {
 	}
 
 	return ( state = {}, action ) => {
-
 		// don't allow coercion of key name: null => 0
 		const itemKey = get( action, keyPath, undefined );
+
+		if (action.type === SESSION_END_SUCCESS) {
+			console.log(action)
+			return {}
+		}
 
 		if ( null === itemKey || undefined === itemKey ) {
 			return state;

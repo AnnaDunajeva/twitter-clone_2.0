@@ -3,10 +3,10 @@ import {
     COMPOSITE_DATA_ENTITIES_FETCH, 
     COMPOSITE_DATA_ENTITIES_FETCH_SUCCESS, 
     COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
-    SESSION_END_SUCCESS,
     NEW_TWEET_ADD_TO_FEED,
     NEW_TWEET_ADD_TO_REPLIES,
-    NEW_TWEET_ADD_TO_USER_TWEETS
+    NEW_TWEET_ADD_TO_USER_TWEETS,
+    COMPOSITE_DATA_CLEAR
 } 
 from '../action-types'
 import { homeKey, conversationKey, userTweetsKey } from '../utils/compositeDataStateKeys'
@@ -87,7 +87,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             }else {
                 return state
             }
-        case SESSION_END_SUCCESS:
+        case COMPOSITE_DATA_CLEAR:
             return initialState
         default: 
             return state

@@ -21,28 +21,22 @@ const NavBar = () => {
     }
     return (
         <nav className='nav'>
-            <ul>
-                <li>
-                    <NavLink to='/' exact activeClassName='active'>
-                        Home
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to='/newtweet' activeClassName='active'>
-                        New Tweet
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to={`/user/${authedUser}`} activeClassName='active'>
-                        Profile
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to='/users' activeClassName='active'>
-                        Discover
-                    </NavLink>
-                </li>
-            </ul>
+            <div>
+                <NavLink to='/' exact activeClassName='active'>
+                    Home
+                </NavLink>
+            {/* <li>
+                <NavLink to='/newtweet' activeClassName='active'>
+                    New Tweet
+                </NavLink>
+            </li> */}
+                <NavLink to={`/user/${authedUser}`} activeClassName='active'>
+                    Profile
+                </NavLink>
+                <NavLink to='/users' activeClassName='active'>
+                    Discover
+                </NavLink>
+            </div>
             <button onClick={logOutUser} className='btn-logout hover-blue'>
                 Log Out
             </button>

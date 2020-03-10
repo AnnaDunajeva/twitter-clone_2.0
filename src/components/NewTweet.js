@@ -7,8 +7,10 @@ import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io"
 import {postTweet} from '../redux-store-2.0/api/tweets'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import emoji from '../utils/emoji'
+import TextareaAutosize from 'react-textarea-autosize';
 
-const NewTweet = ({replyingTo}) => {
+const NewTweet = ({replyingTo, showHeader}) => {
+    const isShowHeader = showHeader === false ? false : true
     const [text, setText] = useState('')
     const [isEmojiVisible, setIsEmojiVisible] = useState(false)
     const [toHome, setToHome] = useState(false)
@@ -38,28 +40,39 @@ const NewTweet = ({replyingTo}) => {
     const addEmoji = (emoji) => {
         setText(state => state + emoji)
     }
-    if (toHome === true) {
-        return <Redirect to='/' />
-      }
+    // if (toHome === true) {
+    //     return <Redirect to='/' />
+    // }
+    
 
     return (
         <React.Fragment>
-            <h1 className='header'>{replyingTo ? 'Leave your reply' : 'Compose new tweet'}</h1>
+            {toHome && <Redirect to='/' />}
+            {isShowHeader && <h1 className='header'>{replyingTo ? 'Leave your reply' : 'Compose new tweet'}</h1>}
             <form className='new-tweet' onSubmit={handleSubmit}>
-                <textarea
+                <TextareaAutosize 
+                    className='textarea'
+                    maxLength={maxlength}
+                    placeholder={replyingTo ? 'What are your thoughts?' : "What's on your mind?"}
+                    value={text}
+                    onChange={(e)=>setText(e.target.value)}
+                    minRows={1}
+                    maxRows={10}
+                />
+                {/* <textarea
                     className='textarea'
                     maxLength={maxlength}
                     placeholder={replyingTo ? 'What are your thoughts?' : "What's on your mind?"}
                     value={text}
                     onChange={(e)=>setText(e.target.value)}
                 >
-                </textarea>
-                <div className='flex-space-between'>
-                    <div className='clickable hover-blue icon'>
-                        <MdSentimentSatisfied size={30} onClick={()=>setIsEmojiVisible(state=>!state)}/>
+                </textarea> */}
+                <div className='flex-space-between new-tweet-meta'>
+                    <div className='clickable hover-blue show-emoji-icon-container'>
+                        <MdSentimentSatisfied size={27} onClick={()=>setIsEmojiVisible(state=>!state)} />
                         {isEmojiVisible
-                            ? <IoIosArrowUp size={30} onClick={()=>setIsEmojiVisible(state=>!state)}/>
-                            : <IoIosArrowDown size={30} onClick={()=>setIsEmojiVisible(state=>!state)}/>
+                            ? <IoIosArrowUp size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>
+                            : <IoIosArrowDown size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>
                         }
                     </div>
                     <div className='meta-text align-right '>{maxlength-currentLength} characters left</div>

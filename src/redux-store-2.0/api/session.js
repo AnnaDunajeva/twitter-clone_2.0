@@ -28,7 +28,7 @@ export function signUp (userData) {
             })
             const data = await response.json()
 
-            console.log(data)
+            console.log(data, userData)
 
             if (data.error) { //maybe check for status?
                 console.log(`Error! ${data.error}`)
@@ -36,10 +36,10 @@ export function signUp (userData) {
                 dispatch(globalErrorAdd(SESSION_START_ERROR, data.error)) //seems like should not duplicate info like that, I have to 
                                                                         //deside how am i going to store errors, not both ways
             }
-            else if (data.user) {
+            else {
                 localStorage.setItem('userId', userData.userId)
                 localStorage.setItem('token', data.token)
-                dispatch({type: SESSION_START_SUCCESS, userId: data.userId})
+                dispatch({type: SESSION_START_SUCCESS, userId: userData.userId})
             }
             dispatch(hideLoading())
         }

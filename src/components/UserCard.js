@@ -27,10 +27,10 @@ const UserCard = ({userId}) => {
     return (
         <div className='tweet-container'>
             {console.log('rendering user card')}
-            <img src={user.avatarURL} alt={`Avatar for ${user.name}`} className='avatar'/>
+            <img src={user.avatarURL} alt={`Avatar for ${user.firstName} ${user.lastName}`} className='avatar'/>
             <div className='tweet-meta'>
                 <Link to={`/user/${userId}`}>
-                    <h3>{user.name}</h3>
+                    <h3>{`${user.firstName} ${user.lastName}`}</h3>
                 </Link>
                 <div className='meta-text'>@{userId}</div>
                 <div className='meta-text'>Following {user.followingsCount} | Followers {user.followersCount}</div>
