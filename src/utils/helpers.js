@@ -1,4 +1,6 @@
 import moment from 'moment'
+import {defaultBackgroundColor} from '../redux-store-2.0/constants'
+import * as linkify from 'linkifyjs'
 
 export function formatDate (timestamp) {
     const d = new Date(timestamp)
@@ -43,5 +45,16 @@ export function formatDate (timestamp) {
     let lineEndIndex = 0
     for (let i = 0; i < text.length; i++) {
       
+    }
+  }
+
+  export const formatUser = (user) => {
+    return {
+      ...user,
+      backgroundColor: user.backgroundURL 
+        ?linkify.test(user.backgroundURL) 
+          ? defaultBackgroundColor 
+          : user.backgroundURL
+        :defaultBackgroundColor
     }
   }

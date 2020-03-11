@@ -188,6 +188,7 @@ export function updateUser (data) {
                 
             } else {
                 const user = userData.user
+                
                 dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
             }
 

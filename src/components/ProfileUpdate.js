@@ -10,6 +10,7 @@ import PrivateRoute from './PrivateRoute'
 import NotFound from './NotFound'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import General from './GeneralUserData'
+import Additional from './AdditionalUserData'
 import {updateUser} from '../redux-store-2.0/api/users'
 import {getUserUpdateError} from '../redux-store-2.0/errors/selectors'
 import Alert from './Alert'
@@ -50,7 +51,7 @@ const ProfileUpdate = (props) => {
                         <ProfileDataSideBar path={`${props.match.path}`}/>
                         <Switch>
                             <PrivateRoute path={`${props.match.path}/`} exact component={General} additionalProps={{updateProfileData}}/>
-                            <PrivateRoute path={`${props.match.path}/additional`} exact component={ToBeImplemented}/>
+                            <PrivateRoute path={`${props.match.path}/additional`} exact component={Additional} additionalProps={{updateProfileData}}/>
                             <PrivateRoute path={`${props.match.path}/security`} exact component={ToBeImplemented}/>
                             <PrivateRoute path={`${props.match.path}/timeline`} exact component={ToBeImplemented}/>
                             <PrivateRoute path={`${props.match.path}/theme`} exact component={ToBeImplemented}/>

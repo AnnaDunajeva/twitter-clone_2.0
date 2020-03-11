@@ -305,8 +305,8 @@ li {
   font-size: 19px;
   border-radius: 30px;
   color: rgb(78, 75, 75);
-  border: none;
-  /* border-bottom: 1px solid #444242; */
+  /* border: none; */
+  border: 1px solid #ece9e9de;
   /* background-color: #e6edf577; */
   background-color: #ffffff;
   /* border: 1px solid #b6b9b9; */
@@ -327,6 +327,21 @@ li {
 .profile-update-data-container button {
   display: block;
   border-radius: 40px;
+}
+.textarea-update {
+  padding: 12px 25px;
+  font-size: 19px;
+  border-radius: 30px;
+  color: rgb(78, 75, 75);
+  /* border: none; */
+  background-color: #ffffff;
+  border: 1px solid #ece9e9de;
+  -webkit-box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
+  -moz-box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
+  box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
+  width: 370px;
+  resize: none;
+  outline: none;
 }
 
 /* =============== follow button =========== */

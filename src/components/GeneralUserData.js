@@ -72,7 +72,7 @@ const General = (props) => {
         </div>
         <button
             type='submit'
-            disabled={!(firstName !== user.firstName || lastName !== user.lastName || avatarURL !== user.avatarURL || email !== user.email) || (firstName === '' || lastName === '' || avatarURL === '' || email === '')}
+            disabled={!((firstName !== '' && firstName !== user.firstName) || (lastName !== '' && lastName !== user.lastName) || (email !== '' && email !== user.email) || (avatarURL !== '' && avatarURL !== user.avatarURL))}
             className='btn'
             >Update
         </button>

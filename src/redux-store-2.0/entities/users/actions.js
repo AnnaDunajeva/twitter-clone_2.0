@@ -1,3 +1,6 @@
+import {formatUser} from '../../../utils/helpers'
+import{mapValues} from 'lodash'
+
 import { 
     USERS_FETCH_SUCCESS,
     USERS_REMOVE_ALL,
