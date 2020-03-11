@@ -1,24 +1,42 @@
 import React, {useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {getUserById, getUserStatusById} from '../redux-store-2.0/entities/users/selectors'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
-import {LOADED} from '../redux-store-2.0/constants'
+// import {LOADED} from '../redux-store-2.0/constants'
 
-const General = () => {    
+const General = (props) => {    
     const userId = useSelector(getAuthedUserId())
     const user = useSelector(getUserById(userId))
-    const userFetchStatus = useSelector(getUserStatusById(userId))
+    // const userFetchStatus = useSelector(getUserStatusById(userId))
 
     const [firstName, setFirstName] = useState(user.firstName)
     const [lastName, setLastName] = useState(user.lastName)
     const [email, setEmail] = useState(user.email)
     const [avatarURL, setAvatarUrl] = useState(user.avatarURL)
-    const [backgroundURL, setBackgroundURL] = useState(user.backgroundURL || '')
 
-    const dispatch = useDispatch()
+    const handleUpdate = (e) => {
+        e.preventDefault()
+        const data = {}
+        if (firstName !== '' && firstName !== user.firstName) {
+            data.firstName = firstName
+        }
+        if (lastName !== '' && lastName !== user.lastName) {
+            data.lastName = lastName
+        }
+        if (email !== '' && email !== user.email) {
+            data.email = email        
+        }
+        if (avatarURL !== '' && avatarURL !== user.avatarURL) {
+            data.avatar = avatarURL        
+        }
+        console.log(data)
+        if (Object.keys(data).length > 0) {
+            props.updateProfileData(data)
+        }
+    }
 
     return (
-        <form className='profile-update-data-container'>
+        <form className='profile-update-data-container' onSubmit={handleUpdate}>
         <h3 className='form-header'>General Information</h3>
         <div className='inputs-container'>
             <label htmlFor='firstName'>First Name</label>

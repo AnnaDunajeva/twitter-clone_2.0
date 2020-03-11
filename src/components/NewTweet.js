@@ -68,7 +68,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
                 >
                 </textarea> */}
                 <div className='flex-space-between new-tweet-meta'>
-                    <div className='clickable hover-blue show-emoji-icon-container'>
+                    <div className='clickable hover-blue show-emoji-icon-container' tabIndex={0}>
                         <MdSentimentSatisfied size={27} onClick={()=>setIsEmojiVisible(state=>!state)} />
                         {isEmojiVisible
                             ? <IoIosArrowUp size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>

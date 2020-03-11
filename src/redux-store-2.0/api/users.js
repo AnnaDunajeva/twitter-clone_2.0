@@ -5,7 +5,9 @@ import {
     URL, 
     LOADING,
     NOT_FOUND,
-    ERROR} from "../constants"
+    ERROR,
+    UPDATING,
+    UPDATED} from "../constants"
 
 import { 
         usersFetch,
@@ -16,7 +18,8 @@ import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
 import { 
         USERS_FETCH_ERROR,
         USER_TOGGLE_FOLLOW,
-        COMPOSITE_DATA_ENTITIES_FETCH_ERROR } from '../action-types'
+        COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
+        USER_UPDATE } from '../action-types'
 import { discoverUsersKey, homeKey } from '../utils/compositeDataStateKeys'
 import { 
     compositeDataEntitiesFetch, 
@@ -159,10 +162,16 @@ export function getAllUsersPaginated (data) {
 
 export function updateUser (data) {
     return async (dispatch) => {
+        console.log(data)
         dispatch(showLoading())
+        dispatch(globalErrorRemove(`${USER_UPDATE}`))
+        dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
+        const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
+        const userFetchStatusError = {[data.user.userId]: LOADED}
 
         try {
-            const userData = await fetch(`${URL}/user`, {
+            // throw new Error ('Test')
+            const response = await fetch(`${URL}/user`, {
                 method: 'PATCH',
                 mode: 'cors',
                 headers: {
@@ -171,12 +180,15 @@ export function updateUser (data) {
                 },
                 body: JSON.stringify(data.userData)
             })
-            const user = await userData.json()
+            const userData = await response.json()
 
-            if (user.error) {
-
+            if (userData.error) {
+                dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+                dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                
             } else {
-
+                const user = userData.user
+                dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
             }
 
             dispatch(hideLoading())
@@ -184,7 +196,9 @@ export function updateUser (data) {
         catch (err) { 
             console.log(err.message)
 
-                        
+            dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+            dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
+
             dispatch(hideLoading())
         }
     }

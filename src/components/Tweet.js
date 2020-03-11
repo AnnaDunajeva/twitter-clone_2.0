@@ -54,7 +54,7 @@ const Tweet = ({id}) => {
             <div className='tweet-container'>
                 <Link to={`/tweet/${id}`} className='pseudo-link'></Link>
 
-                <img src={author.avatarURL} alt={`Avatar for ${author.firstName} ${author.lastName}`} className='avatar'/>
+                <img src={author.avatarURL || 'https://kooledge.com/assets/default_medium_avatar-57d58da4fc778fbd688dcbc4cbc47e14ac79839a9801187e42a796cbd6569847.png'} alt={`Avatar for ${author.firstName} ${author.lastName}`} className='avatar'/>
 
                 <div className='tweet-meta'>
                     <Link to={`/user/${author.userId}`} className='user-name'>
@@ -73,7 +73,7 @@ const Tweet = ({id}) => {
                     <Linkify tagName="p" className='text' options={linkifyOptions}>{tweet.text}</Linkify>
                     {/* <p className='text'>{tweet.text}</p> */}
                     
-                    {urlsInTweet.current.length > 0
+                    {/* {urlsInTweet.current.length > 0
                         ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>
                             {
                                 urlsInTweet.current.map(urlObj => 
@@ -89,7 +89,7 @@ const Tweet = ({id}) => {
                             }
                         </div>
                         :null
-                    }
+                    } */}
 
                     {youtubeUrls.current.length > 0 
                         ?<YouTube

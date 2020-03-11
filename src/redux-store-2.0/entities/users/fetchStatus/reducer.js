@@ -3,7 +3,8 @@ import {
     USERS_REMOVE_ALL,
     USERS_FETCH,
     USERS_FETCH_ERROR,
-    SESSION_END_SUCCESS
+    SESSION_END_SUCCESS,
+    USERS_FETCH_STATUS_SET
 } 
 from '../../../action-types'
 
@@ -16,6 +17,11 @@ export default function fetchStatus (state = {}, action) {
                 ...state,
                 ...(action.fetchStatus || {}) 
         }
+        case USERS_FETCH_STATUS_SET:
+            return {
+                ...state,
+                ...action.fetchStatus
+            }
         case SESSION_END_SUCCESS:
         case USERS_REMOVE_ALL:
             return {}

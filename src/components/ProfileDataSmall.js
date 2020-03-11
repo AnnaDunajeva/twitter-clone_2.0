@@ -12,7 +12,12 @@ const ProfileDataSmall = ({user, isAuthedUser, history}) => {
                 ?<IoIosSettings onClick={()=>history.push(`/user/${user.userId}/update`)} className='clickable hover-blue profile-setting-wheel' size={35} />
                 : null
             }
-            <div className='profile-meta-text profile-meta-text-first'>
+            {user.description && 
+                <div className='profile-meta-text' style={{paddingBottom: '10px'}}>
+                    {user.description}
+                </div>
+            }
+            <div className='profile-meta-text'>
                 <FaUser className='profile-icon' size={22}/>
                 @{user.userId}
             </div>

@@ -2,7 +2,8 @@ import {
     USERS_FETCH_SUCCESS,
     USERS_REMOVE_ALL,
     USERS_FETCH,
-    USERS_FETCH_ERROR
+    USERS_FETCH_ERROR,
+    USERS_FETCH_STATUS_SET
 } 
 from '../../action-types'
 
@@ -33,5 +34,12 @@ export const usersFetchError = (errors, fetchStatus) => {
 export const usersRemoveAll = () => {
     return {
         type: USERS_REMOVE_ALL
+    }
+}
+
+export const usersFetchStatusSet = (fetchStatus) => {
+    return {
+        type: USERS_FETCH_STATUS_SET,
+        fetchStatus
     }
 }

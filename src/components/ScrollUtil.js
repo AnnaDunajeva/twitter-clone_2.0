@@ -190,7 +190,7 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
                     scrollThreshold={0.85}
                     loader={<Loading text='Fetching more' speed={200}/>}
                     endMessage={
-                        <p className='header-small'>
+                        <p className='header-small' style={{marginBottom: '20px'}}>
                             <b>Yay! You have seen it all</b>
                         </p>}
                     >
