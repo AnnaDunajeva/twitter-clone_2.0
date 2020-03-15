@@ -15,6 +15,8 @@ import {updateUser} from '../redux-store-2.0/api/users'
 import {getUserUpdateError} from '../redux-store-2.0/errors/selectors'
 import Alert from './Alert'
 import {usersFetchStatusSet} from '../redux-store-2.0/entities/users/actions'
+import {deleteAvatar} from '../redux-store-2.0/api/users'
+import {deleteBackgroundImage} from '../redux-store-2.0/api/users'
 
 const ProfileUpdate = (props) => {
     const userId = useSelector(getAuthedUserId())
@@ -64,8 +66,8 @@ const ProfileUpdate = (props) => {
                     <div className='data-container data-container-update'>
                         <ProfileDataSideBar path={`${props.match.path}`}/>
                         <Switch>
-                            <PrivateRoute path={`${props.match.path}/`} exact component={General} additionalProps={{updateProfileData}}/>
-                            <PrivateRoute path={`${props.match.path}/additional`} exact component={Additional} additionalProps={{updateProfileData}}/>
+                            <PrivateRoute path={`${props.match.path}/`} exact component={General} additionalProps={{updateProfileData, handleDelete: deleteAvatar}}/>
+                            <PrivateRoute path={`${props.match.path}/additional`} exact component={Additional} additionalProps={{updateProfileData, handleDelete: deleteBackgroundImage}}/>
                             <PrivateRoute path={`${props.match.path}/security`} exact component={ToBeImplemented}/>
                             <PrivateRoute path={`${props.match.path}/timeline`} exact component={ToBeImplemented}/>
                             <PrivateRoute path={`${props.match.path}/theme`} exact component={ToBeImplemented}/>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import {getUserById, getUserStatusById} from '../redux-store-2.0/entities/users/selectors'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 // import {LOADED} from '../redux-store-2.0/constants'
@@ -14,6 +14,7 @@ const dragConfig = {
 }
 
 const General = (props) => {    
+    const dispatch = useDispatch()
     const userId = useSelector(getAuthedUserId())
     const user = useSelector(getUserById(userId))
     const [crop, setCrop] = useState(null)
@@ -45,6 +46,16 @@ const General = (props) => {
         if (Object.keys(data.user).length > 0) {
             props.updateProfileData(data)
         }
+    }
+
+    const handleDeleteAvatar = (e) => {
+        e.preventDefault()
+        dispatch(props.handleDelete({
+            user: {
+                userId: localStorage.getItem('userId'),
+                token: localStorage.getItem('token')
+            }
+        }))
     }
 
     return (
@@ -81,6 +92,7 @@ const General = (props) => {
                 type='text'
                 className='profile-update-data-container-input'
             /> */}
+            <button onClick={handleDeleteAvatar} className='profile-image-delete-btn btn-unfollow'>Delete current avatar</button>
         </div>
         <button
             type='submit'

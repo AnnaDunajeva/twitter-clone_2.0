@@ -8,6 +8,7 @@ import {postTweet} from '../redux-store-2.0/api/tweets'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import emoji from '../utils/emoji'
 import TextareaAutosize from 'react-textarea-autosize';
+import {FiImage} from "react-icons/fi"
 
 const NewTweet = ({replyingTo, showHeader}) => {
     const isShowHeader = showHeader === false ? false : true
@@ -68,12 +69,17 @@ const NewTweet = ({replyingTo, showHeader}) => {
                 >
                 </textarea> */}
                 <div className='flex-space-between new-tweet-meta'>
-                    <div className='clickable hover-blue show-emoji-icon-container' tabIndex={0}>
-                        <MdSentimentSatisfied size={27} onClick={()=>setIsEmojiVisible(state=>!state)} />
-                        {isEmojiVisible
-                            ? <IoIosArrowUp size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>
-                            : <IoIosArrowDown size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>
-                        }
+                    <div style={{display: 'flex'}}>
+                        <div className='clickable hover-blue show-emoji-icon-container' tabIndex={0}>
+                            <MdSentimentSatisfied size={27} onClick={()=>setIsEmojiVisible(state=>!state)} />
+                            {/* {isEmojiVisible
+                                ? <IoIosArrowUp size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>
+                                : <IoIosArrowDown size={27} onClick={()=>setIsEmojiVisible(state=>!state)}/>
+                            } */}
+                        </div>
+                        <div className='clickable hover-blue show-emoji-icon-container' tabIndex={0}>
+                            <FiImage size={27}/>
+                        </div>
                     </div>
                     <div className='meta-text align-right '>{maxlength-currentLength} characters left</div>
                 </div>

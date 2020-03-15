@@ -256,3 +256,83 @@ export function updateUser (data) {
         }
     }
 }
+
+export function deleteAvatar (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        dispatch(globalErrorRemove(`${USER_UPDATE}`))
+        dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
+        const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
+        const userFetchStatusError = {[data.user.userId]: LOADED}
+
+        try {
+            const response = await fetch(`${URL}/user/avatar`, {
+                method: 'DELETE',
+                mode: 'cors',
+                headers: {
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const userData = await response.json()
+
+            if (userData.error) {
+                dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+                dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                
+            } else {
+                const user = userData.user
+                dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
+            }
+
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+            dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
+
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function deleteBackgroundImage (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        dispatch(globalErrorRemove(`${USER_UPDATE}`))
+        dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
+        const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
+        const userFetchStatusError = {[data.user.userId]: LOADED}
+
+        try {
+            const response = await fetch(`${URL}/user/background`, {
+                method: 'DELETE',
+                mode: 'cors',
+                headers: {
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const userData = await response.json()
+
+            if (userData.error) {
+                dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+                dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                
+            } else {
+                const user = userData.user
+                dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
+            }
+
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+            dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
+
+            dispatch(hideLoading())
+        }
+    }
+}

@@ -28,7 +28,7 @@ const ProfileCard = ({user, history}) => {
             <ProfileBackgroundWithAvatar user={user} />
             <div className='data-container'>
                 <ProfileDataSmall user={user} isAuthedUser={isAuthedUser} history={history}/>
-                <div className='profile-tweets big-container' style={{borderRadius: '2px'}}>
+                <div className='profile-tweets big-container' style={{borderRadius: '2px', marginTop: '7px'}}>
                     <ScrollUtil getDataFetch={getUserTweetsPaginated} 
                                 dispatchData={dispatchData} 
                                 stateSelector={userTweetsSelector} 

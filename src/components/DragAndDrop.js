@@ -122,7 +122,7 @@ function DragAndDrop(props) {
         <div>
         {!file && !cropResult &&
             <div {...getRootProps({style})} className='clickable'>
-                <input {...getInputProps()} />
+                <input {...getInputProps()}/>
                 {isFileTooLarge && !isDragActive && <p style={text}>File is too large.</p>}
                 {isDragReject && <p style={text}>File type not accepted, sorry!</p>}
                 {!isDragActive && !file && <p style={text}>Drag and drop image here, or click to select a file</p>}

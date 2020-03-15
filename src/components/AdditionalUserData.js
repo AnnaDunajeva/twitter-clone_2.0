@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import {getUserById, getUserStatusById} from '../redux-store-2.0/entities/users/selectors'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import TextareaAutosize from 'react-textarea-autosize';
@@ -141,6 +141,7 @@ const dragConfig = {
 }
 
 const Additional = (props) => {    
+    const dispatch = useDispatch()
     const closeColorPickerArea = useRef(null)
     const maxlength = 100
     const userId = useSelector(getAuthedUserId())
@@ -187,6 +188,16 @@ const Additional = (props) => {
         }
     }
 
+    const handleDeleteBackground = (e) => {
+        e.preventDefault()
+        dispatch(props.handleDelete({
+            user: {
+                userId: localStorage.getItem('userId'),
+                token: localStorage.getItem('token')
+            }
+        }))
+    }
+
     return (
         <form className='profile-update-data-container position-relative' onSubmit={handleUpdate}>
             {console.log('Additional file ', file)}
@@ -230,6 +241,7 @@ const Additional = (props) => {
                 </div>
                 <p>Background image</p>
                 <DragAndDrop file={file} setFile={setFile} setCrop={setCrop} config={dragConfig}/>
+                <button onClick={handleDeleteBackground} className='profile-image-delete-btn btn-unfollow'> Delete current background</button>
             </div>
             <button
                 type='submit'

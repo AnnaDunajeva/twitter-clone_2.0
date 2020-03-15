@@ -387,6 +387,18 @@ li {
 .color-picker-close-container {
   background-color: transparent;
 }
+.profile-image-delete-btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  font-size: 19px;
+  border-radius: 30px;
+  border: none;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
+  -moz-box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
+  box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
+  min-width: 370px;
+}
 
 /* =============== follow button =========== */
 .btn-follow-container {
@@ -659,12 +671,12 @@ li {
 }
 .show-emoji-icon-container {
   height: 40px;
-  width: 70px;
+  width: 40px;
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 3px;
+  margin: 5px;
 }
 .show-emoji-icon-container:hover,
 .show-emoji-icon-container:focus {
