@@ -27,7 +27,7 @@ const UserCard = ({userId}) => {
     return (
         <div className='tweet-container'>
             {console.log('rendering user card')}
-            <img src={user.avatarURL || 'https://kooledge.com/assets/default_medium_avatar-57d58da4fc778fbd688dcbc4cbc47e14ac79839a9801187e42a796cbd6569847.png'} alt={`Avatar for ${user.firstName} ${user.lastName}`} className='avatar'/>
+            <img src={user.avatar} alt={`Avatar for ${user.firstName} ${user.lastName}`} className='avatar'/>
             <div className='tweet-meta'>
                 <Link to={`/user/${userId}`}>
                     <h3>{`${user.firstName} ${user.lastName}`}</h3>

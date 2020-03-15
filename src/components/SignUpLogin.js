@@ -55,6 +55,30 @@ const SignUpLogin = () => {
             <div className='form-container'>
                 {console.log('rendering signup')}
                 {loginError && <Alert message={loginError}/>}
+                <form onSubmit={LoginUser} className='form'>
+                    <h3 className='form-header'>Login </h3>
+                    <div className='inputs-container'>
+                        <label htmlFor='loginUsername'>Username</label>
+                        <input 
+                            value={loginUsername}
+                            onChange={(e) => setLoginUsername(e.target.value)}
+                            type='text'
+                        />
+                        <label htmlFor='loginPassword'>Password</label>
+                        <input 
+                            value={loginPassword}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                            type='password'
+                        />
+                    </div>
+                    <button
+                        type='submit'
+                        disabled={loginUsername === '' || loginPassword === ''}
+                        className='btn btn-form'
+                    >Login
+                    </button>
+                </form>
+                <div className='separator-line'></div>
                 <form onSubmit={SignUpUser} className='form'>
                     <h3 className='form-header'>Sign Up to communicate with the World!</h3>
                     <div className='inputs-container'>
@@ -100,30 +124,6 @@ const SignUpLogin = () => {
                         disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}
                         className='btn btn-form'
                         >Sign Up
-                    </button>
-                </form>
-                <div className='separator-line'></div>
-                <form onSubmit={LoginUser} className='form'>
-                    <h3 className='form-header'>Log In </h3>
-                    <div className='inputs-container'>
-                        <label htmlFor='loginUsername'>Username</label>
-                        <input 
-                            value={loginUsername}
-                            onChange={(e) => setLoginUsername(e.target.value)}
-                            type='text'
-                        />
-                        <label htmlFor='loginPassword'>Password</label>
-                        <input 
-                            value={loginPassword}
-                            onChange={(e) => setLoginPassword(e.target.value)}
-                            type='password'
-                        />
-                    </div>
-                    <button
-                        type='submit'
-                        disabled={loginUsername === '' || loginPassword === ''}
-                        className='btn btn-form'
-                    >Log In
                     </button>
                 </form>
             </div>

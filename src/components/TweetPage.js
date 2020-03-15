@@ -37,7 +37,7 @@ const TweetPage = (props) => {
     } 
 
     return (
-        <React.Fragment>
+        <div className='big-container'>
             {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
             {/* {mainTweetFetchStatus === LOADED  */}
                 <React.Fragment>
@@ -50,20 +50,20 @@ const TweetPage = (props) => {
                     }
                     {/* <Tweet id={tweetId}/>
                     <NewTweet replyingTo={tweetId}/> */}
-                    <ScrollUtil getDataFetch={getConversationPaginated} 
-                                dispatchData={dispatchData} 
-                                stateSelector={repliesSelector}
-                                stateKey={conversationKey(tweetId)}
-                                take={take} 
-                                headerText={'Replies'} 
-                                noDataText={'No replies yet!'}  
-                                >
-                                {(ids) => ids.map((id) => <Tweet id={id} key={id}/>)}
-                    </ScrollUtil>
+                        <ScrollUtil getDataFetch={getConversationPaginated} 
+                                    dispatchData={dispatchData} 
+                                    stateSelector={repliesSelector}
+                                    stateKey={conversationKey(tweetId)}
+                                    take={take} 
+                                    headerText={'Replies'} 
+                                    noDataText={'No replies yet!'}  
+                                    >
+                                    {(ids) => ids.map((id) => <Tweet id={id} key={id}/>)}
+                        </ScrollUtil>
                 </React.Fragment>
                 {/* : <Loading text='Fetching' speed={200}/> */}
             {/* } */}
-        </React.Fragment>
+            </div>
     )
 }
 

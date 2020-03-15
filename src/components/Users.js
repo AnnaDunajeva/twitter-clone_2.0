@@ -19,6 +19,7 @@ const Users = () => {
     const usersSelector = useCallback(getDiscoverUsersIds(), [])
 
     return (
+        <div className='big-container'>
         <ScrollUtil 
             getDataFetch={getAllUsersPaginated} 
             dispatchData={dispatchData} 
@@ -38,6 +39,7 @@ const Users = () => {
                 </ul>
             )}
         </ScrollUtil>
+        </div>
     )
 }
 

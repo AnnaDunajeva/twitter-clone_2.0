@@ -48,13 +48,13 @@ export function formatDate (timestamp) {
     }
   }
 
-  export const formatUser = (user) => {
-    return {
-      ...user,
-      backgroundColor: user.backgroundURL 
-        ?linkify.test(user.backgroundURL) 
-          ? defaultBackgroundColor 
-          : user.backgroundURL
-        :defaultBackgroundColor
-    }
-  }
+  // export const formatUser = (user) => {
+  //   return {
+  //     ...user,
+  //     backgroundColor: user.backgroundURL 
+  //       ?linkify.test(user.backgroundURL) 
+  //         ? defaultBackgroundColor 
+  //         : user.backgroundURL
+  //       :defaultBackgroundColor
+  //   }
+  // }

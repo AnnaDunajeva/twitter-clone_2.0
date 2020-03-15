@@ -29,27 +29,31 @@ const Home = () => {
     
     return (
         <React.Fragment>
-            <NewTweet showHeader={false}/>
-            <ScrollUtil getDataFetch={getFeedPaginated} 
-                        dispatchData={dispatchData} 
-                        stateSelector={feedIds}
-                        // fetchStatusSelector={feedFetchStatus}
-                        take={5} 
-                        headerText={'Your Timeline'} 
-                        noDataText={'No tweets to show yet!'}
-                        // getLastFetchTime = {lastFetchTime}
-                        stateKey={(homeKey())}
-                        >
-                {(ids)=>(
-                    <ul>
-                        {ids.map((id) => (
-                            <li key={id}>
-                                <Tweet id={id}/>
-                            </li>
-                        ))}
-                    </ul>  
-                )}
-            </ScrollUtil>
+            <div className='big-container'>
+                <NewTweet showHeader={false}/>
+            </div>
+            <div className='big-container'>
+                <ScrollUtil getDataFetch={getFeedPaginated} 
+                            dispatchData={dispatchData} 
+                            stateSelector={feedIds}
+                            // fetchStatusSelector={feedFetchStatus}
+                            take={5} 
+                            headerText={'Your Timeline'} 
+                            noDataText={'No tweets to show yet!'}
+                            // getLastFetchTime = {lastFetchTime}
+                            stateKey={(homeKey())}
+                            >
+                    {(ids)=>(
+                        <ul>
+                            {ids.map((id) => (
+                                <li key={id}>
+                                    <Tweet id={id}/>
+                                </li>
+                            ))}
+                        </ul>  
+                    )}
+                </ScrollUtil>
+            </div>
         </React.Fragment>
     )
 }

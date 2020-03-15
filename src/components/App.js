@@ -39,7 +39,7 @@ const App = () => {
             <React.Fragment>
                 {console.log('rendering app', authedUser)}
                 <LoadingBar/>
-                <div className='app-container'>
+                <div className={authedUser ? 'app-container' : null}>
                     {authedUser 
                         ? <NavBar/> 
                         : null

@@ -160,6 +160,51 @@ export function getAllUsersPaginated (data) {
     }
 }
 
+// export function updateUser (data) {
+//     return async (dispatch) => {
+//         console.log(data)
+//         dispatch(showLoading())
+//         dispatch(globalErrorRemove(`${USER_UPDATE}`))
+//         dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
+//         const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
+//         const userFetchStatusError = {[data.user.userId]: LOADED}
+
+//         try {
+//             // throw new Error ('Test')
+//             const response = await fetch(`${URL}/user`, {
+//                 method: 'PATCH',
+//                 mode: 'cors',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     'Authorization': `Bearer ${data.user.token}`
+//                 },
+//                 body: JSON.stringify(data.userData)
+//             })
+//             const userData = await response.json()
+
+//             if (userData.error) {
+//                 dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+//                 dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                
+//             } else {
+//                 const user = userData.user
+                
+//                 dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
+//             }
+
+//             dispatch(hideLoading())
+//         }
+//         catch (err) { 
+//             console.log(err.message)
+
+//             dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+//             dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
+
+//             dispatch(hideLoading())
+//         }
+//     }
+// }
+
 export function updateUser (data) {
     return async (dispatch) => {
         console.log(data)
@@ -170,15 +215,22 @@ export function updateUser (data) {
         const userFetchStatusError = {[data.user.userId]: LOADED}
 
         try {
+            const formData = new FormData()
+            if (data.file) {
+                formData.append('file', data.file)
+            }
+            formData.append('user', JSON.stringify(data.userData))
+            for (var key of formData.entries()) {
+                console.log(key[0] + ', ' + key[1]);
+            }            
             // throw new Error ('Test')
             const response = await fetch(`${URL}/user`, {
                 method: 'PATCH',
                 mode: 'cors',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${data.user.token}`
                 },
-                body: JSON.stringify(data.userData)
+                body: formData
             })
             const userData = await response.json()
 

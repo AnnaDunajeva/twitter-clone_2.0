@@ -28,7 +28,7 @@ const ProfileCard = ({user, history}) => {
             <ProfileBackgroundWithAvatar user={user} />
             <div className='data-container'>
                 <ProfileDataSmall user={user} isAuthedUser={isAuthedUser} history={history}/>
-                <div className='profile-tweets'>
+                <div className='profile-tweets big-container' style={{borderRadius: '2px'}}>
                     <ScrollUtil getDataFetch={getUserTweetsPaginated} 
                                 dispatchData={dispatchData} 
                                 stateSelector={userTweetsSelector} 
@@ -38,7 +38,9 @@ const ProfileCard = ({user, history}) => {
                                 noDataText={'No tweets to show yet!'}
                                 >
                         {(ids)=>(
-                            ids.map((id) => <Tweet id={id} key={id}/>)  
+                            ids.map((id) => (
+                                    <Tweet id={id}/>
+                            ))
                         )}
                     </ScrollUtil>
                 </div>

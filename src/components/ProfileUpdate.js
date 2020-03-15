@@ -23,13 +23,27 @@ const ProfileUpdate = (props) => {
     const dispatch = useDispatch()
     const profileUpdateError = useSelector(getUserUpdateError())
 
-    const updateProfileData = (userData) => {
+    // const updateProfileData = (userData) => {
+    //     const data = {
+    //         user: {
+    //             userId,
+    //             token: localStorage.getItem('token')
+    //         },
+    //         userData
+    //     }
+    //     dispatch(updateUser(data))
+    // }
+
+    const updateProfileData = (userDataAndFile) => {
         const data = {
             user: {
                 userId,
                 token: localStorage.getItem('token')
             },
-            userData
+            userData: userDataAndFile.user
+        }
+        if (userDataAndFile.file) {
+            data.file = userDataAndFile.file
         }
         dispatch(updateUser(data))
     }

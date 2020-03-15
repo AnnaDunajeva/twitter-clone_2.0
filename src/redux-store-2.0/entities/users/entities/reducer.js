@@ -6,17 +6,17 @@ import {
     USER_TOGGLE_FOLLOW
 } 
 from '../../../action-types'
-import {formatUser} from '../../../../utils/helpers'
+// import {formatUser} from '../../../../utils/helpers'
 import {mapValues} from 'lodash'
 
 export default function users (state = {}, action) {
     switch (action.type) {
         case SESSION_START_SUCCESS:
         case USERS_FETCH_SUCCESS :
-            const formatedUsers = mapValues(action.users, (user) => formatUser(user))
+            // const formatedUsers = mapValues(action.users, (user) => ({...user, backgroundImage: btoa(String.fromCharCode.apply(null, user.backgroundImage.data))}))
             return {
                 ...state,
-                ...formatedUsers
+                ...action.users
             }
         case USER_TOGGLE_FOLLOW:
             const isFollowing = state[action.userId].following
