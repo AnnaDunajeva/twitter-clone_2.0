@@ -6,6 +6,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { ChromePicker  } from 'react-color';
 import {IoMdColorFill} from 'react-icons/io'
 import {defaultBackgroundColor} from '../redux-store-2.0/constants'
+import DeleteAlert from './DeleteAlert'
 // import ColorPicker from '@mapbox/react-colorpickr'
 
 // import {LOADED} from '../redux-store-2.0/constants'
@@ -148,13 +149,15 @@ const Additional = (props) => {
     const user = useSelector(getUserById(userId))
     const [file, setFile] = useState(null)
     const [crop, setCrop] = useState(null)
-
+    const [cropResult, setCropResult] = useState(null)
     const [description, setDescription] = useState(user.description || '')
     const [location, setLocation] = useState(user.location || '')
     // const [background, setBackground] = useState(user.backgroundURL || '')
 
     const [isColorPickerVisible, setIsColorPickerVisible] = useState(false)
     const [color, setColor] = useState(user.backgroundColor || defaultBackgroundColor)
+
+    const [deleteBackground, setDeleteBackground] = useState(false)
 
     const handleUpdate = (e) => {
         e.preventDefault()
@@ -177,6 +180,9 @@ const Additional = (props) => {
         console.log(data)
         if (Object.keys(data.user).length > 0) {
             props.updateProfileData(data)
+            setFile(null)
+            setCrop(null)
+            setCropResult(null)
         }
     }
     const handleChangeComplete = (color) => {
@@ -188,8 +194,7 @@ const Additional = (props) => {
         }
     }
 
-    const handleDeleteBackground = (e) => {
-        e.preventDefault()
+    const handleDeleteBackground = () => {
         dispatch(props.handleDelete({
             user: {
                 userId: localStorage.getItem('userId'),
@@ -198,9 +203,21 @@ const Additional = (props) => {
         }))
     }
 
+    const handleRemoveImage = (e) => {
+        e.preventDefault() 
+        setFile(null)
+        setCropResult(null)
+    }
+    const handleAcceptImage = (cropper) => {
+        const crop = cropper.getData()
+        setCrop(crop)
+        setCropResult(cropper.getCroppedCanvas().toDataURL())
+    }
+
     return (
         <form className='profile-update-data-container position-relative' onSubmit={handleUpdate}>
             {console.log('Additional file ', file)}
+            {deleteBackground && <DeleteAlert onDelete={handleDeleteBackground} onClose={()=>setDeleteBackground(false)} message={'Are you sure you want to delete your current background image permanentely?'}/>}
             <h3 className='form-header'>Additional Information</h3>
             <div className='inputs-container'>
                 <p>Description</p>
@@ -240,8 +257,16 @@ const Additional = (props) => {
                     }  
                 </div>
                 <p>Background image</p>
-                <DragAndDrop file={file} setFile={setFile} setCrop={setCrop} config={dragConfig}/>
-                <button onClick={handleDeleteBackground} className='profile-image-delete-btn btn-unfollow'> Delete current background</button>
+                <button onClick={()=>setDeleteBackground(true)} className='profile-image-delete-btn btn-unfollow'> Delete current background</button>
+                <p>Upload new image</p>
+                <DragAndDrop 
+                    file={file} 
+                    setFile={setFile} 
+                    setCrop={setCrop} 
+                    config={dragConfig}
+                    cropResult={cropResult}
+                    handleAcceptImage={handleAcceptImage} 
+                    handleRemoveImage={handleRemoveImage}/>
             </div>
             <button
                 type='submit'

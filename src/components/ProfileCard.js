@@ -26,9 +26,9 @@ const ProfileCard = ({user, history}) => {
     return (
         <React.Fragment>
             <ProfileBackgroundWithAvatar user={user} />
-            <div className='data-container'>
+            <div className='data-container' style={{marginBottom: '10px'}}>
                 <ProfileDataSmall user={user} isAuthedUser={isAuthedUser} history={history}/>
-                <div className='profile-tweets big-container' style={{borderRadius: '2px', marginTop: '7px'}}>
+                <div className='profile-tweets big-container' style={{borderRadius: '2px', margin: '7px 0 0 0', alignSelf: 'stretch'}}>
                     <ScrollUtil getDataFetch={getUserTweetsPaginated} 
                                 dispatchData={dispatchData} 
                                 stateSelector={userTweetsSelector} 

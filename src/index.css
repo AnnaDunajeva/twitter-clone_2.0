@@ -388,7 +388,7 @@ li {
   background-color: transparent;
 }
 .profile-image-delete-btn {
-  margin-top: 15px;
+  /* margin-bottom: 15px; */
   padding: 12px 25px;
   font-size: 19px;
   border-radius: 30px;

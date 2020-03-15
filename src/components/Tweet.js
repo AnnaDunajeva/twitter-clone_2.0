@@ -72,7 +72,9 @@ const Tweet = ({id}) => {
                     }
                     <Linkify tagName="p" className='text' options={linkifyOptions}>{tweet.text}</Linkify>
                     {/* <p className='text'>{tweet.text}</p> */}
-                    
+                    {tweet.media &&
+                        <img src={tweet.media} alt='Image in tweet' className='tweet-image' style={{width: 400, height: 400, borderRadius: 2}}/>
+                    }
                     {/* {urlsInTweet.current.length > 0
                         ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>
                             {

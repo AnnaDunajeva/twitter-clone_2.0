@@ -221,16 +221,25 @@ export function postTweet (data) {
     return async (dispatch, getState) => {
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_POST}`))
-
+        console.log(data)
         try {
+            const formData = new FormData()
+            if (data.file) {
+                formData.append('file', data.file)
+            }
+            formData.append('tweet', JSON.stringify(data.tweet))
+            
+            for (var key of formData.entries()) {
+                console.log(key[0] + ', ' + key[1]);
+            } 
+
             const tweetResponse = await fetch(`${URL}/user/tweet`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${data.user.token}`
                 },
-                body: JSON.stringify(data.tweet)
+                body: formData
             })
             const tweetData = await tweetResponse.json()
             console.log(tweetData)

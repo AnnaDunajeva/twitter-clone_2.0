@@ -71,13 +71,11 @@ const removeBtn = {
 }
 
 
-function DragAndDrop(props) {
+function DragAndDrop({cropResult, handleAcceptImage, handleRemoveImage, file, setFile, config}) {
     const [preview, setPreview] = useState(null)
     const cropper = useRef();
-    const [cropResult, setCropResult] = useState(null)
 
     const maxSize = 1000000 //10MB for now
-    const file = props.file
     const {
         getRootProps,
         getInputProps,
@@ -90,7 +88,7 @@ function DragAndDrop(props) {
             multiple: false,
             onDropAccepted: acceptedFiles => {
                 console.log(acceptedFiles)
-                props.setFile(acceptedFiles[0])
+                setFile(acceptedFiles[0])
                 setPreview(URL.createObjectURL(acceptedFiles[0]))
             }  
         });
@@ -106,17 +104,18 @@ function DragAndDrop(props) {
         isDragAccept
     ]);
 
-    const handleRemove = (e) => {
-        e.preventDefault() 
-        props.setFile(null)
-        setPreview(null)
-        setCropResult(null)
-    }
-    const handleAccept = () => {
-        const crop = cropper.current.cropper.getData()
-        props.setCrop(crop)
-        setCropResult(cropper.current.getCroppedCanvas().toDataURL())
-    }
+    // const handleRemove = (e) => {
+    //     e.preventDefault() 
+    //     props.setFile(null)
+    //     setPreview(null)
+    //     setCropResult(null)
+    // }
+    // const handleAccept = () => {
+    //     const crop = cropper.current.cropper.getData()
+    //     props.setCrop(crop)
+    //     setPreview(null)
+    //     setCropResult(cropper.current.getCroppedCanvas().toDataURL())
+    // }
 
     return (
         <div>
@@ -129,35 +128,35 @@ function DragAndDrop(props) {
                 {isDragActive && !isDragReject && <p style={text}>Drop your image here</p>}
             </div>
         }
-        {preview && !cropResult &&
+        {preview && file && !cropResult &&
             <React.Fragment>
                 <div style={resultContainer}>
                     <Cropper
                         ref={cropper}
                         src={preview}
-                        style={{height: props.config.height, maxWidth: props.config.width}}
+                        style={{height: config.height, width: config.width}}
                         // Cropper.js options
                         dragMode='move'
                         zoomable={false}
-                        aspectRatio={props.config.aspect}
+                        aspectRatio={config.aspect}
                         viewMode={2}
                         responsive={true}
                         guides={false} 
                         preview='.img-preview'
                     />
                     <div style={{display: 'flex', flexDirection: 'column'}}>
-                        <MdCheck style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleAccept}/>
-                        <MdClose style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleRemove}/>
+                        <MdCheck style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={() =>handleAcceptImage(cropper.current)}/>
+                        <MdClose style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleRemoveImage}/>
                     </div>
                 </div>
                 <div >
-                    <div className="img-preview" style={{ width: props.config.previewWidth, height: props.config.previewHeight, overflow: 'hidden', marginTop: '3px' }} />
+                    <div className="img-preview" style={{ width: config.previewWidth, height: config.previewHeight, overflow: 'hidden', marginTop: '3px' }} />
                 </div>
             </React.Fragment>
         }
         {cropResult &&
             <div style={resultContainer}>
-                <div style={{...thumbsContainer, width: props.config.previewWidth, height: props.config.previewHeight}}>
+                <div style={{...thumbsContainer, width: config.previewWidth, height: config.previewHeight}}>
                     <div style={thumbInner}>
                         <img
                         src={cropResult}
@@ -166,7 +165,7 @@ function DragAndDrop(props) {
                         />
                     </div>
                 </div>
-                <MdClose style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleRemove}/>
+                <MdClose style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleRemoveImage}/>
             </div>
         }
         {/* {preview &&
