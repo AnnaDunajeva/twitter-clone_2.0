@@ -1,54 +1,147 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useCallback, useMemo, useState} from 'react'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import ProfileCard from './ProfileCard'
 import NotFound from './NotFound'
 import {getUserById, getUserStatusById, getUserErrorById} from '../redux-store-2.0/entities/users/selectors'
 import {getUser} from '../redux-store-2.0/api/users'
-import {NOT_FOUND, LOADED} from '../redux-store-2.0/constants'
+import {NOT_FOUND, LOADED, UPDATED} from '../redux-store-2.0/constants'
+import ProfileNav from './ProfileNav'
+import TweetsList from './TweetsList'
+import ToBeImplemented from './ToBeImplemented'
+import PrivateRoute from './PrivateRoute'
+import {getUserTweetsPaginated} from '../redux-store-2.0/api/tweets'
+import {getUserTweetIds} from '../redux-store-2.0/composite-data/selectors'
+import {userTweetsKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import {Redirect} from 'react-router-dom'
+import ImageList from './ImagesList'
 
 const Profile = (props) => {
     const userId = props.match.params.userId
-
+    const authedUser = useSelector(getAuthedUserId())
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
     const userFetchError = useSelector(getUserErrorById(userId))
+    const [toUpdate, setToUpdate] = useState(false)
+    const [toTweetPageId, setToTweetPageId] = useState(null)
+
+    const userTweetsSelector = useCallback(getUserTweetIds(userId), []) //not sure if I need it
 
     const dispatch = useDispatch()
 
+    const dispatchData = useMemo(()=>({
+        user: {
+            userId: localStorage.getItem('userId'),
+            token: localStorage.getItem('token')
+        },
+        userId
+    }), [userId])
+
     useEffect(() => {
         //in future needs to be redone using Suspense, which is not implemented in react yet
-        let didCancel = false;
         const asyncDispatch = async () => {
-            const data = {
-                user: {
-                    userId: localStorage.getItem('userId'),
-                    token: localStorage.getItem('token')
-                },
-                userId
-            }
-
-            await dispatch(getUser(data))
-
-            if (!didCancel) {
-              }
+            await dispatch(getUser(dispatchData))
         }
         asyncDispatch();
-        return () => { didCancel = true; };
-    }, [dispatch, userId])
-    
+    }, [dispatch, userId, dispatchData])
+
     if (userFetchError === NOT_FOUND) {
         return <NotFound />
     } 
+    if (toUpdate) {
+        // return (
+        //     <Redirect to={`/profile/update`} />
+        // )
+        props.history.push(`/profile/update`)
+    }
+    if (toTweetPageId) {
+        // return (<Redirect to={`/tweet/${toTweetPageId}`} />)
+        props.history.push(`/tweet/${toTweetPageId}`)
+    }
+
+    //remove trailing forwardslash when comid back to profile tweets (because if after that select another route it will result in double shash)
+    // const pathname = window.location.pathname;
+    // if((/\/$/).test(pathname)){
+    //     props.history.replace(pathname.slice(0, -1));
+    // }
+
     return (
-        <React.Fragment>
+        <Router>
             {console.log('rendering profile page', 'userFetchStatus ', userFetchStatus)}
             {console.log('profile: ', user)}
-            {userFetchStatus === LOADED 
-                ? <ProfileCard user={user}/>
+            {console.log('props.match.url ', props.match.url)}
+            {userFetchStatus === LOADED || userFetchStatus === UPDATED ?
+                <React.Fragment>
+                    <ProfileCard user={user} setToUpdate={setToUpdate}/>
+                    <ProfileNav url={props.match.url}/>
+                    <div className='profile-tweets big-container' style={{borderRadius: '2px', margin: '0px auto', alignSelf: 'stretch', width: 'initial'}}>
+                        <Switch>
+                            <PrivateRoute path={`${props.match.path}`} exact component={TweetsList} additionalProps={{handleToTweetPage: setToTweetPageId, stateSelector: userTweetsSelector, getDataFetch: getUserTweetsPaginated, stateKey: userTweetsKey(userId), dispatchData}}/>
+                            <PrivateRoute path={`${props.match.path}/replies`} component={ToBeImplemented}/>
+                            <PrivateRoute path={`${props.match.path}/likes`} component={ToBeImplemented}/>
+                            <PrivateRoute path={`${props.match.path}/photos`} component={ImageList} additionalProps={{userId: userId, setToTweetPageId, dispatchData}}/>
+                            <Route component={NotFound} />
+                        </Switch>
+                    </div>
+                </React.Fragment>
                 : null
             }
-        </React.Fragment>
+        </Router>
     )
 }
 
 export default Profile
+
+// import React, {useEffect} from 'react'
+// import {useDispatch, useSelector} from 'react-redux'
+// import ProfileCard from './ProfileCard'
+// import NotFound from './NotFound'
+// import {getUserById, getUserStatusById, getUserErrorById} from '../redux-store-2.0/entities/users/selectors'
+// import {getUser} from '../redux-store-2.0/api/users'
+// import {NOT_FOUND, LOADED} from '../redux-store-2.0/constants'
+
+// const Profile = (props) => {
+//     const userId = props.match.params.userId
+
+//     const user = useSelector(getUserById(userId))
+//     const userFetchStatus = useSelector(getUserStatusById(userId))
+//     const userFetchError = useSelector(getUserErrorById(userId))
+
+//     const dispatch = useDispatch()
+
+//     useEffect(() => {
+//         //in future needs to be redone using Suspense, which is not implemented in react yet
+//         let didCancel = false;
+//         const asyncDispatch = async () => {
+//             const data = {
+//                 user: {
+//                     userId: localStorage.getItem('userId'),
+//                     token: localStorage.getItem('token')
+//                 },
+//                 userId
+//             }
+
+//             await dispatch(getUser(data))
+
+//             if (!didCancel) {
+//               }
+//         }
+//         asyncDispatch();
+//         return () => { didCancel = true; };
+//     }, [dispatch, userId])
+    
+//     if (userFetchError === NOT_FOUND) {
+//         return <NotFound />
+//     } 
+//     return (
+//         <React.Fragment>
+//             {console.log('rendering profile page', 'userFetchStatus ', userFetchStatus)}
+//             {console.log('profile: ', user)}
+//             {userFetchStatus === LOADED || userFetchStatus === UPDATED
+//                 ? <ProfileCard user={user}/>
+//                 : null
+//             }
+//         </React.Fragment>
+//     )
+// }

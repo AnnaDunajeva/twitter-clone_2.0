@@ -25,7 +25,7 @@ const UserCard = ({userId}) => {
     }
 
     return (
-        <div className='tweet-container'>
+        <div className='tweet-container clickable'>
             {console.log('rendering user card')}
             <img src={user.avatar} alt={`Avatar for ${user.firstName} ${user.lastName}`} className='avatar'/>
             <div className='tweet-meta'>

@@ -6,10 +6,11 @@ import {
     NEW_TWEET_ADD_TO_FEED,
     NEW_TWEET_ADD_TO_REPLIES,
     NEW_TWEET_ADD_TO_USER_TWEETS,
-    COMPOSITE_DATA_CLEAR
+    COMPOSITE_DATA_CLEAR,
+    NEW_TWEET_ADD_TO_USER_IMAGES
 } 
 from '../action-types'
-import { homeKey, conversationKey, userTweetsKey } from '../utils/compositeDataStateKeys'
+import { homeKey, conversationKey, userTweetsKey, userTweetImagesKey } from '../utils/compositeDataStateKeys'
 
 const initialState = {
     entities: [],
@@ -78,6 +79,20 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 const tweet = {
                     ...action.tweet,
                     sortindex: state.entities[0]?.sortindex - 1 || Date.now(), 
+                }
+                return {
+                    ...state,
+                    fetchStatus: action.fetchStatus,
+                    entities: [tweet, ...state.entities]
+                }
+            }else {
+                return state
+            }
+        case NEW_TWEET_ADD_TO_USER_IMAGES:
+            if (action.stateKey === userTweetImagesKey(action.author)) {
+                const tweet = {
+                    ...action.tweet,
+                    sortindex: state.entities[0]?.sortindex - 1 || Date.now()
                 }
                 return {
                     ...state,

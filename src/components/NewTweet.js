@@ -148,12 +148,20 @@ const NewTweet = ({replyingTo, showHeader}) => {
                     />
                     :null
                 }
-                <button
+                {(text !== '' || (file !== null && crop !== null)) &&
+                    <button
+                        type='submit'
+                        disabled={!(text !== '' || (file !== null && crop !== null))}
+                        className='btn'
+                    >Post
+                    </button>
+                }
+                {/* <button
                     type='submit'
                     disabled={!(text !== '' || (file !== null && crop !== null))}
                     className='btn'
                 >Post
-                </button>
+                </button> */}
             </form>
         </React.Fragment>
     )

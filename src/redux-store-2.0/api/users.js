@@ -29,8 +29,9 @@ import {
 
 export function getUser (data) {
     return async (dispatch) => {
+        console.log('inside getUser usersFetchstatus ', {[data.userId]: LOADING})
         dispatch(showLoading())
-        dispatch(usersFetch([data.userId]), {[data.userId]: LOADING})
+        dispatch(usersFetch([data.userId], {[data.userId]: LOADING}))
         dispatch(globalErrorRemove(`${USERS_FETCH_ERROR}/${data.userId}`))
 
         const userFetchStatusSuccess = {[data.userId]: LOADED}

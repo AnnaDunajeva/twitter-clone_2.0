@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 const ProfileDataSideBar = ({path}) => {    
     return (
-        <div className='profile-meta profile-sidebar'>
+        <div className='profile-meta profile-sidebar' style={{width: '330px'}}>
             <NavLink to={`${path}/`} exact activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
                 General Informatiom
             </NavLink>

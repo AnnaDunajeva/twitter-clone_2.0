@@ -217,7 +217,7 @@ const Additional = (props) => {
     return (
         <form className='profile-update-data-container position-relative' onSubmit={handleUpdate}>
             {console.log('Additional file ', file)}
-            {deleteBackground && <DeleteAlert onDelete={handleDeleteBackground} onClose={()=>setDeleteBackground(false)} message={'Are you sure you want to delete your current background image permanentely?'}/>}
+            {deleteBackground && <DeleteAlert onDelete={handleDeleteBackground} onClose={()=>setDeleteBackground(false)} message={'Are you sure you want to delete your current background image permanently?'}/>}
             <h3 className='form-header'>Additional Information</h3>
             <div className='inputs-container'>
                 <p>Description</p>

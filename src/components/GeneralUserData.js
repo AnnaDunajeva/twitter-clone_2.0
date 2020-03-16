@@ -77,7 +77,7 @@ const General = (props) => {
 
     return (
         <form className='profile-update-data-container' onSubmit={handleUpdate}>
-            {deleteAvatar && <DeleteAlert onDelete={handleDeleteAvatar} onClose={()=>setDeleteAvatar(false)} message={'Are you sure you want to delete your current avatar image permanentely?'}/>}
+            {deleteAvatar && <DeleteAlert onDelete={handleDeleteAvatar} onClose={()=>setDeleteAvatar(false)} message={'Are you sure you want to delete your current avatar image permanently?'}/>}
             <h3 className='form-header'>General Information</h3>
             <div className='inputs-container'>
                 <label htmlFor='firstName'>First Name</label>

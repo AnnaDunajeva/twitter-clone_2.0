@@ -15,6 +15,7 @@ import ProfileUpdate from './ProfileUpdate'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import {getUser} from '../redux-store-2.0/api/users'
 import Alert from './Alert'
+import ScrollToTopOnRouteChange from './ScrollToTopOnRouteChange'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
@@ -36,7 +37,7 @@ const App = () => {
     
     return (
         <Router>
-            <React.Fragment>
+            <ScrollToTopOnRouteChange>
                 {console.log('rendering app', authedUser)}
                 <LoadingBar/>
                 <div className={authedUser ? 'app-container' : null}>
@@ -51,14 +52,14 @@ const App = () => {
                         <Route path='/login' component={SignUpLogin}/>
                         <PrivateRoute path='/newtweet' component={NewTweet}/>
                         <PrivateRoute path='/tweet/:id' component={TweetPage}/>
-                        <PrivateRoute path='/user/:userId' exact component={Profile}/>
-                        <PrivateRoute path={`/user/${authedUser}/update`} component={ProfileUpdate}/>
+                        <PrivateRoute path='/user/:userId' component={Profile}/>
+                        <PrivateRoute path={`/profile/update`} component={ProfileUpdate}/>
                         <PrivateRoute path='/users' component={Users}/>
                         <Route component={NotFound} />
                     </Switch>
                     </div>
                 </div>
-            </React.Fragment>
+            </ScrollToTopOnRouteChange>
         </Router>
     )
 }

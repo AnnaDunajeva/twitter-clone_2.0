@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {formatDate} from '../utils/helpers'
 import {Link, withRouter} from 'react-router-dom'
@@ -21,7 +21,7 @@ const linkifyOptions = {
     }
 }
 
-const Tweet = ({id}) => {
+const Tweet = ({id, handleToTweetPage, history}) => {
     const dispatch = useDispatch()
 
     const tweet = useSelector(getTweetById(id))
@@ -44,32 +44,29 @@ const Tweet = ({id}) => {
             }
         }))
     }
-    // const toParent = (e, id) => {
-    //     e.preventDefault()
-    //     history.push(`/tweet/${id}`)
-    // }
+    const toParent = () => {
+        history.push(`/tweet/${tweet.replyingToTweetId}`)
+    }
 
     return (
         <React.Fragment>
             <div className='tweet-container'>
-                <Link to={`/tweet/${id}`} className='pseudo-link'></Link>
+                <div onClick={handleToTweetPage ? () =>handleToTweetPage(id) : ()=>history.push(`/tweet/${id}`)} className='pseudo-link clickable'></div>
+                    {/* ? <div className='pseudo-link clickable' onClick={() =>handleToTweetPage(id)}></div>
+                    : <Link to={`/tweet/${id}`} className='pseudo-link'></Link> */}
+                
 
                 <img src={author.avatar} alt={`Avatar for ${author.firstName} ${author.lastName}`} className='avatar'/>
 
                 <div className='tweet-meta'>
-                    <Link to={`/user/${author.userId}`} className='user-name'>
-                        {`${author.firstName} ${author.lastName}`}
+                    <Link to={`/user/${author.userId}`}>
+                        <span className='user-name'>{`${author.firstName} ${author.lastName} `}</span>
+                        <span className='meta-text'>@{author.userId}</span>
                     </Link>
-
                     <div className='meta-text'>{formatDate(tweet.createdAt)}</div>
 
-                    {tweet.replyingToTweetId !== null && 
-                        <Link to={`/tweet/${tweet.replyingToTweetId}`} 
-                            className='meta-text' 
-                        >
-                            {`Replying to @${tweet.replyingToUserId}`}
-                        </Link>
-                    }
+                    {tweet.replyingToTweetId !== null && <Link className='meta-text' onClick={handleToTweetPage ? ()=>handleToTweetPage(tweet.replyingToTweetId) : toParent}>{`Replying to @${tweet.replyingToUserId}`}</Link>}
+
                     <Linkify tagName="p" className='text' options={linkifyOptions}>{tweet.text}</Linkify>
                     {/* <p className='text'>{tweet.text}</p> */}
                     {tweet.media &&
@@ -103,9 +100,10 @@ const Tweet = ({id}) => {
                     }
 
                     <div className='respons-container'> 
-                        <Link to={`/tweet/${id}`} className='icon-container'>
+                        <div onClick={handleToTweetPage ? () =>handleToTweetPage(id) : ()=>history.push(`/tweet/${id}`)} className='icon-container'>
                             <TiArrowBackOutline className='icon'/>
-                        </Link>
+                        </div>
+
 
                         <div className='respons'>{tweet.repliesCount !== 0 ? tweet.repliesCount : null}</div>
 

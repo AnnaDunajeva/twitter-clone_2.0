@@ -21,11 +21,13 @@ import {
     compositeDataEntitiesFetchError,
     newTweetAddToFeed,
     newTweetAddToReplies,
-    newTweetAddToUserTweets } from '../composite-data/actions'
+    newTweetAddToUserTweets,
+    newTweetAddToUserImages } from '../composite-data/actions'
 import { 
     conversationKey,
     homeKey,
-    userTweetsKey } from '../utils/compositeDataStateKeys'
+    userTweetsKey,
+    userTweetImagesKey } from '../utils/compositeDataStateKeys'
 
 
 export function getFeedPaginated(data) {
@@ -175,6 +177,51 @@ export function getUserTweetsPaginated (data) {
     }
 }
 
+export function getUserTweetImagesPaginated (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        const stateKey = userTweetImagesKey(data.userId)
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`))
+        dispatch(compositeDataEntitiesFetch(stateKey))
+
+        try {
+            console.log('inside action getUserTweetImagesPaginated')
+            const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/media?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false&getParents=false`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const tweetsData = await tweetsResponse.json()
+            if (tweetsData.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, tweetsData.error))
+                dispatch(compositeDataEntitiesFetchError(stateKey, tweetsData.error, data.time))
+            } else {
+                const tweets = tweetsData.tweets
+                console.log('tweetsData ', tweetsData)
+    
+                const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('userTweets ', userTweets) 
+               
+                const tweetsFetchStatus = mapValues(tweets, () => LOADED)
+    
+                dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(stateKey, userTweets, data.time))
+            }
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(stateKey, err.message, data.time))
+            dispatch(hideLoading())
+        }
+    }
+}
+
 export function toggleTweetsLike (data) {
     return async (dispatch) => {
         dispatch(showLoading())
@@ -268,6 +315,11 @@ export function postTweet (data) {
                 if (userTweets !== undefined) {
                 //if (userTweets !== undefined && userTweets.entities.length !== 0) {
                     dispatch(newTweetAddToUserTweets(tweetShort, tweet[tweetId].user))
+                }
+                const userImages = getState().compositeData[userTweetImagesKey(tweet[tweetId].user)]
+                if (userImages !== undefined) {
+                //if (userTweets !== undefined && userTweets.entities.length !== 0) {
+                    dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
                 }
             }
             dispatch(hideLoading())

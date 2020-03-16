@@ -13,3 +13,7 @@ export const userTweetsKey = (userId) => {
 export const discoverUsersKey = () => {
     return 'discoverUsers'
 }
+
+export const userTweetImagesKey = (userId) => {
+    return `userTweetImages-${userId}`
+}
