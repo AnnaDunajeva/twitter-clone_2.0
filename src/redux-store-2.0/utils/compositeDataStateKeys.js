@@ -17,3 +17,11 @@ export const discoverUsersKey = () => {
 export const userTweetImagesKey = (userId) => {
     return `userTweetImages-${userId}`
 }
+
+export const userTweetLikesKey = (userId) => {
+    return `userTweetLikes-${userId}`
+}
+
+export const userRepliesKey = (userId) => {
+    return `userReplies-${userId}`
+}

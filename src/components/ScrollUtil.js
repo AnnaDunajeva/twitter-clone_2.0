@@ -108,8 +108,9 @@ import React, {useEffect, useState, useRef, useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from './Loading.js'
-import {LOADED, LOADING} from '../redux-store-2.0/constants'
+import {LOADED, LOADING, PENDING_UPDATE} from '../redux-store-2.0/constants'
 import {getCompositeDataFetchStatus, getCompositeDataLastFetchTime} from '../redux-store-2.0/composite-data/selectors'
+import {compositeDataSetFetchStatus} from '../redux-store-2.0/composite-data/actions'
 
 const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText, noDataText, stateKey, children}) => {
     const dispatch = useDispatch()
@@ -126,7 +127,7 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
 
     const [hasMore, setHasMore] = useState(true)
     
-    const initialFetchTime = useRef(lastFetchTime || null)
+    const initialFetchTime = useRef(lastFetchTime || Date.now())
     const skip = useRef(ids.length)
 
     const memorizedFetch = useCallback(async()=> { 
@@ -156,6 +157,19 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
         }
     }, [dispatch, memorizedFetch, ids.length, fetchStatus])
 
+    // useEffect(() => {
+    //     //fetch for situation when user deletes almost all tweets from one view (so like less than take remains) and then comes to other page.
+    //     //we need to autofetch tweets cause user cant scroll himself because page is too small (displayed tweets length less than take)
+    //     const asyncDispatch = async () => {
+    //         await memorizedFetch()
+    //     }
+
+    //     if (ids.length !== 0 && ids.length < take && fetchStatus !== LOADING && fetchStatus !== LOADED) {
+    //         console.log('making initial fetch for scroll')
+    //         asyncDispatch();
+    //     }
+    // }, [dispatch, memorizedFetch, ids.length, fetchStatus, take])
+    
     useEffect(() => {
         console.log('savedIdsLength ', savedIdsLength, 'ids.length ', ids.length)
         // console.log('initialDataFetched ', initialDataFetched, 'fetchStatus ', fetchStatus)
@@ -169,6 +183,10 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
         }
     }, [fetchStatus, ids, savedIdsLength, take])
 
+    useEffect(()=>{
+        return ()=>dispatch(compositeDataSetFetchStatus(stateKey, PENDING_UPDATE)) //dont need it for now really
+    }, [dispatch, stateKey])
+
     const fetchScroll = async () => {
         await memorizedFetch()
         setSavedIdsLength(ids.length) //inside function ids isnt updated yet (despite state being updated)
@@ -181,8 +199,8 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
             {console.log('rendering scroll', 'hasmore ', hasMore, savedIdsLength, 'skip ', skip, 'fetchStatus ', fetchStatus)}
             {console.log('ids ', ids)}
             {headerText && (ids.length !== 0 || fetchStatus === LOADED) ? <h1 className='header'>{headerText}</h1> : null}
-            {ids.length === 0
-                ?fetchStatus === LOADED && <div className='header-small'>{noDataText}</div> 
+            {ids.length === 0 && fetchStatus === LOADED
+                ?<div className='header-small'>{noDataText}</div> 
                 :<InfiniteScroll
                     dataLength={ids.length}
                     next={fetchScroll}

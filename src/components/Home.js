@@ -47,7 +47,7 @@ const Home = () => {
                         <ul>
                             {ids.map((id) => (
                                 <li key={id}>
-                                    <Tweet id={id}/>
+                                    <Tweet id={id} stateKey={(homeKey())}/>
                                 </li>
                             ))}
                         </ul>  

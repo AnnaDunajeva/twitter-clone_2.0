@@ -10,8 +10,12 @@ import {
     NEW_TWEET_ADD_TO_REPLIES,
     NEW_TWEET_ADD_TO_USER_TWEETS,
     NEW_TWEET_ADD_TO_USER_IMAGES,
-    COMPOSITE_DATA_CLEAR } from '../action-types'
-import {homeKey, conversationKey, userTweetsKey, userTweetImagesKey} from '../utils/compositeDataStateKeys'
+    NEW_LIKE_ADD_TO_USER_LIKES,
+    NEW_LIKE_REMOVE_FROM_USER_LIKES,
+    NEW_TWEET_ADD_TO_USER_REPLIES,
+    COMPOSITE_DATA_SET_FETCH_STATUS,
+    COMPOSITE_DATA_CLEAR} from '../action-types'
+import {homeKey, conversationKey, userTweetsKey, userTweetImagesKey, userTweetLikesKey} from '../utils/compositeDataStateKeys'
 
 export const compositeDataEntitiesFetch = (stateKey) => {
     return {
@@ -40,6 +44,11 @@ export const compositeDataEntitiesFetchError = (stateKey, error, lastTopFetchTim
         error
     }
 }
+export const compositeDataSetFetchStatus = (stateKey, fetchStatus) => ({
+    type: COMPOSITE_DATA_SET_FETCH_STATUS,
+    fetchStatus,
+    stateKey
+})
 
 export const newTweetAddToFeed = (tweet) => {
     return {
@@ -50,11 +59,12 @@ export const newTweetAddToFeed = (tweet) => {
     }
 }
 
-export const newTweetAddToReplies = (tweet, parentId) => {
+export const newTweetAddToReplies = (tweet, parentId, author) => {
     return {
         type: NEW_TWEET_ADD_TO_REPLIES,
         tweet,
         parentId,
+        author,
         stateKey: conversationKey(parentId),
         fetchStatus: LOADED
     }
@@ -76,6 +86,23 @@ export const newTweetAddToUserImages = (tweet, author) => {
         author,
         stateKey: userTweetImagesKey(author),
         fetchStatus: LOADED
+    }
+}
+export const newLikeAddToUserLikes = (tweet, userId) => {
+    return {
+        type: NEW_LIKE_ADD_TO_USER_LIKES,
+        tweet,
+        userId,
+        stateKey: userTweetLikesKey(userId),
+        fetchStatus: LOADED
+    }
+}
+export const newLikeRemoveFromUserLikes = (tweetId, userId) => {
+    return {
+        type: NEW_LIKE_REMOVE_FROM_USER_LIKES,
+        tweetId,
+        userId,
+        stateKey: userTweetLikesKey(userId),
     }
 }
 

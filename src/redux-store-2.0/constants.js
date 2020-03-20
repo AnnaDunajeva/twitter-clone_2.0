@@ -4,6 +4,7 @@ export const ERROR = 'error'
 export const UPDATING = 'updating'
 export const UPDATED = 'updated'
 export const NOT_FOUND = 'not found'
+export const PENDING_UPDATE = 'pending update'
 
 export const URL = 'http://localhost:3001'
 

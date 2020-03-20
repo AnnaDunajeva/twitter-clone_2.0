@@ -7,10 +7,14 @@ import {
     NEW_TWEET_ADD_TO_REPLIES,
     NEW_TWEET_ADD_TO_USER_TWEETS,
     COMPOSITE_DATA_CLEAR,
-    NEW_TWEET_ADD_TO_USER_IMAGES
+    NEW_TWEET_ADD_TO_USER_IMAGES,
+    NEW_LIKE_ADD_TO_USER_LIKES,
+    NEW_LIKE_REMOVE_FROM_USER_LIKES,
+    COMPOSITE_DATA_SET_FETCH_STATUS,
+    TWEET_DELETE
 } 
 from '../action-types'
-import { homeKey, conversationKey, userTweetsKey, userTweetImagesKey } from '../utils/compositeDataStateKeys'
+import { homeKey, conversationKey, userTweetsKey, userTweetImagesKey, userTweetLikesKey, userRepliesKey } from '../utils/compositeDataStateKeys'
 
 const initialState = {
     entities: [],
@@ -75,7 +79,8 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 return state
             }
         case NEW_TWEET_ADD_TO_USER_TWEETS:
-            if (action.stateKey === userTweetsKey(action.author)) {
+        case NEW_TWEET_ADD_TO_REPLIES:
+            if (action.stateKey === userTweetsKey(action.author) || action.stateKey === userRepliesKey(action.author)) {
                 const tweet = {
                     ...action.tweet,
                     sortindex: state.entities[0]?.sortindex - 1 || Date.now(), 
@@ -101,6 +106,35 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 }
             }else {
                 return state
+            }
+        case NEW_LIKE_ADD_TO_USER_LIKES:
+            if (action.stateKey === userTweetLikesKey(action.userId)) {
+                const tweet = {
+                    ...action.tweet,
+                    sortindex: state.entities[0]?.sortindex - 1 || Date.now()
+                }
+                const filteresTweets = state.entities.filter(tweet => tweet.id !== action.tweet.id)
+                return {
+                    ...state,
+                    fetchStatus: action.fetchStatus,
+                    entities: [tweet, ...filteresTweets]
+                }
+            }else {
+                return state
+            }
+        case NEW_LIKE_REMOVE_FROM_USER_LIKES:
+            if (action.stateKey === userTweetLikesKey(action.userId)) {
+                return {
+                    ...state,
+                    entities: state.entities.filter(tweet => tweet.id !== action.tweetId)
+                }
+            }else {
+                return state
+            }
+        case COMPOSITE_DATA_SET_FETCH_STATUS:
+            return {
+                ...state,
+                fetchStatus: action.fetchStatus
             }
         case COMPOSITE_DATA_CLEAR:
             return initialState

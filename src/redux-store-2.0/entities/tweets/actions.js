@@ -2,7 +2,8 @@ import {
     TWEETS_FETCH_SUCCESS,
     TWEETS_REMOVE_ALL,
     TWEETS_FETCH,
-    TWEETS_FETCH_ERROR
+    TWEETS_FETCH_ERROR,
+    TWEET_DELETE
 } 
 from '../../action-types'
 
@@ -33,5 +34,12 @@ export const tweetsFetchError = (errors, fetchStatus) => {
 export const tweetsRemoveAll = () => {
     return {
         type: TWEETS_REMOVE_ALL
+    }
+}
+
+export const tweetDelete = (tweetId) => {
+    return {
+        type: TWEET_DELETE,
+        tweetId
     }
 }

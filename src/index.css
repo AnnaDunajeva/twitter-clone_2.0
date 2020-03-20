@@ -237,11 +237,11 @@ li {
 .profile-nav {
   display: flex;
   justify-content: center;
-  background: rgba(231, 233, 235, 0.877);
+  background: rgba(234, 236, 238, 0.877);
   border: 1px solid #dae0e2;
-  -webkit-box-shadow: 0px 11px 31px -15px rgba(23, 38, 68, 0.230);
+  /* -webkit-box-shadow: 0px 11px 31px -15px rgba(23, 38, 68, 0.230);
   -moz-box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230);
-  box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230);
+  box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230); */
 }
 .profile-nav a {
   padding: 10px 15px;
@@ -280,9 +280,9 @@ li {
   margin: 7px 0 0 0;
   border-radius: 2px;
   border: 1px solid #d9dfe291;
-  -webkit-box-shadow: 0px 11px 31px -15px rgba(23, 38, 68, 0.230);
+  /* -webkit-box-shadow: 0px 11px 31px -15px rgba(23, 38, 68, 0.230);
   -moz-box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230);
-  box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230);
+  box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230); */
 }
 
 .profile-meta-text {
@@ -611,6 +611,7 @@ li {
 }
 .tweet-meta {
   margin: 15px 10px 15px 0;
+  flex: 2;
 }
 .tweet-meta a {
   position: relative;

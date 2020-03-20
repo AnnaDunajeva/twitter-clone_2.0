@@ -10,11 +10,10 @@ import ProfileNav from './ProfileNav'
 import TweetsList from './TweetsList'
 import ToBeImplemented from './ToBeImplemented'
 import PrivateRoute from './PrivateRoute'
-import {getUserTweetsPaginated} from '../redux-store-2.0/api/tweets'
-import {getUserTweetIds} from '../redux-store-2.0/composite-data/selectors'
-import {userTweetsKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
+import {getUserTweetsPaginated, getUserTweetLikesPaginated, getUserRepliesPaginated} from '../redux-store-2.0/api/tweets'
+import {getUserTweetIds, getUserTweetLikesIds, getUserRepliesIds} from '../redux-store-2.0/composite-data/selectors'
+import {userTweetsKey, userTweetLikesKey, userRepliesKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
-import {Redirect} from 'react-router-dom'
 import ImageList from './ImagesList'
 
 const Profile = (props) => {
@@ -25,8 +24,11 @@ const Profile = (props) => {
     const userFetchError = useSelector(getUserErrorById(userId))
     const [toUpdate, setToUpdate] = useState(false)
     const [toTweetPageId, setToTweetPageId] = useState(null)
+    const [toProfileId, setToProfileId] = useState(null)
 
     const userTweetsSelector = useCallback(getUserTweetIds(userId), []) //not sure if I need it
+    const userTweetLikesSelector = useCallback(getUserTweetLikesIds(userId), [])
+    const userRepliesSelector = useCallback(getUserRepliesIds(userId), [])
 
     const dispatch = useDispatch()
 
@@ -50,21 +52,14 @@ const Profile = (props) => {
         return <NotFound />
     } 
     if (toUpdate) {
-        // return (
-        //     <Redirect to={`/profile/update`} />
-        // )
         props.history.push(`/profile/update`)
     }
     if (toTweetPageId) {
-        // return (<Redirect to={`/tweet/${toTweetPageId}`} />)
         props.history.push(`/tweet/${toTweetPageId}`)
     }
-
-    //remove trailing forwardslash when comid back to profile tweets (because if after that select another route it will result in double shash)
-    // const pathname = window.location.pathname;
-    // if((/\/$/).test(pathname)){
-    //     props.history.replace(pathname.slice(0, -1));
-    // }
+    if (toProfileId) {
+        props.history.push(`/user/${toProfileId}`)
+    }
 
     return (
         <Router>
@@ -75,11 +70,11 @@ const Profile = (props) => {
                 <React.Fragment>
                     <ProfileCard user={user} setToUpdate={setToUpdate}/>
                     <ProfileNav url={props.match.url}/>
-                    <div className='profile-tweets big-container' style={{borderRadius: '2px', margin: '0px auto', alignSelf: 'stretch', width: 'initial'}}>
+                    <div className='profile-tweets big-container' style={{borderRadius: '2px', margin: '0px auto', alignSelf: 'stretch', width: 'initial', boxShadow: 'none'}}>
                         <Switch>
                             <PrivateRoute path={`${props.match.path}`} exact component={TweetsList} additionalProps={{handleToTweetPage: setToTweetPageId, stateSelector: userTweetsSelector, getDataFetch: getUserTweetsPaginated, stateKey: userTweetsKey(userId), dispatchData}}/>
-                            <PrivateRoute path={`${props.match.path}/replies`} component={ToBeImplemented}/>
-                            <PrivateRoute path={`${props.match.path}/likes`} component={ToBeImplemented}/>
+                            <PrivateRoute path={`${props.match.path}/replies`} component={TweetsList} additionalProps={{handleToTweetPage: setToTweetPageId, handleToProfile: setToProfileId, stateSelector: userRepliesSelector, getDataFetch: getUserRepliesPaginated, stateKey: userRepliesKey(userId), dispatchData}}/>
+                            <PrivateRoute path={`${props.match.path}/likes`} component={TweetsList} additionalProps={{handleToTweetPage: setToTweetPageId, handleToProfile: setToProfileId, stateSelector: userTweetLikesSelector, getDataFetch: getUserTweetLikesPaginated, stateKey: userTweetLikesKey(userId), dispatchData}}/>
                             <PrivateRoute path={`${props.match.path}/photos`} component={ImageList} additionalProps={{userId: userId, setToTweetPageId, dispatchData}}/>
                             <Route component={NotFound} />
                         </Switch>

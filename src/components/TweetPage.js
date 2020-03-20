@@ -13,8 +13,7 @@ import {LOADED, NOT_FOUND} from '../redux-store-2.0/constants'
 
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
-    // const mainTweet = useSelector(getTweetById(tweetId)) //created infinite rerender loop because when i fetch conversation
-    //I get always main tweet and then i add it to store so it changes with each fetch
+    const mainTweet = useSelector(getTweetById(tweetId)) 
     const mainTweetFetchStatus = useSelector(getTweetStatusById(tweetId))
     const mainTweetFetchError = useSelector(getTweetErrorById(tweetId))
 
@@ -45,21 +44,22 @@ const TweetPage = (props) => {
                     {mainTweetFetchStatus === LOADED &&
                         <React.Fragment>
                             <Tweet id={tweetId}/>
-                            <NewTweet replyingTo={tweetId}/>
+                            {!mainTweet?.deleted && <NewTweet replyingTo={tweetId}/>}
                         </React.Fragment>
                     }
                     {/* <Tweet id={tweetId}/>
                     <NewTweet replyingTo={tweetId}/> */}
-                        <ScrollUtil getDataFetch={getConversationPaginated} 
-                                    dispatchData={dispatchData} 
-                                    stateSelector={repliesSelector}
-                                    stateKey={conversationKey(tweetId)}
-                                    take={take} 
-                                    headerText={'Replies'} 
-                                    noDataText={'No replies yet!'}  
-                                    >
-                                    {(ids) => ids.map((id) => <Tweet id={id} key={id}/>)}
-                        </ScrollUtil>
+ 
+                    <ScrollUtil getDataFetch={getConversationPaginated} 
+                        dispatchData={dispatchData} 
+                        stateSelector={repliesSelector}
+                        stateKey={conversationKey(tweetId)}
+                        take={take} 
+                        headerText={'Replies'} 
+                        noDataText={mainTweet?.deleted ? '' : 'No replies yet!'}  
+                        >
+                        {(ids) => ids.map((id) => <Tweet id={id} key={id} stateKey={conversationKey(tweetId)}/>)}
+                    </ScrollUtil>
                 </React.Fragment>
                 {/* : <Loading text='Fetching' speed={200}/> */}
             {/* } */}

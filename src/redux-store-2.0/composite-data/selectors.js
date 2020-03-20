@@ -1,4 +1,4 @@
-import {homeKey, userTweetsKey, discoverUsersKey, conversationKey, userTweetImagesKey} from '../utils/compositeDataStateKeys'
+import {homeKey, userTweetsKey, discoverUsersKey, conversationKey, userTweetImagesKey, userTweetLikesKey, userRepliesKey} from '../utils/compositeDataStateKeys'
 //return array of entities with their metadata
 export const getCompositeDataEntities = (stateKey) => {
     return (state) => state.compositeData[stateKey]?.entities || []
@@ -35,14 +35,24 @@ export const getDiscoverUsersIds = () => {
 export const getConversationMainTweetId = (tweetId) => {
     //assumes data is already sorted by sortIndex
     //otherwise i need to go through objects and find one where type is main tweet
-    return (state) => state.compositeData[conversationKey(tweetId)]?.entities[0].id || null
+    // return (state) => state.compositeData[conversationKey(tweetId)]?.entities[0].id || null
+    return (state) => state.compositeData[conversationKey(tweetId)]?.entities.filter(tweet => tweet.type === 'main tweet')[0]?.id || null
 }
 
 export const getConversationRepliesIds = (tweetId) => {
     //assumes data is already sorted by sortIndex
-    return (state) => state.compositeData[conversationKey(tweetId)]?.entities.slice(1).map(tweetData => tweetData.id) || [] //maybe add tweetData.type === 'reply' 
+    // return (state) => state.compositeData[conversationKey(tweetId)]?.entities.slice(1).map(tweetData => tweetData.id) || [] //maybe add tweetData.type === 'reply' 
+    return (state) => state.compositeData[conversationKey(tweetId)]?.entities.filter(tweet => tweet.type === 'reply').map(tweet => tweet.id) || [] //maybe add tweetData.type === 'reply' 
 }
 
 export const getUserTweetsWithImagesIds = (userId) => {
     return (state) => state.compositeData[userTweetImagesKey(userId)]?.entities.map(tweetData => tweetData.id) || []
+}
+
+export const getUserTweetLikesIds = (userId) => {
+    return (state) => state.compositeData[userTweetLikesKey(userId)]?.entities.map(tweetData => tweetData.id) || []
+}
+
+export const getUserRepliesIds= (userId) => {
+    return (state) => state.compositeData[userRepliesKey(userId)]?.entities.map(tweetData => tweetData.id) || []
 }

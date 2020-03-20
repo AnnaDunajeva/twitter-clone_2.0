@@ -3,9 +3,11 @@ import {
     TWEETS_REMOVE_ALL,
     TWEET_TOGGLE_LIKE,
     SESSION_END_SUCCESS,
-    NEW_TWEET_ADD_TO_REPLIES
+    NEW_TWEET_ADD_TO_REPLIES,
+    TWEET_DELETE
 } 
 from '../../../action-types'
+import {omit} from 'lodash'
 
 export default function tweets (state = {}, action) {
     switch (action.type) {
@@ -24,6 +26,8 @@ export default function tweets (state = {}, action) {
                     likesCount: !state[tweetId].liked ? state[tweetId].likesCount + 1 : state[tweetId].likesCount - 1,
                 }
             }
+        case TWEET_DELETE:
+            return omit(state, action.tweetId)
         case TWEETS_REMOVE_ALL:
         case SESSION_END_SUCCESS:
             return {}

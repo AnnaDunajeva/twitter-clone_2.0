@@ -2,7 +2,7 @@ import React from 'react'
 import Tweet from './Tweet'
 import ScrollUtil from './ScrollUtil'
 
-const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleToTweetPage}) => {    
+const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleToTweetPage, handleToProfile}) => {    
     return (
         <ScrollUtil getDataFetch={getDataFetch} 
                     dispatchData={dispatchData} 
@@ -15,7 +15,7 @@ const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handle
                 <ul>
                     {ids.map((id) => (
                         <li key={id}>
-                            <Tweet id={id} handleToTweetPage={handleToTweetPage}/>
+                            <Tweet id={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
                         </li>
                     ))}
                 </ul>  

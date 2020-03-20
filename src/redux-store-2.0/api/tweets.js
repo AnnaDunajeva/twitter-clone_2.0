@@ -6,7 +6,7 @@ import {
     NOT_FOUND,
     ERROR } from "../constants"
 
-import { tweetsFetchSuccess, tweetsFetchError } from '../entities/tweets/actions'
+import { tweetsFetchSuccess, tweetsFetchError, tweetDelete } from '../entities/tweets/actions'
 import { tweetToggleLike } from '../entities/tweets/entities/actions'
 import { usersFetchSuccess } from '../entities/users/actions'
 import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
@@ -14,7 +14,8 @@ import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
 import { 
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
         TWEET_TOGGLE_LIKE,
-        TWEET_POST } from '../action-types'
+        TWEET_POST,
+        TWEET_DELETE } from '../action-types'
 import { 
     compositeDataEntitiesFetch, 
     compositeDataEntitiesFetchSuccess,
@@ -22,12 +23,17 @@ import {
     newTweetAddToFeed,
     newTweetAddToReplies,
     newTweetAddToUserTweets,
-    newTweetAddToUserImages } from '../composite-data/actions'
+    newTweetAddToUserImages, 
+    newLikeAddToUserLikes,
+    newLikeRemoveFromUserLikes,
+    compositeDataClear} from '../composite-data/actions'
 import { 
     conversationKey,
     homeKey,
     userTweetsKey,
-    userTweetImagesKey } from '../utils/compositeDataStateKeys'
+    userTweetImagesKey,
+    userTweetLikesKey,
+    userRepliesKey } from '../utils/compositeDataStateKeys'
 
 
 export function getFeedPaginated(data) {
@@ -223,7 +229,7 @@ export function getUserTweetImagesPaginated (data) {
 }
 
 export function toggleTweetsLike (data) {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         dispatch(showLoading())
         dispatch(tweetToggleLike(data.tweetId)) //provides instant UI feedback to user
         dispatch(globalErrorRemove(`${TWEET_TOGGLE_LIKE}/${data.tweetId}`))
@@ -241,7 +247,24 @@ export function toggleTweetsLike (data) {
             if (responseData.error) {
                 dispatch(tweetToggleLike(data.tweetId))
                 dispatch(globalErrorAdd(`${TWEET_TOGGLE_LIKE}/${data.tweetId}`, responseData.error))
+            } else {
+                const tweet = responseData.tweet
+                const tweetId = Object.keys(tweet)[0]
+
+                const userTweetLikes = getState().compositeData[userTweetLikesKey(data.user.userId)]
+
+                //a lot og troubles, should just refresh it on like... like i do with followers
+                if (userTweetLikes !== undefined) {
+                    const tweetShort = pick(tweet[tweetId], ['id', 'sortindex'])
+                    if (tweet[tweetId].liked) {
+                        dispatch(newLikeAddToUserLikes(tweetShort, data.user.userId))
+                    } else {
+                        // dispatch(newLikeRemoveFromUserLikes(data.tweetId, data.user.userId))
+                        dispatch(compositeDataClear(userTweetLikesKey(data.user.userId)))
+                    }
+                }
             }
+
             //maybe be I dont need to update tweet like this, because what if while request was being send somebody else
             //liked tweet so when you receive tweet back in UI insted of like being plus 1 it will be plus 2 or more,
             //this might be confusing to user
@@ -303,22 +326,28 @@ export function postTweet (data) {
 
                 dispatch(tweetsFetchSuccess(tweet, tweetFetchStatus))
 
+                // if (tweet[tweetId].replyingToTweetId) {
+                //     dispatch(compositeDataClear(conversationKey(tweet[tweetId].replyingToTweetId)))
+                //     dispatch(compositeDataClear(userRepliesKey(tweet[tweetId].user)))
+                // } else {
+                //     dispatch(compositeDataClear(userTweetsKey(tweet[tweetId].user)))
+                // }
+
+                // dispatch(compositeDataClear(homeKey()))
+
+                // if (tweet.media) {
+                //     dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
+                // }
+                //=====================================================================
                 if (tweet[tweetId].replyingToTweetId) {
-                    dispatch(newTweetAddToReplies(tweetShort, tweet[tweetId].replyingToTweetId))
-                } 
-                const home = getState().compositeData[homeKey()]
-                if (home !== undefined) {
-                //if (home !== undefined && home.entities.length !== 0) {
-                    dispatch(newTweetAddToFeed(tweetShort))
-                }
-                const userTweets = getState().compositeData[userTweetsKey(tweet[tweetId].user)]
-                if (userTweets !== undefined) {
-                //if (userTweets !== undefined && userTweets.entities.length !== 0) {
+                    dispatch(newTweetAddToReplies(tweetShort, tweet[tweetId].replyingToTweetId, tweet[tweetId].user))
+                } else {
                     dispatch(newTweetAddToUserTweets(tweetShort, tweet[tweetId].user))
                 }
-                const userImages = getState().compositeData[userTweetImagesKey(tweet[tweetId].user)]
-                if (userImages !== undefined) {
-                //if (userTweets !== undefined && userTweets.entities.length !== 0) {
+
+                dispatch(newTweetAddToFeed(tweetShort))
+
+                if (tweet[tweetId].media) {
                     dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
                 }
             }
@@ -332,3 +361,133 @@ export function postTweet (data) {
         }
     }
 }
+
+export function getUserTweetLikesPaginated (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        const stateKey = userTweetLikesKey(data.userId)
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`))
+        dispatch(compositeDataEntitiesFetch(stateKey))
+
+        try {
+            console.log('inside action getUserTweetLikesPaginated')
+            const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/likes?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const tweetsData = await tweetsResponse.json()
+
+            console.log(tweetsData)
+
+            if (tweetsData.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, tweetsData.error))
+                dispatch(compositeDataEntitiesFetchError(stateKey, tweetsData.error, data.time))
+            } else {
+                const tweets = tweetsData.tweets
+                const users = tweetsData.users
+                console.log('tweetsData ', tweetsData)
+    
+                const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('userTweets ', userTweets) 
+               
+                const tweetsFetchStatus = mapValues(tweets, () => LOADED)
+                const usersFetchStatus = mapValues(users, () => LOADED)
+                
+                dispatch(usersFetchSuccess(users, usersFetchStatus))
+                dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(stateKey, userTweets, data.time))
+            }
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(stateKey, err.message, data.time))
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function getUserRepliesPaginated (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        const stateKey = userRepliesKey(data.userId)
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`))
+        dispatch(compositeDataEntitiesFetch(stateKey))
+
+        try {
+            console.log('inside action getUserRepliesPaginated')
+            const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/replies?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const tweetsData = await tweetsResponse.json()
+            if (tweetsData.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, tweetsData.error))
+                dispatch(compositeDataEntitiesFetchError(stateKey, tweetsData.error, data.time))
+            } else {
+                const tweets = tweetsData.tweets
+                console.log('tweetsData ', tweetsData)
+    
+                const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('userTweets ', userTweets) 
+               
+                const tweetsFetchStatus = mapValues(tweets, () => LOADED)
+    
+                dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(stateKey, userTweets, data.time))
+            }
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(stateKey, err.message, data.time))
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function deleteTweet (data) {
+    //data.stateKey - place from where tweet was deleted
+    return async (dispatch) => {
+        dispatch(showLoading())
+        dispatch(globalErrorRemove(`${TWEET_DELETE}/${data.tweetId}`))
+
+        try {
+            const response = await fetch(`${URL}/user/tweet/${data.tweetId}`, {
+                method: 'DELETE',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const responseData = await response.json() //{message: 'success', status: 'ok' or {error: {...}}
+            if (responseData.error) {
+                dispatch(globalErrorAdd(`${TWEET_DELETE}/${data.tweetId}`, responseData.error))
+            } else {
+                dispatch(compositeDataClear(data.stateKey))
+                dispatch(tweetDelete(data.tweetId)) 
+            }
+
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+            dispatch(globalErrorAdd(`${TWEET_DELETE}/${data.tweetId}`, err.message))
+            dispatch(hideLoading())
+        }
+    }
+}
+
