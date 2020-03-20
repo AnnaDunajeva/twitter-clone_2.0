@@ -17,12 +17,29 @@ import {getUser} from '../redux-store-2.0/api/users'
 import Alert from './Alert'
 import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
 import ToTopButton from './ToTopButton'
+import io from 'socket.io-client';
+import {URL, LOADED} from '../redux-store-2.0/constants'
+import {setSocket} from '../redux-store-2.0/socket/actions'
+import {tweetsFetchSuccess} from '../redux-store-2.0/entities/tweets/actions'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
     
     useScrollToTopOnRouteChange()
+
+    useEffect(()=>{
+        const socket = io(URL)
+        socket.on('connect', () => {
+            console.log('socket created and connected to server!')
+            dispatch(setSocket(socket))
+        })
+        socket.on('tweet_update', (tweet) => {
+            console.log('got tweet update through socket ', tweet)
+            dispatch(tweetsFetchSuccess(tweet, LOADED))
+        })
+        return () => socket.close()
+    },[dispatch])
 
     useEffect(() => {
         if (authedUser) {

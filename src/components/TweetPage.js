@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux'
 import NotFound from './NotFound'
 import ScrollUtil from './ScrollUtil'
 import Loading from './Loading.js'
-import {getConversationRepliesIds} from '../redux-store-2.0/composite-data/selectors'
+import {getConversationRepliesIds, getConversationMainTweetId} from '../redux-store-2.0/composite-data/selectors'
 import {conversationKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 import {getConversationPaginated} from '../redux-store-2.0/api/tweets'
 import {getTweetStatusById, getTweetErrorById, getTweetById} from '../redux-store-2.0/entities/tweets/selectors'
@@ -16,8 +16,10 @@ const TweetPage = (props) => {
     const mainTweet = useSelector(getTweetById(tweetId)) 
     const mainTweetFetchStatus = useSelector(getTweetStatusById(tweetId))
     const mainTweetFetchError = useSelector(getTweetErrorById(tweetId))
+    const conversationMainTweetId = useSelector(getConversationMainTweetId(tweetId))
 
     const repliesSelector = useCallback(getConversationRepliesIds((tweetId)), [])
+   
 
     const take = 2
 
@@ -26,7 +28,8 @@ const TweetPage = (props) => {
             userId: localStorage.getItem('userId'),
             token: localStorage.getItem('token')
         },
-        tweetId
+        tweetId,
+        getMainTweet: conversationMainTweetId ? false : true
     }
     
     if (mainTweetFetchError === NOT_FOUND) {

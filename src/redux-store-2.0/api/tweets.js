@@ -92,8 +92,8 @@ export function getConversationPaginated (data) {
         dispatch(compositeDataEntitiesFetch(stateKey))
 
         try {
-            console.log('inside action getRepliesPaginated')
-            const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getMainTweet=${data.skip === 0 ? true : false}`, { 
+            console.log('inside action getRepliesPaginated ', data)
+            const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getMainTweet=${data.getMainTweet}`, { 
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -114,7 +114,7 @@ export function getConversationPaginated (data) {
                 const tweetsFetchStatus = mapValues(tweets, () => LOADED)
                 const usersFetchStatus = mapValues(users, () => LOADED)
                 
-                if (data.skip === 0 && tweets[data.tweetId] === undefined) {
+                if (data.getMainTweet && tweets[data.tweetId] === undefined) {
                     dispatch(tweetsFetchError({[data.tweetId]: NOT_FOUND}, {[data.tweetId]:ERROR}))
                     dispatch(compositeDataEntitiesFetchError(stateKey, NOT_FOUND, data.time))
                 } else {

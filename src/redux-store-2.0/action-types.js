@@ -23,6 +23,8 @@ export const SESSION_START = 'SESSION_START'
 export const SESSION_START_ERROR = 'SESSION_START_ERROR'
 export const SESSION_START_SUCCESS = 'SESSION_START_SUCCESS'
 
+export const SOCKET_SET = 'SOCKET_SET'
+
 export const TWEET_DELETE = 'TWEET_DELETE'
 export const TWEET_POST = 'TWEET_POST' //right now only used for setting up a global error
 export const TWEET_TOGGLE_LIKE = 'TWEET_TOGGLE_LIKE'

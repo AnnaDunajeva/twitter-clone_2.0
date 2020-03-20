@@ -31,14 +31,14 @@ export default function tweets (state = {}, action) {
         case TWEETS_REMOVE_ALL:
         case SESSION_END_SUCCESS:
             return {}
-        case NEW_TWEET_ADD_TO_REPLIES: 
-            return {
-                ...state,
-                [action.parentId]: {
-                    ...state[action.parentId],
-                    repliesCount: state[action.parentId].repliesCount + 1
-                }
-            }
+        // case NEW_TWEET_ADD_TO_REPLIES: 
+        //     return {
+        //         ...state,
+        //         [action.parentId]: {
+        //             ...state[action.parentId],
+        //             repliesCount: state[action.parentId].repliesCount + 1
+        //         }
+        //     }
         default :
             return state
     } 

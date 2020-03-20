@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {formatDate} from '../utils/helpers'
 import {Link, withRouter} from 'react-router-dom'
@@ -16,6 +16,7 @@ import {toggleTweetsLike, deleteTweet} from '../redux-store-2.0/api/tweets'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import {MdClose} from "react-icons/md"
 import DeleteAlert from './DeleteAlert'
+import {getSocket} from '../redux-store-2.0/socket/selectors'
 
 const linkifyOptions = {
     validate: {
@@ -28,7 +29,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
     const dispatch = useDispatch()
 
     const tweet = useSelector(getTweetById(id))
-    const author = useSelector(getUserById(tweet.user))
+    const author = useSelector(getUserById(tweet?.user))
     const authedUser = useSelector(getAuthedUserId())
 
     const [isDeleteTweet, setIsDeleteTweet] = useState(false)
@@ -39,6 +40,13 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                                 .filter(videoData => videoData !== undefined && videoData.provider === 'youtube')
                                 )
 
+    const socket = useSelector(getSocket())
+    
+    useEffect(()=>{
+        console.log('about to subscribe to tweet update ', tweet.id, )
+        socket.emit('subscribe_to_tweet_update', tweet.id) 
+        return () => socket.emit('unsubscribe_to_tweet_update', tweet.id) 
+    },[])
 
     const handleLike = (e) => {
         e.preventDefault()
@@ -69,7 +77,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
         <React.Fragment>
             {tweet.deleted 
                 ? <div className='tweet-container' style={{justifyContent: 'center'}}>
-                    <p>[Deleted]</p>
+                    <p style={{padding: '20px'}}>[Deleted]</p>
                 </div>
                 : <React.Fragment>
                     {isDeleteTweet && <DeleteAlert onDelete={handleDelete} onClose={()=>setIsDeleteTweet(false)} message={'Are you sure you want to delete this tweet?'}/>}
