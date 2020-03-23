@@ -20,7 +20,7 @@ import ToTopButton from './ToTopButton'
 import io from 'socket.io-client';
 import {URL, LOADED} from '../redux-store-2.0/constants'
 import {setSocket} from '../redux-store-2.0/socket/actions'
-import {tweetsFetchSuccess} from '../redux-store-2.0/entities/tweets/actions'
+import {tweetUpdate} from '../redux-store-2.0/entities/tweets/actions'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
@@ -29,17 +29,19 @@ const App = () => {
     useScrollToTopOnRouteChange()
 
     useEffect(()=>{
-        const socket = io(URL)
-        socket.on('connect', () => {
-            console.log('socket created and connected to server!')
-            dispatch(setSocket(socket))
-        })
-        socket.on('tweet_update', (tweet) => {
-            console.log('got tweet update through socket ', tweet)
-            dispatch(tweetsFetchSuccess(tweet, LOADED))
-        })
+        const socket = io(URL)//needs actually to be moved to some other place
+        if (authedUser) {//need this otherwise it wont rerun after user loagout
+            socket.on('connect', () => {
+                console.log('socket created and connected to server!')
+                dispatch(setSocket(socket))
+            })
+            socket.on('tweet_update', ({tweetId, tweet}) => {
+                console.log('got tweet update through socket ', tweet)
+                dispatch(tweetUpdate(tweetId, tweet, LOADED))
+            })
+        }
         return () => socket.close()
-    },[dispatch])
+    },[dispatch, authedUser])
 
     useEffect(() => {
         if (authedUser) {

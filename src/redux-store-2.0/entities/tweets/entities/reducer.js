@@ -3,6 +3,7 @@ import {
     TWEETS_REMOVE_ALL,
     TWEET_TOGGLE_LIKE,
     SESSION_END_SUCCESS,
+    TWEET_UPDATE,
     NEW_TWEET_ADD_TO_REPLIES,
     TWEET_DELETE
 } 
@@ -26,8 +27,16 @@ export default function tweets (state = {}, action) {
                     likesCount: !state[tweetId].liked ? state[tweetId].likesCount + 1 : state[tweetId].likesCount - 1,
                 }
             }
-        case TWEET_DELETE:
-            return omit(state, action.tweetId)
+        case TWEET_UPDATE: 
+            return {
+                ...state,
+                [action.tweetId]: {
+                    ...state[action.tweetId],
+                    ...action.tweet[action.tweetId]
+                }
+            }
+        // case TWEET_DELETE:
+        //     return omit(state, action.tweetId) //dont forget about fetchStatus
         case TWEETS_REMOVE_ALL:
         case SESSION_END_SUCCESS:
             return {}

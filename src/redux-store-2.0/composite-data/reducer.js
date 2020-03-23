@@ -73,7 +73,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 return {
                     ...state,
                     fetchStatus: action.fetchStatus,
-                    entities: [state.entities[0], tweet, ...state.entities.slice(1)]
+                    entities: [tweet, ...state.entities]
                 }
             }else {
                 return state

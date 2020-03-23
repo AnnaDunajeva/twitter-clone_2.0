@@ -3,7 +3,8 @@ import {
     TWEETS_REMOVE_ALL,
     TWEETS_FETCH,
     TWEETS_FETCH_ERROR,
-    TWEET_DELETE
+    TWEET_DELETE,
+    TWEET_UPDATE
 } 
 from '../../action-types'
 
@@ -43,3 +44,10 @@ export const tweetDelete = (tweetId) => {
         tweetId
     }
 }
+
+export const tweetUpdate = (tweetId, tweet, fetchStatus) =>({
+    type: TWEET_UPDATE,
+    tweetId,
+    tweet,
+    fetchStatus
+})

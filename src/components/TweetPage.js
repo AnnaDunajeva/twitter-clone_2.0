@@ -41,17 +41,14 @@ const TweetPage = (props) => {
     return (
         <div className='big-container'>
             {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
-            {/* {mainTweetFetchStatus === LOADED  */}
                 <React.Fragment>
                     {console.log('parent tweet', tweetId)}
                     {mainTweetFetchStatus === LOADED &&
                         <React.Fragment>
-                            <Tweet id={tweetId}/>
+                            <Tweet id={tweetId} stateKey={conversationKey(tweetId)}/>
                             {!mainTweet?.deleted && <NewTweet replyingTo={tweetId}/>}
                         </React.Fragment>
                     }
-                    {/* <Tweet id={tweetId}/>
-                    <NewTweet replyingTo={tweetId}/> */}
  
                     <ScrollUtil getDataFetch={getConversationPaginated} 
                         dispatchData={dispatchData} 
@@ -64,8 +61,6 @@ const TweetPage = (props) => {
                         {(ids) => ids.map((id) => <Tweet id={id} key={id} stateKey={conversationKey(tweetId)}/>)}
                     </ScrollUtil>
                 </React.Fragment>
-                {/* : <Loading text='Fetching' speed={200}/> */}
-            {/* } */}
             </div>
     )
 }

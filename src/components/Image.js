@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getTweetById} from '../redux-store-2.0/entities/tweets/selectors'
 import {toggleTweetsLike} from '../redux-store-2.0/api/tweets'
@@ -6,6 +6,7 @@ import { TiArrowBackOutline } from "react-icons/ti";
 import { TiHeartOutline } from "react-icons/ti";
 import { TiHeart } from "react-icons/ti";
 import useHover from '../Hooks/useHover'
+import {getSocket} from '../redux-store-2.0/socket/selectors'
 
 const Image = ({id, setToTweetPageId}) => {
     const dispatch = useDispatch()
@@ -22,6 +23,18 @@ const Image = ({id, setToTweetPageId}) => {
             }
         }))
     }
+
+    const socket = useSelector(getSocket())
+    
+    useEffect(()=>{
+        if(!tweet.deleted && socket) {
+            console.log('about to subscribe to tweet update ', tweet.id, )
+            socket.emit('subscribe_to_tweet_update', tweet.id) 
+            return () => socket.emit('unsubscribe_to_tweet_update', tweet.id) 
+        }
+    },[socket, tweet])
+
+    //needs to be subscribed for tweet update from here 
 
     return (
         <div className='position-relative' onMouseEnter={onMouseOver} onMouseLeave={onMouseOut}>

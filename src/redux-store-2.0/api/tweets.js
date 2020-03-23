@@ -460,6 +460,7 @@ export function getUserRepliesPaginated (data) {
 
 export function deleteTweet (data) {
     //data.stateKey - place from where tweet was deleted
+    console.log(data)
     return async (dispatch) => {
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_DELETE}/${data.tweetId}`))
@@ -477,7 +478,7 @@ export function deleteTweet (data) {
             if (responseData.error) {
                 dispatch(globalErrorAdd(`${TWEET_DELETE}/${data.tweetId}`, responseData.error))
             } else {
-                dispatch(compositeDataClear(data.stateKey))
+                // dispatch(compositeDataClear(data.stateKey))
                 dispatch(tweetDelete(data.tweetId)) 
             }
 

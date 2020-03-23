@@ -3,9 +3,11 @@ import {
     TWEETS_REMOVE_ALL,
     TWEETS_FETCH,
     TWEETS_FETCH_ERROR,
-    SESSION_END_SUCCESS
+    SESSION_END_SUCCESS,
+    TWEET_DELETE
 } 
 from '../../../action-types'
+import {omit} from 'lodash'
 
 export default function fetchStatus (state = {}, action){
     switch (action.type) {
@@ -19,6 +21,8 @@ export default function fetchStatus (state = {}, action){
         case SESSION_END_SUCCESS:
         case TWEETS_REMOVE_ALL: 
             return {}
+        // case TWEET_DELETE:
+        //     return omit(state, action.tweetId)
         default :
             return state
     }

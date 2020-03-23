@@ -34,19 +34,25 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
 
     const [isDeleteTweet, setIsDeleteTweet] = useState(false)
 
-    const urlsInTweet = useRef(tweet.deleted ? null : linkify.find(tweet.text).filter(urlObj => urlObj.type === 'url')) //maybe useMemo instead?
-    const youtubeUrls = useRef(tweet.deleted ? null : urlsInTweet.current
-                                .map(urlObj => videoUrlParser.parse(urlObj.href))
-                                .filter(videoData => videoData !== undefined && videoData.provider === 'youtube')
+    const urlsInTweet = useRef(tweet?.text 
+                                ? linkify.find(tweet.text).filter(urlObj => urlObj.type === 'url')
+                                : null) //maybe useMemo instead?
+    const youtubeUrls = useRef(tweet?.text 
+                                ? urlsInTweet.current
+                                    .map(urlObj => videoUrlParser.parse(urlObj.href))
+                                    .filter(videoData => videoData !== undefined && videoData.provider === 'youtube')
+                                :null
                                 )
 
     const socket = useSelector(getSocket())
     
     useEffect(()=>{
-        console.log('about to subscribe to tweet update ', tweet.id, )
-        socket.emit('subscribe_to_tweet_update', tweet.id) 
-        return () => socket.emit('unsubscribe_to_tweet_update', tweet.id) 
-    },[])
+        if(!tweet.deleted && socket) {
+            console.log('about to subscribe to tweet update ', tweet.id, )
+            socket.emit('subscribe_to_tweet_update', tweet.id) 
+            return () => socket.emit('unsubscribe_to_tweet_update', tweet.id) 
+        }
+    },[socket, tweet])
 
     const handleLike = (e) => {
         e.preventDefault()
@@ -58,7 +64,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
             }
         }))
     }
-    const handleDelete = () => {
+    const handleDelete = () => { //async?
         dispatch(deleteTweet({
             tweetId: id,
             user: {
@@ -75,7 +81,8 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
 
     return (
         <React.Fragment>
-            {tweet.deleted 
+            {console.log('stateKey ', stateKey)}
+            {tweet?.deleted 
                 ? <div className='tweet-container' style={{justifyContent: 'center'}}>
                     <p style={{padding: '20px'}}>[Deleted]</p>
                 </div>
@@ -89,7 +96,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                         <img src={author.avatar} alt={`Avatar for ${author.firstName} ${author.lastName}`} className='avatar'/>
 
                         <div className='tweet-meta'>
-                            {authedUser === author.userId && <MdClose onClick={() => setIsDeleteTweet(true)} size={25} className='close-alert-btn icon'/>}
+                            {authedUser === author.userId && <MdClose onClick={() => setIsDeleteTweet(true)} size={25} className='close-alert-btn position-relative'/>}
                             <Link onClick={handleToProfile ? () => handleToProfile(author.userId) : ()=>history.push(`/user/${author.userId}`)}>
                                 <span className='user-name'>{`${author.firstName} ${author.lastName} `}</span>
                                 <span className='meta-text'>@{author.userId}</span>
@@ -103,7 +110,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                             {tweet.media &&
                                 <img src={tweet.media} alt='Image in tweet' className='tweet-image' style={{width: 400, height: 400, borderRadius: 2}}/>
                             }
-                            {/* {urlsInTweet.current.length > 0
+                            {/* {urlsInTweet.current?.length > 0
                                 ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>
                                     {
                                         urlsInTweet.current.map(urlObj => 
@@ -121,7 +128,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                                 :null
                             } */}
 
-                            {youtubeUrls.current.length > 0 
+                            {youtubeUrls.current?.length > 0 
                                 ?<YouTube
                                     videoId={youtubeUrls.current[0].id}
                                     opts={{height: '262', width: '430'}}

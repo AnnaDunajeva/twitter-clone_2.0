@@ -28,6 +28,7 @@ export const SOCKET_SET = 'SOCKET_SET'
 export const TWEET_DELETE = 'TWEET_DELETE'
 export const TWEET_POST = 'TWEET_POST' //right now only used for setting up a global error
 export const TWEET_TOGGLE_LIKE = 'TWEET_TOGGLE_LIKE'
+export const TWEET_UPDATE = 'TWEET_UPDATE'
 
 export const TWEETS_FETCH = 'TWEETS_FETCH'
 export const TWEETS_FETCH_ERROR = 'TWEETS_FETCH_ERROR'
