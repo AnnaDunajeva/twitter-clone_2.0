@@ -13,6 +13,7 @@ import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
 // import { getTweetById } from '../entities/tweets/entities/selectors'
 import { 
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
+        COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR,
         TWEET_TOGGLE_LIKE,
         TWEET_POST,
         TWEET_DELETE } from '../action-types'
@@ -20,6 +21,7 @@ import {
     compositeDataEntitiesFetch, 
     compositeDataEntitiesFetchSuccess,
     compositeDataEntitiesFetchError,
+    compositeDataEntitiesUpdateFetchSuccess,
     newTweetAddToFeed,
     newTweetAddToReplies,
     newTweetAddToUserTweets,
@@ -79,6 +81,51 @@ export function getFeedPaginated(data) {
 
             dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${homeKey()}`, err.message))
             dispatch(compositeDataEntitiesFetchError(homeKey(), err.message, data.time))
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function getFeedUpdate(data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${homeKey()}`))
+        try{
+            console.log('inside action getFeedPaginated')
+            const feedResponse = await fetch(`${URL}/user/feed/update?take=${data.take}&time=${data.time}&getUsers=true&getParents=false`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            
+            const feedData = await feedResponse.json()
+            console.log('feedData ', feedData)
+
+            if (feedData.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${homeKey()}`, feedData.error))
+            } else {
+                const feedUpdate = Object.keys(feedData.tweets).map(tweetId => pick(feedData.tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('feedUpdate ', feedUpdate) 
+               
+                const tweetsFetchStatus = mapValues(feedData.tweets, () => LOADED)
+                const usersFetchStatus = mapValues(feedData.users, () => LOADED)
+    
+                dispatch(tweetsFetchSuccess(feedData.tweets, tweetsFetchStatus))
+                dispatch(usersFetchSuccess(feedData.users, usersFetchStatus))
+                dispatch(compositeDataEntitiesUpdateFetchSuccess(homeKey(), feedUpdate)) //it is important that composite data goes last
+                //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
+                //with stuff being undefined
+
+            }
+            dispatch(hideLoading())
+        }
+        catch(err) {
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${homeKey()}`, err.message))
             dispatch(hideLoading())
         }
     }

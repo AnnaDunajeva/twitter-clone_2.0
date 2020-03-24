@@ -1,4 +1,5 @@
 import {homeKey, userTweetsKey, discoverUsersKey, conversationKey, userTweetImagesKey, userTweetLikesKey, userRepliesKey} from '../utils/compositeDataStateKeys'
+import {getTweetById} from '../entities/tweets/selectors'
 //return array of entities with their metadata
 export const getCompositeDataEntities = (stateKey) => {
     return (state) => state.compositeData[stateKey]?.entities || []
@@ -55,4 +56,11 @@ export const getUserTweetLikesIds = (userId) => {
 
 export const getUserRepliesIds= (userId) => {
     return (state) => state.compositeData[userRepliesKey(userId)]?.entities.map(tweetData => tweetData.id) || []
+}
+
+export const getCompositeDataFirstEntityCreatedAt = (stateKey) => {
+    return (state) => {
+        const firstEntityId = state.compositeData[stateKey]?.entities[0]?.id || null
+        return firstEntityId !== null ? getTweetById(firstEntityId)(state).createdAt : null
+    }
 }

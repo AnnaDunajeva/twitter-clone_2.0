@@ -11,7 +11,7 @@ import {
     NEW_LIKE_ADD_TO_USER_LIKES,
     NEW_LIKE_REMOVE_FROM_USER_LIKES,
     COMPOSITE_DATA_SET_FETCH_STATUS,
-    TWEET_DELETE
+    COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_SUCCESS
 } 
 from '../action-types'
 import { homeKey, conversationKey, userTweetsKey, userTweetImagesKey, userTweetLikesKey, userRepliesKey } from '../utils/compositeDataStateKeys'
@@ -40,6 +40,11 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 entities: state.entities.concat(action.entities),
                 fetchStatus: action.fetchStatus,
                 error: null
+            }
+        case COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_SUCCESS:
+            return {
+                ...state,
+                entities: action.entities.concat(state.entities)
             }
         case COMPOSITE_DATA_ENTITIES_FETCH_ERROR:
             return {
