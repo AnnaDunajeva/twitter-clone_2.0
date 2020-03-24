@@ -19,7 +19,7 @@ import {
         USERS_FETCH_ERROR,
         USER_TOGGLE_FOLLOW,
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
-        USER_UPDATE } from '../action-types'
+        PROFILE_UPDATE } from '../action-types'
 import { discoverUsersKey, homeKey } from '../utils/compositeDataStateKeys'
 import { 
     compositeDataEntitiesFetch, 
@@ -206,11 +206,11 @@ export function getAllUsersPaginated (data) {
 //     }
 // }
 
-export function updateUser (data) {
+export function updateProfile (data) {
     return async (dispatch) => {
         console.log(data)
         dispatch(showLoading())
-        dispatch(globalErrorRemove(`${USER_UPDATE}`))
+        dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
         dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
         const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
         const userFetchStatusError = {[data.user.userId]: LOADED}
@@ -236,7 +236,7 @@ export function updateUser (data) {
             const userData = await response.json()
 
             if (userData.error) {
-                dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+                dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, userData.error))
                 dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
                 
             } else {
@@ -250,7 +250,7 @@ export function updateUser (data) {
         catch (err) { 
             console.log(err.message)
 
-            dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+            dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, err.message))
             dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
 
             dispatch(hideLoading())
@@ -261,7 +261,7 @@ export function updateUser (data) {
 export function deleteAvatar (data) {
     return async (dispatch) => {
         dispatch(showLoading())
-        dispatch(globalErrorRemove(`${USER_UPDATE}`))
+        dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
         dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
         const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
         const userFetchStatusError = {[data.user.userId]: LOADED}
@@ -277,7 +277,7 @@ export function deleteAvatar (data) {
             const userData = await response.json()
 
             if (userData.error) {
-                dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+                dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, userData.error))
                 dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
                 
             } else {
@@ -290,7 +290,7 @@ export function deleteAvatar (data) {
         catch (err) { 
             console.log(err.message)
 
-            dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+            dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, err.message))
             dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
 
             dispatch(hideLoading())
@@ -301,7 +301,7 @@ export function deleteAvatar (data) {
 export function deleteBackgroundImage (data) {
     return async (dispatch) => {
         dispatch(showLoading())
-        dispatch(globalErrorRemove(`${USER_UPDATE}`))
+        dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
         dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
         const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
         const userFetchStatusError = {[data.user.userId]: LOADED}
@@ -317,7 +317,7 @@ export function deleteBackgroundImage (data) {
             const userData = await response.json()
 
             if (userData.error) {
-                dispatch(globalErrorAdd(`${USER_UPDATE}`, userData.error))
+                dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, userData.error))
                 dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
                 
             } else {
@@ -330,7 +330,7 @@ export function deleteBackgroundImage (data) {
         catch (err) { 
             console.log(err.message)
 
-            dispatch(globalErrorAdd(`${USER_UPDATE}`, err.message))
+            dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, err.message))
             dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
 
             dispatch(hideLoading())

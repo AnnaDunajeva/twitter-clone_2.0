@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {getUserById, getUserStatusById} from '../redux-store-2.0/entities/users/selectors'
-import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
-// import {LOADED} from '../redux-store-2.0/constants'
 import DragAndDrop from './DragAndDrop'
 import DeleteAlert from './DeleteAlert'
+import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
+import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const dragConfig = {
     height: 300,
@@ -16,17 +15,16 @@ const dragConfig = {
 
 const General = (props) => {    
     const dispatch = useDispatch()
-    const userId = useSelector(getAuthedUserId())
-    const user = useSelector(getUserById(userId))
-    const [crop, setCrop] = useState(null)
-    const [cropResult, setCropResult] = useState(null)
-    // const userFetchStatus = useSelector(getUserStatusById(userId))
+
+    const user = useSelector(getAuthedUserProfile())
+    const userCredentials = useAuthedUserCredentials()
 
     const [firstName, setFirstName] = useState(user.firstName)
     const [lastName, setLastName] = useState(user.lastName)
     const [email, setEmail] = useState(user.email)
     const [avatar, setAvatar] = useState(null)
-
+    const [crop, setCrop] = useState(null)
+    const [cropResult, setCropResult] = useState(null)
     const [deleteAvatar, setDeleteAvatar] = useState(false)
 
     const handleUpdate = (e) => {
@@ -56,12 +54,7 @@ const General = (props) => {
     }
 
     const handleDeleteAvatar = () => {
-        dispatch(props.handleDelete({
-            user: {
-                userId: localStorage.getItem('userId'),
-                token: localStorage.getItem('token')
-            }
-        }))
+        dispatch(props.handleDelete(userCredentials))
     }
 
     const handleRemoveImage = (e) => {
@@ -74,10 +67,26 @@ const General = (props) => {
         setCrop(crop)
         setCropResult(cropper.getCroppedCanvas().toDataURL())
     }
+    const isDisabled = () => {
+        const isFirstName = firstName !== '' && firstName !== user.firstName
+        const isLastName = lastName !== '' && lastName !== user.lastName
+        const isEmail = email !== '' && email !== user.email
+        const isAvatar = avatar !== null && crop !== null
+        if (isFirstName || isLastName || isEmail || isAvatar) {
+            return false
+        }
+        return true
+    }
 
     return (
         <form className='profile-update-data-container' onSubmit={handleUpdate}>
-            {deleteAvatar && <DeleteAlert onDelete={handleDeleteAvatar} onClose={()=>setDeleteAvatar(false)} message={'Are you sure you want to delete your current avatar image permanently?'}/>}
+            {deleteAvatar && 
+                <DeleteAlert 
+                    onDelete={handleDeleteAvatar} 
+                    onClose={()=>setDeleteAvatar(false)} 
+                    message={'Are you sure you want to delete your current avatar image permanently?'}
+                />
+            }
             <h3 className='form-header'>General Information</h3>
             <div className='inputs-container'>
                 <label htmlFor='firstName'>First Name</label>
@@ -102,7 +111,12 @@ const General = (props) => {
                     className='profile-update-data-container-input'
                 />
                 <p>Profile image</p>
-                <button onClick={()=>setDeleteAvatar(true)} className='profile-image-delete-btn btn-unfollow'>Delete current avatar</button>
+                <button 
+                    onClick={()=>setDeleteAvatar(true)} 
+                    className='profile-image-delete-btn btn-unfollow'
+                >
+                    Delete current avatar
+                </button>
                 <p>Upload new image</p>
                 <DragAndDrop 
                     file={avatar} 
@@ -111,18 +125,12 @@ const General = (props) => {
                     config={dragConfig}
                     cropResult={cropResult}
                     handleAcceptImage={handleAcceptImage} 
-                    handleRemoveImage={handleRemoveImage}/>
-                {/* <label htmlFor='avatarUrl'>Profile image</label>
-                <input 
-                    value={avatar}
-                    onChange={(e) => setAvatarUrl(e.target.value)}
-                    type='text'
-                    className='profile-update-data-container-input'
-                /> */}
+                    handleRemoveImage={handleRemoveImage}
+                />
             </div>
             <button
                 type='submit'
-                disabled={!((firstName !== '' && firstName !== user.firstName) || (lastName !== '' && lastName !== user.lastName) || (email !== '' && email !== user.email) || (avatar !== null && crop !== null))}
+                disabled={isDisabled()}
                 className='btn'
                 >Update
             </button>

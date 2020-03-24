@@ -21,6 +21,7 @@ import io from 'socket.io-client';
 import {URL, LOADED} from '../redux-store-2.0/constants'
 import {setSocket} from '../redux-store-2.0/socket/actions'
 import {tweetUpdate} from '../redux-store-2.0/entities/tweets/actions'
+import {userUpdate} from '../redux-store-2.0/entities/users/actions'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
@@ -29,8 +30,9 @@ const App = () => {
     useScrollToTopOnRouteChange()
 
     useEffect(()=>{
-        const socket = io(URL)//needs actually to be moved to some other place
-        if (authedUser) {//need this otherwise it wont rerun after user loagout
+        if (authedUser) {//need this otherwise it wont rerun after user loagout. 
+                        //Also cant put into login component cause then socket wont be open on page refresh
+            const socket = io(URL)
             socket.on('connect', () => {
                 console.log('socket created and connected to server!')
                 dispatch(setSocket(socket))
@@ -39,8 +41,11 @@ const App = () => {
                 console.log('got tweet update through socket ', tweet)
                 dispatch(tweetUpdate(tweetId, tweet, LOADED))
             })
+            socket.on('user_update', ({userId, user}) => {
+                console.log('got user update through socket ', user)
+                dispatch(userUpdate(userId, user, LOADED))
+            })
         }
-        return () => socket.close()
     },[dispatch, authedUser])
 
     useEffect(() => {
@@ -66,7 +71,7 @@ const App = () => {
                         ? <NavBar/> 
                         : null
                     }
-                    {authedUser && <Alert message={'Welcome to the coolest twitter clone out there!!! Hope you find tons of great content here <3'}/>}
+                    {/* {authedUser && <Alert message={'Welcome to the coolest twitter clone out there!!! Hope you find tons of great content here <3'}/>} */}
                     <div>
                         <Switch>
                             <PrivateRoute path='/' exact component={Home}/>

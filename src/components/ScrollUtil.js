@@ -13,7 +13,6 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
     const fetchStatus = useSelector(getCompositeDataFetchStatus(stateKey))
     const lastFetchTime = useSelector(getCompositeDataLastFetchTime(stateKey))
     
-    //const [savedIdsLength, setSavedIdsLength] = useState(ids.length > 0 && ids.length % take === 0 ? ids.length - take : 0)
     const [savedIdsLength, setSavedIdsLength] = useState( //we want to make at least one fetch each time compopnent mounts
         ids.length >= take
         ? ids.length - take 
@@ -50,20 +49,12 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
             console.log('making initial fetch for scroll')
             asyncDispatch();
         }
-    }, [dispatch, memorizedFetch, ids.length, fetchStatus])
+    }, [dispatch, memorizedFetch, ids.length, fetchStatus, take])
     
     useEffect(() => {
         console.log('is there more data to fetch? ', !(fetchStatus === LOADED && ids.length - savedIdsLength < take))
         console.log('savedIdsLength ', savedIdsLength, 'ids.length ', ids.length)
-        // console.log('initialDataFetched ', initialDataFetched, 'fetchStatus ', fetchStatus)
-        // if (ids.length !== 0 && fetchStatus === LOADED) {
-        //     if(ids.length - savedIdsLength < take) {
-        //         console.log('setting hasmore to false')
-        //         setHasMore(false)
-        //     } else { //i think i dont need this else
-        //         setHasMore(true)
-        //     }
-        // }
+
         if (fetchStatus === LOADED && ids.length - savedIdsLength < take) {
             setHasMore(false)
         }
@@ -76,7 +67,6 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
     const fetchScroll = async () => {
         await memorizedFetch('from scroll fetch')
         setSavedIdsLength(ids.length) //inside function ids isnt updated yet (despite state being updated)
-        // skip.current = skip.current + take
         console.log('savedIdsLength ', ids.length)
     }
 
@@ -94,7 +84,6 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
                     loader={<Loading text='Fetching' speed={200}/>}
                     endMessage={
                         <p className='header-small' style={{marginBottom: '20px'}}>
-                            {/* <b>{ids.length === 0 && fetchStatus === LOADED ? noDataText : 'Yay! You have seen it all'}</b> */}
                             <b>Yay! You have seen it all</b> 
                         </p>}
                     >

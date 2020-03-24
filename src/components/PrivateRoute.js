@@ -5,13 +5,7 @@ import {Route, Redirect} from 'react-router-dom'
 const PrivateRoute = ({ component: Component, computedMatch, path, additionalProps, ...rest }) => {
 
   console.log('rendering route', path)
-  // if (path === '/') {
-  //   const asyncDispatch = async() =>{
-  //     await dispatch(deleteAllTweets())
-
-  //   }
-  //   asyncDispatch()
-  // }
+  
   if (path === '/tweet/:id') {
     return <Route computedMatch={computedMatch} {...rest} render={(props) => (
       localStorage.getItem('userId')

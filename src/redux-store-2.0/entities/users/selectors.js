@@ -1,7 +1,15 @@
 import { pick } from 'lodash'
+import {getAuthedUserId} from '../../session/selectors'
 
 export const getUserById = (userId) => {
     return (state) => state.entities.users.entities[userId]
+}
+
+export const getAuthedUserProfile = () => {
+    return (state) => {
+        const authedUserId = getAuthedUserId()(state)
+        return state.entities.users.entities[authedUserId]
+    }
 }
 
 export const getUserStatusById = (userId) => {

@@ -22,27 +22,3 @@ const ProfileNav = ({url}) => {
 }
 
 export default ProfileNav
-
-// import React from 'react'
-
-// const ProfileNav = ({url}) => {
-//     return (
-//         <nav className='profile-nav'>
-//             {console.log('ProfileNav url ', url)}
-//             <a href={`${url}`} activeClassName='active' className='header'>
-//                 Tweets
-//             </a>
-//             <a href={`${url}/replies`} activeClassName='active' className='header'>
-//                 Replies
-//             </a>
-//             <a href={`${url}/likes`} activeClassName='active' className='header'>
-//                 Likes
-//             </a>
-//             <a href={`${url}/photos`} activeClassName='active' className='header'>
-//                 Photos
-//             </a>
-//         </nav>
-//     )
-// }
-
-// export default ProfileNav

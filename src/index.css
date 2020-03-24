@@ -28,7 +28,13 @@ li {
 .center {
   margin: 0 auto;
 }
+.flex-row-center {
+  display: flex;
+  justify-content: center;
+}
 .nav {
+  max-width: 970px;
+  min-width: 700px;
   background-color: white;
   margin: 0 auto;
   margin-top: 4px;
@@ -187,10 +193,14 @@ li {
   margin: 0 auto;
   position: relative;
   background: #97bad1;
-
+  width: 100%;
+  max-width: 970px;
+  /* height: auto; */
 }
 .under-avatar {
   position: absolute;
+  /* top: 61%;
+  left: 2%; */
   top: 119px;
   left: 20px;
   min-height: 150px;
@@ -205,6 +215,8 @@ li {
 }
 .profile-avatar {
   position: absolute;
+  /* top: 61%;
+  left: 2%; */
   top: 119px;
   left: 20px;
   min-height: 150px;
@@ -221,7 +233,9 @@ li {
 }
 .profile-name {
   position: absolute;
-  top: 140px;
+  top: 70%;
+  /* left: 20%; */
+  /* top: 140px; */
   left: 182px;
   font-size: 35px;
   font-weight: 600;
@@ -435,7 +449,7 @@ li {
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 300px;
+  /* grid-auto-rows: auto; */
   grid-column-gap: 12px;
   grid-row-gap: 12px;
   justify-items: center;
@@ -575,6 +589,7 @@ li {
   -moz-box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.143);
   box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.143);
   background: white;
+  color: #424242;
 }
 .tweet-container:hover {
   background: #fcfbfb;
@@ -609,11 +624,21 @@ li {
   font-size: 10px;
   border: 1px solid #ece7e7;
 }
+.avatar:hover {
+  /* border: 2px solid  #31baf0 */
+  box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #31baf0;
+}
+.avatar:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #31baf0;
+}
+
 .tweet-meta {
   margin: 15px 10px 15px 0;
   flex: 2;
 }
-.tweet-meta a {
+.tweet-meta a,
+.tweet-meta-link {
   position: relative;
 }
 

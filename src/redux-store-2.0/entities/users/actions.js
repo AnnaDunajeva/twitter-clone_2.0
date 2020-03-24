@@ -6,7 +6,8 @@ import {
     USERS_REMOVE_ALL,
     USERS_FETCH,
     USERS_FETCH_ERROR,
-    USERS_FETCH_STATUS_SET
+    USERS_FETCH_STATUS_SET,
+    USER_UPDATE
 } 
 from '../../action-types'
 
@@ -46,3 +47,10 @@ export const usersFetchStatusSet = (fetchStatus) => {
         fetchStatus
     }
 }
+
+export const userUpdate = (userId, user, fetchStatus) => ({
+    type: USER_UPDATE,
+    userId,
+    user,
+    fetchStatus
+})

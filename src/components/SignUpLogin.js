@@ -3,25 +3,22 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {signUp, login} from '../redux-store-2.0/api/session'
 import {getSessionStartError} from '../redux-store-2.0/errors/selectors'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import Alert from './Alert'
 
-// import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
-
 const SignUpLogin = () => {
+    const dispatch = useDispatch()
     const loginError = useSelector(getSessionStartError())
+    const authedUser = useSelector(getAuthedUserId())
+
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
-    // const [avatarURL, setAvatarUrl] = useState('')
     const [password, setPassword] = useState('')
 
     const [loginUsername, setLoginUsername] = useState('')
     const [loginPassword, setLoginPassword] = useState('')
-
-    const [authedUser, setAuthedUser] = useState(localStorage.getItem('userId'))
-
-    const dispatch = useDispatch()
 
     const SignUpUser = async (e) => {
         e.preventDefault()
@@ -29,13 +26,10 @@ const SignUpLogin = () => {
             userId: username.toLowerCase(),
             firstName,
             lastName,
-            // avatarURL,
             password,
             email
         }
         await dispatch(signUp(user))
-
-        setAuthedUser(localStorage.getItem('userId'))
     }
     const LoginUser = async (e) => {
         e.preventDefault()
@@ -44,7 +38,6 @@ const SignUpLogin = () => {
             password: loginPassword
         }
         await dispatch(login(user))
-        setAuthedUser(localStorage.getItem('userId'))
     }
 
     if (authedUser) {
@@ -112,12 +105,6 @@ const SignUpLogin = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             type='text'
                         />
-                        {/* <label htmlFor='avatarUrl'>Avatar URL</label>
-                        <input 
-                            value={avatarURL}
-                            onChange={(e) => setAvatarUrl(e.target.value)}
-                            type='text'
-                        /> */}
                     </div>
                     <button
                         type='submit'

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {formatJoinDate} from '../utils/helpers'
 import { MdLocationOn } from "react-icons/md"
 import { IoMdCalendar } from "react-icons/io"
@@ -6,16 +6,16 @@ import { FaUser, FaUsers } from 'react-icons/fa'
 import {IoIosSettings} from "react-icons/io"
 import {toggleUserFollow} from '../redux-store-2.0/api/users'
 import {useDispatch} from 'react-redux'
+import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const ProfileDataSmall = ({user, isAuthedUser, setToUpdate}) => {    
     const dispatch = useDispatch()
+    const userCredentials = useAuthedUserCredentials()
+
     const handleFollowUnfollow = async () => {
         console.log('about to handle following')
         const data = {
-            user: {
-                userId: localStorage.getItem('userId'),
-                token: localStorage.getItem('token')
-            },
+            ...userCredentials,
             userId: user.userId,
             following: user.following
         }
@@ -26,9 +26,18 @@ const ProfileDataSmall = ({user, isAuthedUser, setToUpdate}) => {
     return (
         <div className='profile-meta' style={{paddingBottom: '20px'}}>
             {isAuthedUser
-                ?<IoIosSettings onClick={()=>setToUpdate(true)} className='clickable hover-blue profile-setting-wheel' size={35} />
+                ?<IoIosSettings 
+                    onClick={()=>setToUpdate(true)} 
+                    className='clickable hover-blue profile-setting-wheel' 
+                    size={35} 
+                />
                 :<div className='btn-follow-container' style={{float: 'right'}}>
-                    <button className={`btn-usercard btn-${user.following ? 'unfollow' : 'follow'}`} onClick={handleFollowUnfollow}> {user.following ? 'Unfollow' : "Follow"} </button>
+                    <button 
+                        className={`btn-usercard btn-${user.following ? 'unfollow' : 'follow'}`} 
+                        onClick={handleFollowUnfollow}
+                    > 
+                        {user.following ? 'Unfollow' : "Follow"} 
+                    </button>
                 </div>
             }
             <div>
@@ -50,10 +59,12 @@ const ProfileDataSmall = ({user, isAuthedUser, setToUpdate}) => {
                     </span>
                 }
                 <div style={{marginTop: '15px'}}>
-                    <span className='profile-meta-text'><FaUsers className='profile-icon' size={22}/>Following {user.followingsCount}</span>
-                    <span className='profile-meta-text'><FaUsers className='profile-icon' size={22}/>Followers {user.followersCount}</span>
-                    {/* <FaUsers className='profile-icon' size={22}/>
-                    Following {user.followingsCount} | Followers {user.followersCount} */}
+                    <span className='profile-meta-text'>
+                        <FaUsers className='profile-icon' size={22}/>Following {user.followingsCount}
+                    </span>
+                    <span className='profile-meta-text'>
+                        <FaUsers className='profile-icon' size={22}/>Followers {user.followersCount}
+                    </span>
                 </div>
             </div>
         </div>

@@ -30,10 +30,12 @@ export default function tweets (state = {}, action) {
         case TWEET_UPDATE: 
             return {
                 ...state,
-                [action.tweetId]: {
-                    ...state[action.tweetId],
-                    ...action.tweet[action.tweetId]
-                }
+                [action.tweetId]: action.tweet[action.tweetId].deleted 
+                    ? action.tweet[action.tweetId]
+                    :{
+                        ...state[action.tweetId],
+                        ...action.tweet[action.tweetId]
+                    }
             }
         // case TWEET_DELETE:
         //     return omit(state, action.tweetId) //dont forget about fetchStatus

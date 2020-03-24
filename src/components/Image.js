@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getTweetById} from '../redux-store-2.0/entities/tweets/selectors'
 import {toggleTweetsLike} from '../redux-store-2.0/api/tweets'
@@ -6,35 +6,24 @@ import { TiArrowBackOutline } from "react-icons/ti";
 import { TiHeartOutline } from "react-icons/ti";
 import { TiHeart } from "react-icons/ti";
 import useHover from '../Hooks/useHover'
-import {getSocket} from '../redux-store-2.0/socket/selectors'
+import useSubscribeToTweetUpdate from '../Hooks/useSubscribeToTweetUpdate'
+import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const Image = ({id, setToTweetPageId}) => {
     const dispatch = useDispatch()
     const tweet = useSelector(getTweetById(id))
     const {hovering, onMouseOver, onMouseOut} = useHover()
+    const userCredentials = useAuthedUserCredentials()
 
     const handleLike = (e) => {
         e.preventDefault()
         dispatch(toggleTweetsLike({
             tweetId: id,
-            user: {
-                userId: localStorage.getItem('userId'),
-                token: localStorage.getItem('token')
-            }
+            ...userCredentials
         }))
     }
 
-    const socket = useSelector(getSocket())
-    
-    useEffect(()=>{
-        if(!tweet.deleted && socket) {
-            console.log('about to subscribe to tweet update ', tweet.id, )
-            socket.emit('subscribe_to_tweet_update', tweet.id) 
-            return () => socket.emit('unsubscribe_to_tweet_update', tweet.id) 
-        }
-    },[socket, tweet])
-
-    //needs to be subscribed for tweet update from here 
+    useSubscribeToTweetUpdate(tweet)
 
     return (
         <div className='position-relative' onMouseEnter={onMouseOver} onMouseLeave={onMouseOut}>
@@ -42,7 +31,7 @@ const Image = ({id, setToTweetPageId}) => {
                 src={tweet.media} 
                 alt='' 
                 className='tweet-image clickable' 
-                style={{width: 300, height: 300, borderRadius: 2}}
+                style={{width: '100%', height: 'auto', borderRadius: 2}}
                 onClick={()=>setToTweetPageId(tweet.id)}
             />
             {hovering && 

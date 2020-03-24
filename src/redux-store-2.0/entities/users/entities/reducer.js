@@ -3,7 +3,8 @@ import {
     SESSION_START_SUCCESS,
     USERS_FETCH_SUCCESS,
     USERS_REMOVE_ALL,
-    USER_TOGGLE_FOLLOW
+    USER_TOGGLE_FOLLOW,
+    USER_UPDATE
 } 
 from '../../../action-types'
 // import {formatUser} from '../../../../utils/helpers'
@@ -26,6 +27,14 @@ export default function users (state = {}, action) {
                     ...state[action.userId],
                     following: !isFollowing,
                     followersCount: !isFollowing ? state[action.userId].followersCount + 1 : state[action.userId].followersCount - 1,
+                }
+            }
+        case USER_UPDATE:
+            return {
+                ...state,
+                [action.userId]: {
+                    ...state[action.userId],
+                    ...action.user[action.userId]
                 }
             }
         case USERS_REMOVE_ALL:
