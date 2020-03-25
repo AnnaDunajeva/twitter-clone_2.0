@@ -4,7 +4,8 @@ import {
     TWEETS_FETCH,
     TWEETS_FETCH_ERROR,
     TWEET_DELETE,
-    TWEET_UPDATE
+    TWEET_UPDATE,
+    TWEET_DELETE_EXEPT_REPLIES
 } 
 from '../../action-types'
 
@@ -38,9 +39,15 @@ export const tweetsRemoveAll = () => {
     }
 }
 
-export const tweetDelete = (tweetId) => {
+export const tweetDelete = (tweetId) => { ///should put it i dunno maybe into keyedReducer actions, not here
     return {
         type: TWEET_DELETE,
+        tweetId
+    }
+}
+export const tweetDeleteExeptReplies = (tweetId) => { ///should put it i dunno maybe into keyedReducer actions, not here
+    return {
+        type: TWEET_DELETE_EXEPT_REPLIES,
         tweetId
     }
 }

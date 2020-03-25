@@ -48,6 +48,13 @@ export const splitText = (text) => {
   }
 }
 
+export const subscribeToTweetUpdate = (tweetIds, socket) => {
+  tweetIds.forEach(tweetId => {
+    console.log('about to subscribe to tweet update ', tweetId, )
+    socket.emit('subscribe_to_tweet_update', tweetId) 
+  })
+}
+
 // export const formatUser = (user) => {
 //   return {
 //     ...user,

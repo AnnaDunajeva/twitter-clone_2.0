@@ -9,7 +9,7 @@ const useSubscribeToUserUpdate = (user) => {
         if(user && !user.deleted && socket) {
             console.log('about to subscribe to user update ', user.userId)
             socket.emit('subscribe_to_user_update', user.userId) 
-            return () => socket.emit('unsubscribe_to_user_update', user.userId) 
+            // return () => socket.emit('unsubscribe_to_user_update', user.userId) 
         }
     },[socket, user])
 }

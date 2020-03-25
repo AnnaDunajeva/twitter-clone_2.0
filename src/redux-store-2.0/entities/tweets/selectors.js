@@ -4,6 +4,8 @@ export const getTweetById = (tweetId) => {
     return (state) => state.entities.tweets.entities[tweetId]
 }
 
+export const getAllTweetsIds = () => (state) => Object.keys(state.entities.tweets.entities)
+
 export const getTweetStatusById = (tweetId) => {
     return (state) => state.entities.tweets.fetchStatus[tweetId]
 }

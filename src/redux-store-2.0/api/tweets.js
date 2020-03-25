@@ -386,15 +386,20 @@ export function postTweet (data) {
                 //     dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
                 // }
                 //=====================================================================
+                
+                const compositeData = getState().compositeData
+
                 if (tweet[tweetId].replyingToTweetId) {
                     dispatch(newTweetAddToReplies(tweetShort, tweet[tweetId].replyingToTweetId, tweet[tweetId].user))
-                } else {
+                } else if (compositeData[userTweetsKey(data.user.userId)]) {
+                    //need this check cause there is a chance this view was not loaded yet and keyed reducer will create it then
+                    //whith loaded status and wont refetch then
                     dispatch(newTweetAddToUserTweets(tweetShort, tweet[tweetId].user))
                 }
-
-                dispatch(newTweetAddToFeed(tweetShort))
-
-                if (tweet[tweetId].media) {
+                if (compositeData[homeKey()]) {
+                    dispatch(newTweetAddToFeed(tweetShort))
+                }
+                if (tweet[tweetId].media && compositeData[userTweetImagesKey(data.user.userId)]) {
                     dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
                 }
             }

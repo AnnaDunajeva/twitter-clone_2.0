@@ -54,7 +54,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 error: action.error
             }
         case NEW_TWEET_ADD_TO_FEED: //all this is veery hacky and bug prone
-            if (action.stateKey === homeKey()) {
+            if (action.stateKey === homeKey()) { //just to make sure you dont add tweet with wrong action and stateKey
                 const tweet = {
                     ...action.tweet,
                     sortindex: state.entities[0]?.sortindex - 1 || Date.now() //in case feed is empty. After recent modification if
@@ -62,7 +62,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 }
                 return {
                     ...state,
-                    fetchStatus: action.fetchStatus,
+                    // fetchStatus: action.fetchStatus,
                     entities: [tweet].concat(state.entities)
                 }
             } else {
@@ -77,7 +77,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 }
                 return {
                     ...state,
-                    fetchStatus: action.fetchStatus,
+                    // fetchStatus: action.fetchStatus,
                     entities: [tweet, ...state.entities]
                 }
             }else {
@@ -92,7 +92,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 }
                 return {
                     ...state,
-                    fetchStatus: action.fetchStatus,
+                    // fetchStatus: action.fetchStatus,
                     entities: [tweet, ...state.entities]
                 }
             }else {
@@ -106,7 +106,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 }
                 return {
                     ...state,
-                    fetchStatus: action.fetchStatus,
+                    // fetchStatus: action.fetchStatus,
                     entities: [tweet, ...state.entities]
                 }
             }else {

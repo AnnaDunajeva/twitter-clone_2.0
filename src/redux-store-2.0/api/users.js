@@ -51,7 +51,7 @@ export function getUser (data) {
 
             if (userData.error) {
                 dispatch(usersFetchError({[data.userId]: userData.error}, userFetchStatusError))
-                dispatch(globalErrorAdd(`${USERS_FETCH_ERROR}/${data.userId}`), userData.error)
+                dispatch(globalErrorAdd(`${USERS_FETCH_ERROR}/${data.userId}`, userData.error))
             } else {
                 if (Object.keys(user).length > 0) {
                     dispatch(usersFetchSuccess(user, userFetchStatusSuccess))
@@ -66,7 +66,7 @@ export function getUser (data) {
             console.log(err.message)
 
             dispatch(usersFetchError({[data.userId]: err.message}, userFetchStatusError))
-            dispatch(globalErrorAdd(`${USERS_FETCH_ERROR}/${data.userId}`), err.message) //do i even need this?
+            dispatch(globalErrorAdd(`${USERS_FETCH_ERROR}/${data.userId}`, err.message)) //do i even need this?
 
             dispatch(hideLoading())
         }

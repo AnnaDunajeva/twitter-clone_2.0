@@ -1,6 +1,7 @@
 import { get, omit, mapValues  } from 'lodash';
-import {SESSION_END_SUCCESS, TWEET_DELETE} from '../action-types'
+import {SESSION_END_SUCCESS, TWEET_DELETE, TWEET_DELETE_EXEPT_REPLIES} from '../action-types'
 import { PENDING_UPDATE } from '../constants';
+import {conversationKey} from './compositeDataStateKeys'
 
 /**
  * Creates a super-reducer as a map of reducers over keyed objects
@@ -74,6 +75,19 @@ export const keyedReducer = ( keyPath, reducer ) => {
 				entities: value.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
 				fetchStatus: PENDING_UPDATE
 			}))
+		}
+		if (action.type === TWEET_DELETE_EXEPT_REPLIES) {
+			console.log('inside keyed reducer, got tweet update that tweet was deleted, about to remove it ', action)
+			return mapValues(state, (value, key) => {
+				if (key !== conversationKey(action.tweetId)) { //we want deleted parent tweet stay in composite data and be marked as deleted
+					return {
+						...value,
+						entities: value.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
+						fetchStatus: PENDING_UPDATE
+					}
+				} 
+				return value
+			})
 		}
 		// if (action.type === TWEET_DELETE) {
 		// 	return mapValues(state, (value) => ({

@@ -13,13 +13,12 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
     const fetchStatus = useSelector(getCompositeDataFetchStatus(stateKey))
     const lastFetchTime = useSelector(getCompositeDataLastFetchTime(stateKey))
     
+    const [hasMore, setHasMore] = useState(true)
     const [savedIdsLength, setSavedIdsLength] = useState( //we want to make at least one fetch each time compopnent mounts
         ids.length >= take
         ? ids.length - take 
         : 0
     )
-
-    const [hasMore, setHasMore] = useState(true)
     
     const initialFetchTime = useRef(lastFetchTime || Date.now())
     const skip = useRef(ids.length)
@@ -34,6 +33,7 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
         }))
         skip.current = skip.current + take
     }, [dispatch, dispatchData, getDataFetch, take])
+
 
     useEffect(() => {
         console.log('initiating scroll inside effect')
@@ -51,6 +51,7 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
         }
     }, [dispatch, memorizedFetch, ids.length, fetchStatus, take])
     
+
     useEffect(() => {
         console.log('is there more data to fetch? ', !(fetchStatus === LOADED && ids.length - savedIdsLength < take))
         console.log('savedIdsLength ', savedIdsLength, 'ids.length ', ids.length)
@@ -60,9 +61,11 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
         }
     }, [fetchStatus, ids, savedIdsLength, take])
 
+
     useEffect(()=>{
         return ()=>dispatch(compositeDataSetFetchStatus(stateKey, PENDING_UPDATE)) //dont need it for now really
     }, [dispatch, stateKey])
+
 
     const fetchScroll = async () => {
         await memorizedFetch('from scroll fetch')
