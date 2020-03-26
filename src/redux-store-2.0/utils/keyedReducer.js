@@ -1,6 +1,6 @@
 import { get, omit, mapValues  } from 'lodash';
 import {SESSION_END_SUCCESS, TWEET_DELETE, TWEET_DELETE_EXEPT_REPLIES} from '../action-types'
-import { PENDING_UPDATE } from '../constants';
+import { PENDING_UPDATE, LOADED } from '../constants';
 import {conversationKey} from './compositeDataStateKeys'
 
 /**
@@ -73,7 +73,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 			return mapValues(state, (value) => ({
 				...value,
 				entities: value.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
-				fetchStatus: PENDING_UPDATE
+				fetchStatus: value.done ? LOADED : PENDING_UPDATE //safeguard to avoid setting hasMore to false
 			}))
 		}
 		if (action.type === TWEET_DELETE_EXEPT_REPLIES) {
@@ -83,7 +83,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 					return {
 						...value,
 						entities: value.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
-						fetchStatus: PENDING_UPDATE
+						fetchStatus: value.done ? LOADED : PENDING_UPDATE
 					}
 				} 
 				return value

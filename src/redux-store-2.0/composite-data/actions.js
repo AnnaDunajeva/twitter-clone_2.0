@@ -15,6 +15,7 @@ import {
     NEW_LIKE_REMOVE_FROM_USER_LIKES,
     NEW_TWEET_ADD_TO_USER_REPLIES,
     COMPOSITE_DATA_SET_FETCH_STATUS,
+    COMPOSITE_DATA_SET_DONE,
     COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_SUCCESS,
     COMPOSITE_DATA_CLEAR} from '../action-types'
 import {homeKey, conversationKey, userTweetsKey, userTweetImagesKey, userTweetLikesKey} from '../utils/compositeDataStateKeys'
@@ -123,6 +124,11 @@ export const compositeDataClear = (stateKey) => {
         stateKey
     }
 }
+export const compositeDataSetDone = (stateKey, done) => ({
+    type: COMPOSITE_DATA_SET_DONE,
+    stateKey,
+    done
+})
 
 // export const compositeDataRemoveTweetExeptReplies = () => ({
 //     //will be reduced in keyedREducer

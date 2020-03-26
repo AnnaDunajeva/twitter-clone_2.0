@@ -125,7 +125,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                             <div className='meta-text'>{formatDate(tweet.createdAt)}</div>
 
                             {tweet.replyingToTweetId !== null && 
-                                <div 
+                                <span 
                                     className='meta-text position-relative clickable hover-blue' 
                                     tabIndex={0}
                                     onClick={handleToTweetPage 
@@ -137,7 +137,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                                         ? `Replying to @${tweet.replyingToUserId}` 
                                         : 'Replying to [deleted]'
                                     }
-                                </div>
+                                </span>
                             }
 
                             <Linkify tagName="p" className='text' options={linkifyOptions}>{tweet.text}</Linkify>

@@ -40,13 +40,22 @@ const Profile = (props) => {
 
     useSubscribeToUserUpdate(user)
 
-    useEffect(() => {
-        //in future needs to be redone using Suspense, which is not implemented in react yet
-        const asyncDispatch = async () => {
-            await dispatch(getUser(dispatchData))
-        }
-        asyncDispatch();
-    }, [dispatch, userId, dispatchData])
+    // useEffect(() => {
+    //     //in future needs to be redone using Suspense, which is not implemented in react yet
+    //     const asyncDispatch = async () => {
+    //         await dispatch(getUser({
+    //             user: {
+    //                 userId: localStorage.getItem('userId'),
+    //                 token: localStorage.getItem('token')
+    //             },
+    //             userId
+    //         }))
+    //     }
+    //     if (!userFetchStatus) {
+    //         console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
+    //         asyncDispatch();
+    //     }
+    // }, [dispatch, userId, userFetchStatus])
 
     if (userFetchError === NOT_FOUND) {
         return <NotFound />

@@ -109,16 +109,16 @@ export function getFeedUpdate(data) {
             } else {
                 const feedUpdate = Object.keys(feedData.tweets).map(tweetId => pick(feedData.tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
                 console.log('feedUpdate ', feedUpdate) 
-               
-                const tweetsFetchStatus = mapValues(feedData.tweets, () => LOADED)
-                const usersFetchStatus = mapValues(feedData.users, () => LOADED)
-    
-                dispatch(tweetsFetchSuccess(feedData.tweets, tweetsFetchStatus))
-                dispatch(usersFetchSuccess(feedData.users, usersFetchStatus))
-                dispatch(compositeDataEntitiesUpdateFetchSuccess(homeKey(), feedUpdate)) //it is important that composite data goes last
-                //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
-                //with stuff being undefined
-
+                if (feedUpdate.length > 0) {
+                    const tweetsFetchStatus = mapValues(feedData.tweets, () => LOADED)
+                    const usersFetchStatus = mapValues(feedData.users, () => LOADED)
+        
+                    dispatch(tweetsFetchSuccess(feedData.tweets, tweetsFetchStatus))
+                    dispatch(usersFetchSuccess(feedData.users, usersFetchStatus))
+                    dispatch(compositeDataEntitiesUpdateFetchSuccess(homeKey(), feedUpdate)) //it is important that composite data goes last
+                    //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
+                    //with stuff being undefined    
+                }
             }
             dispatch(hideLoading())
         }

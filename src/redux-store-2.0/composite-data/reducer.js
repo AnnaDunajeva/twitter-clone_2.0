@@ -11,7 +11,8 @@ import {
     NEW_LIKE_ADD_TO_USER_LIKES,
     NEW_LIKE_REMOVE_FROM_USER_LIKES,
     COMPOSITE_DATA_SET_FETCH_STATUS,
-    COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_SUCCESS
+    COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_SUCCESS,
+    COMPOSITE_DATA_SET_DONE
 } 
 from '../action-types'
 import { homeKey, conversationKey, userTweetsKey, userTweetImagesKey, userTweetLikesKey, userRepliesKey } from '../utils/compositeDataStateKeys'
@@ -20,7 +21,8 @@ const initialState = {
     entities: [],
     fetchStatus: null,
     lastTopFetchTimestamp: null,
-    error: null
+    error: null,
+    done: false
 }
 
 const compositeData = (state = initialState, action) => {//keyedReducer chooses part of state with key value of stateKey
@@ -52,6 +54,11 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 fetchStatus: action.fetchStatus,
                 lastTopFetchTimestamp: action.lastTopFetchTimestamp || state.lastTopFetchTimestamp,
                 error: action.error
+            }
+        case COMPOSITE_DATA_SET_DONE:
+            return {
+                ...state,
+                done: action.done
             }
         case NEW_TWEET_ADD_TO_FEED: //all this is veery hacky and bug prone
             if (action.stateKey === homeKey()) { //just to make sure you dont add tweet with wrong action and stateKey

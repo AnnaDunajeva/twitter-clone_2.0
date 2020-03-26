@@ -64,3 +64,5 @@ export const getCompositeDataFirstEntityCreatedAt = (stateKey) => {
         return firstEntityId !== null ? getTweetById(firstEntityId)(state).createdAt : null
     }
 }
+
+export const getCompositeDataDoneStatus = (stateKey) => (state) => state.compositeData[stateKey]?.done || null

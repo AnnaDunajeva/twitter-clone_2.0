@@ -38,28 +38,26 @@ const TweetPage = (props) => {
     return (
         <div className='big-container'>
             {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
+            {console.log('parent tweet', tweetId)}
+            {mainTweetFetchStatus === LOADED &&
                 <React.Fragment>
-                    {console.log('parent tweet', tweetId)}
-                    {mainTweetFetchStatus === LOADED &&
-                        <React.Fragment>
-                            <Tweet id={tweetId} stateKey={conversationKey(tweetId)}/>
-                            {!mainTweet?.deleted && 
-                                <NewTweet replyingTo={tweetId}/>
-                            }
-                        </React.Fragment>
+                    <Tweet id={tweetId} stateKey={conversationKey(tweetId)}/>
+                    {!mainTweet?.deleted && 
+                        <NewTweet replyingTo={tweetId}/>
                     }
- 
-                    <TweetsList 
-                        getDataFetch={getConversationPaginated} 
-                        dispatchData={dispatchData} 
-                        stateSelector={repliesSelector}
-                        stateKey={conversationKey(tweetId)}
-                        take={take} 
-                        headerText={'Replies'} 
-                        noDataText={mainTweet?.deleted ? '' : 'No replies yet!'}  
-                    />
                 </React.Fragment>
-            </div>
+            }
+
+            <TweetsList 
+                getDataFetch={getConversationPaginated} 
+                dispatchData={dispatchData} 
+                stateSelector={repliesSelector}
+                stateKey={conversationKey(tweetId)}
+                take={take} 
+                headerText={'Replies'} 
+                noDataText={mainTweet?.deleted ? '' : 'No replies yet!'}  
+            />
+        </div>
     )
 }
 

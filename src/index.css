@@ -577,6 +577,28 @@ li {
   -moz-box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230);
   box-shadow: 0px 11px 31px -15px rgba(62, 63, 65, 0.230);
 }
+.item-appear {
+  opacity: 0;
+}
+.item-appear-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+.item-enter {
+  opacity: 0;
+}
+.item-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.item-exit {
+  opacity: 1;
+}
+.item-exit-active {
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
 .tweet-container {
   display: flex;
   width: 600px;
@@ -591,6 +613,7 @@ li {
   background: white;
   color: #424242;
 }
+
 .tweet-container:hover {
   background: #fcfbfb;
   /* box-shadow: 0 0 0 0.05rem #bebebe; */

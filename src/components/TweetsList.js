@@ -1,6 +1,10 @@
 import React from 'react'
 import Tweet from './Tweet'
 import ScrollUtil from './ScrollUtil'
+import {
+    CSSTransition,
+    TransitionGroup,
+} from 'react-transition-group';
 
 const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleToTweetPage, handleToProfile, take, headerText}) => {    
     return (
@@ -13,14 +17,36 @@ const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handle
                     headerText={headerText || null}
                     >
             {(ids)=>(
-                <ul>
+                <TransitionGroup component={null}>
                     {ids.map((id) => (
-                        <li key={id}>
-                            <Tweet id={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
-                        </li>
+                        <CSSTransition
+                            key={id}
+                            appear={true}
+                            timeout={{
+                                appear: 300,
+                                enter: 300,
+                                exit: 1000
+                            }}
+                            classNames='item'
+                            >
+                                <Tweet id={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
+                        </CSSTransition>
                     ))}
-                </ul>  
+                </TransitionGroup>
             )}
+            {/* {(ids)=>(
+                <CSSTransitionGroup
+                    transitionName='item-transition'
+                    transitionAppear={true}
+                    transitionAppearTimeout={200}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={1000}
+                >
+                    {ids.map((id) => (
+                        <Tweet id={id} key={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
+                    ))}
+                </CSSTransitionGroup>
+            )} */}
         </ScrollUtil>
     )
 }
