@@ -15,6 +15,7 @@ const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handle
                     noDataText={'No tweets to show yet!'}
                     stateKey={stateKey}
                     headerText={headerText || null}
+                    key={stateKey}
                     >
             {(ids)=>(
                 <TransitionGroup component={null}>
@@ -29,7 +30,7 @@ const TweetsList = ({stateSelector, getDataFetch, stateKey, dispatchData, handle
                             }}
                             classNames='item'
                             >
-                                <Tweet id={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
+                                <Tweet id={id} key={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
                         </CSSTransition>
                     ))}
                 </TransitionGroup>

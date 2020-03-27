@@ -7,8 +7,10 @@ import {IoIosSettings} from "react-icons/io"
 import {toggleUserFollow} from '../redux-store-2.0/api/users'
 import {useDispatch} from 'react-redux'
 import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+import {useHistory} from 'react-router-dom'
 
-const ProfileDataSmall = ({user, isAuthedUser, setToUpdate}) => {    
+const ProfileDataSmall = ({user, isAuthedUser, setToUpdate}) => {   
+    const history = useHistory() 
     const dispatch = useDispatch()
     const userCredentials = useAuthedUserCredentials()
 

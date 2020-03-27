@@ -14,8 +14,10 @@ import {getUserTweetIds, getUserTweetLikesIds, getUserRepliesIds} from '../redux
 import {userTweetsKey, userTweetLikesKey, userRepliesKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 import ImageList from './ImagesList'
 import useSubscribeToUserUpdate from '../Hooks/useSubscribeToUserUpdate'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 
 const Profile = (props) => {
+    const authedUserId = useSelector(getAuthedUserId())
     const userId = props.match.params.userId
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
@@ -27,6 +29,10 @@ const Profile = (props) => {
     const userTweetsSelector = useCallback(getUserTweetIds(userId), []) //not sure if I need it
     const userTweetLikesSelector = useCallback(getUserTweetLikesIds(userId), [])
     const userRepliesSelector = useCallback(getUserRepliesIds(userId), [])
+
+    const tweetsKey = userTweetsKey(userId)
+    const tweetLikesKey =  userTweetLikesKey(userId)
+    const repliesKey = userRepliesKey(userId)
 
     const dispatch = useDispatch()
 
@@ -40,35 +46,42 @@ const Profile = (props) => {
 
     useSubscribeToUserUpdate(user)
 
-    // useEffect(() => {
-    //     //in future needs to be redone using Suspense, which is not implemented in react yet
-    //     const asyncDispatch = async () => {
-    //         await dispatch(getUser({
-    //             user: {
-    //                 userId: localStorage.getItem('userId'),
-    //                 token: localStorage.getItem('token')
-    //             },
-    //             userId
-    //         }))
-    //     }
-    //     if (!userFetchStatus) {
-    //         console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
-    //         asyncDispatch();
-    //     }
-    // }, [dispatch, userId, userFetchStatus])
+    useEffect(() => {
+        //in future needs to be redone using Suspense, which is not implemented in react yet
+        const asyncDispatch = async () => {
+            await dispatch(getUser({
+                user: {
+                    userId: localStorage.getItem('userId'),
+                    token: localStorage.getItem('token')
+                },
+                userId
+            }))
+        }
+        if (!userFetchStatus && userId !== authedUserId) {
+            console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
+            asyncDispatch();
+        }
+    }, [dispatch, userId, userFetchStatus, authedUserId])
+
+    useEffect(() => {
+        if (toUpdate) {
+            props.history.push(`/profile/update`)
+        }
+    }, [toUpdate])
+    useEffect(() => {
+        if (toTweetPageId) {
+            props.history.push(`/tweet/${toTweetPageId}`)
+        }
+    }, [toTweetPageId])
+    useEffect(() => {
+        if (toProfileId) {
+            props.history.push(`/user/${toProfileId}`)
+        }
+    }, [toProfileId])
 
     if (userFetchError === NOT_FOUND) {
         return <NotFound />
     } 
-    if (toUpdate) {
-        props.history.push(`/profile/update`)
-    }
-    if (toTweetPageId) {
-        props.history.push(`/tweet/${toTweetPageId}`)
-    }
-    if (toProfileId) {
-        props.history.push(`/user/${toProfileId}`)
-    }
 
     return (
         <Router>
@@ -79,20 +92,39 @@ const Profile = (props) => {
                 <React.Fragment>
                     <ProfileCard user={user} setToUpdate={setToUpdate}/>
                     <ProfileNav url={props.match.url}/>
-                    <div className='profile-tweets big-container' style={{borderRadius: '2px', margin: '0px auto', alignSelf: 'stretch', width: 'initial', boxShadow: 'none'}}>
+                    <div 
+                        className='profile-tweets big-container' 
+                        style={{borderRadius: '2px', margin: '0px auto', alignSelf: 'stretch', width: 'initial', boxShadow: 'none'}}>
                         <Switch>
                             <PrivateRoute 
                                 path={`${props.match.path}`} exact 
                                 component={TweetsList} 
-                                additionalProps={{handleToTweetPage: setToTweetPageId, stateSelector: userTweetsSelector, getDataFetch: getUserTweetsPaginated, stateKey: userTweetsKey(userId), dispatchData}}/>
+                                additionalProps={{
+                                    handleToTweetPage: setToTweetPageId, 
+                                    stateSelector: userTweetsSelector, 
+                                    getDataFetch: getUserTweetsPaginated, 
+                                    stateKey: tweetsKey, 
+                                    dispatchData}}/>
                             <PrivateRoute 
                                 path={`${props.match.path}/replies`} 
                                 component={TweetsList} 
-                                additionalProps={{handleToTweetPage: setToTweetPageId, handleToProfile: setToProfileId, stateSelector: userRepliesSelector, getDataFetch: getUserRepliesPaginated, stateKey: userRepliesKey(userId), dispatchData}}/>
+                                additionalProps={{
+                                    handleToTweetPage: setToTweetPageId, 
+                                    handleToProfile: setToProfileId, 
+                                    stateSelector: userRepliesSelector, 
+                                    getDataFetch: getUserRepliesPaginated, 
+                                    stateKey: repliesKey, 
+                                    dispatchData}}/>
                             <PrivateRoute 
                                 path={`${props.match.path}/likes`} 
                                 component={TweetsList} 
-                                additionalProps={{handleToTweetPage: setToTweetPageId, handleToProfile: setToProfileId, stateSelector: userTweetLikesSelector, getDataFetch: getUserTweetLikesPaginated, stateKey: userTweetLikesKey(userId), dispatchData}}/>
+                                additionalProps={{
+                                    handleToTweetPage: setToTweetPageId, 
+                                    handleToProfile: setToProfileId, 
+                                    stateSelector: userTweetLikesSelector, 
+                                    getDataFetch: getUserTweetLikesPaginated, 
+                                    stateKey: tweetLikesKey, 
+                                    dispatchData}}/>
                             <PrivateRoute 
                                 path={`${props.match.path}/photos`} 
                                 component={ImageList} 

@@ -22,10 +22,12 @@ import {URL, LOADED} from '../redux-store-2.0/constants'
 import {setSocket} from '../redux-store-2.0/socket/actions'
 import {tweetUpdate, tweetDeleteExeptReplies} from '../redux-store-2.0/entities/tweets/actions'
 import {userUpdate} from '../redux-store-2.0/entities/users/actions'
+import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
+    const userProfile = useSelector(getAuthedUserProfile())
     
     useScrollToTopOnRouteChange()
 
@@ -75,15 +77,18 @@ const App = () => {
     
     return (
         <React.Fragment>
-                {console.log('rendering app', authedUser)}
+                {console.log('rendering app', authedUser, ' userProfile: ', userProfile)}
                 <LoadingBar/>
+                {!authedUser && 
+                    <Switch>
+                        <Route path='/login' component={SignUpLogin}/>
+                        <Route component={NotFound} />
+                    </Switch>
+                }
                 <div className={authedUser ? 'app-container' : null}>
-                    {authedUser 
-                        ? <NavBar/> 
-                        : null
-                    }
-                    {/* {authedUser && <Alert message={'Welcome to the coolest twitter clone out there!!! Hope you find tons of great content here <3'}/>} */}
-                    <div>
+                    {userProfile && 
+                    <React.Fragment>
+                        <NavBar/> 
                         <Switch>
                             <PrivateRoute path='/' exact component={Home}/>
                             <Route path='/login' component={SignUpLogin}/>
@@ -92,10 +97,11 @@ const App = () => {
                             <PrivateRoute path='/user/:userId' component={Profile}/>
                             <PrivateRoute path={`/profile/update`} component={ProfileUpdate}/>
                             <PrivateRoute path='/users' component={Users}/>
-                            <Route component={NotFound} />
                         </Switch>
                         <ToTopButton />
-                    </div>
+                    </React.Fragment>
+                    }
+                    {/* {authedUser && <Alert message={'Welcome to the coolest twitter clone out there!!! Hope you find tons of great content here <3'}/>} */}
                 </div>
         </React.Fragment>
     )

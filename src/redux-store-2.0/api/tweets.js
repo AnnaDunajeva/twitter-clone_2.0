@@ -185,6 +185,55 @@ export function getConversationPaginated (data) {
     }
 }
 
+export function getConversationUpdate (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        const stateKey = conversationKey(data.tweetId)
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`))
+
+        try {
+            console.log('inside action getConversationUpdate ', data)
+            const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation/update?take=${data.take}&time=${data.time}&getUsers=true`, { 
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const responseData = await response.json() //{tweets: {someId: {...}}}
+            console.log('responseData ', responseData)
+
+            if (responseData.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`, responseData.error))
+            } else {
+                const tweets = responseData.tweets //always contains parents tweet so need to think whether i should filter it from tweetsFetchSuccess
+                const users = responseData.users
+
+                const tweetsFetchStatus = mapValues(tweets, () => LOADED)
+                const usersFetchStatus = mapValues(users, () => LOADED)
+                
+                const conversationUpdate = Object.keys(tweets).filter(tweetId => data.skip !== 0 ? data.tweetId !== tweetId : true).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex', 'type'])).sort((a,b) => b.sortindex - a.sortindex)
+
+                if (conversationUpdate.length > 0) {
+                    console.log('conversationUpdate ', conversationUpdate) 
+        
+                    dispatch(usersFetchSuccess(users, usersFetchStatus))
+                    dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
+                    dispatch(compositeDataEntitiesUpdateFetchSuccess(stateKey, conversationUpdate))
+                }
+            }
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`, err.message))
+            dispatch(hideLoading())
+        }
+    }
+}
+
 export function getUserTweetsPaginated (data) {
     return async (dispatch) => {
         dispatch(showLoading())

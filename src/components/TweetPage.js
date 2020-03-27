@@ -10,7 +10,9 @@ import {getTweetStatusById, getTweetErrorById, getTweetById} from '../redux-stor
 import {LOADED, NOT_FOUND} from '../redux-store-2.0/constants'
 import TweetsList from './TweetsList'
 import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
-
+import {getConversationUpdate} from '../redux-store-2.0/api/tweets'
+import useCompositeDataUpdate from '../Hooks/useCompositeDataUpdate'
+    
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
     const take = 2
@@ -28,6 +30,8 @@ const TweetPage = (props) => {
         tweetId,
         getMainTweet: conversationMainTweetId ? false : true
     }
+
+    useCompositeDataUpdate({take: 1, dispatchData, getUpdateFunc: getConversationUpdate, stateKey: conversationKey(tweetId)})
     
     if (mainTweetFetchError === NOT_FOUND) {
         return (
