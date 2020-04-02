@@ -1,14 +1,16 @@
 import { 
     LOADED, 
     LOADING, 
-    ERROR } from "../constants"
+    ERROR, 
+    SIGN_UP} from "../constants"
 import { 
     SESSION_START_SUCCESS, 
     SESSION_START_ERROR, 
     SESSION_START, 
     SESSION_END, 
     SESSION_END_ERROR, 
-    SESSION_END_SUCCESS 
+    SESSION_END_SUCCESS, 
+    SIGN_UP_SUCCESS
 } from '../action-types'
 
 const initialState = {
@@ -30,7 +32,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userId: action.userId,
-                fetchStatus: LOADED,
+                fetchStatus: action.fetchStatus,
                 error: null
             }
         case SESSION_END_ERROR: 
@@ -46,6 +48,11 @@ export default function (state = initialState, action) {
                 userId: null,
                 fetchStatus: null,
                 error: null
+            }
+        case SIGN_UP_SUCCESS:
+            return {
+                ...state,
+                fetchStatus: SIGN_UP
             }
         default:
             return state

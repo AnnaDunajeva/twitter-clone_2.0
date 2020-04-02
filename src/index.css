@@ -848,6 +848,9 @@ li {
   vertical-align: middle;
   color: #404142;
 }
+/* .alert-content-small {
+  font-size: 18px;
+} */
 .close-alert-btn {
   float: right;
   color: #c0b9b9;

@@ -47,13 +47,21 @@ export const splitText = (text) => {
     
   }
 }
-
-export const subscribeToTweetUpdate = (tweetIds, socket) => {
-  tweetIds.forEach(tweetId => {
-    console.log('about to subscribe to tweet update ', tweetId, )
-    socket.emit('subscribe_to_tweet_update', tweetId) 
-  })
+//! # $ % & ‘ * + – / = ? ^ ` . { | } ~ characters are legal in the local part of an e-mail 
+//address but in this regular expression those characters are filtered out. 
+export const validateEmail = (email) => {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+    return (true)
+  }
+  return (false)
 }
+
+// export const subscribeToTweetUpdate = (tweetIds, socket) => {
+//   tweetIds.forEach(tweetId => {
+//     console.log('about to subscribe to tweet update ', tweetId, )
+//     socket.emit('subscribe_to_tweet_update', tweetId) 
+//   })
+// }
 
 // export const formatUser = (user) => {
 //   return {

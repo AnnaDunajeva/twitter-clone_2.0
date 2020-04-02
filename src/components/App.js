@@ -9,25 +9,27 @@ import PrivateRoute from './PrivateRoute'
 import Users from './Users'
 import Profile from './Profile'
 import NotFound from './NotFound'
-import {Route, Switch} from 'react-router-dom'
+import {Route, Switch, Redirect } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
 import ProfileUpdate from './ProfileUpdate'
-import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import {getAuthedUserId, getSessionFetchStatus} from '../redux-store-2.0/session/selectors'
 import {getUser} from '../redux-store-2.0/api/users'
 import Alert from './Alert'
 import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
 import ToTopButton from './ToTopButton'
 import io from 'socket.io-client';
-import {URL, LOADED} from '../redux-store-2.0/constants'
+import {URL, LOADED, SIGN_UP} from '../redux-store-2.0/constants'
 import {setSocket} from '../redux-store-2.0/socket/actions'
 import {tweetUpdate, tweetDeleteExeptReplies} from '../redux-store-2.0/entities/tweets/actions'
 import {userUpdate} from '../redux-store-2.0/entities/users/actions'
 import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
+import EmailConfirmation from './EmailConfirmation'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
     const userProfile = useSelector(getAuthedUserProfile())
+    const sessionStatus = useSelector(getSessionFetchStatus())
     
     useScrollToTopOnRouteChange()
 
@@ -73,7 +75,7 @@ const App = () => {
         }
     }, [authedUser, dispatch])
     
-    //effect to unsubscribe from updates (when page refreshed), also nedd to be run from loagout
+    //do i even need private route if i render router only when i get user profile?
     
     return (
         <React.Fragment>
@@ -82,12 +84,14 @@ const App = () => {
                 {!authedUser && 
                     <Switch>
                         <Route path='/login' component={SignUpLogin}/>
+                        <Route path='/verify/:token' component={EmailConfirmation}/>
                         <Route component={NotFound} />
                     </Switch>
                 }
                 <div className={authedUser ? 'app-container' : null}>
                     {userProfile && 
                     <React.Fragment>
+                        {sessionStatus === LOADED+''+SIGN_UP && <Alert message={'Welcome to the coolest twitter clone out there!!!'} smallMessage={'Hope you find tons of great content here <3'}/>}
                         <NavBar/> 
                         <Switch>
                             <PrivateRoute path='/' exact component={Home}/>
@@ -97,11 +101,12 @@ const App = () => {
                             <PrivateRoute path='/user/:userId' component={Profile}/>
                             <PrivateRoute path={`/profile/update`} component={ProfileUpdate}/>
                             <PrivateRoute path='/users' component={Users}/>
+                            <Redirect from='/verify/:token' to='/' />
+                            <Route component={NotFound} />
                         </Switch>
                         <ToTopButton />
                     </React.Fragment>
                     }
-                    {/* {authedUser && <Alert message={'Welcome to the coolest twitter clone out there!!! Hope you find tons of great content here <3'}/>} */}
                 </div>
         </React.Fragment>
     )

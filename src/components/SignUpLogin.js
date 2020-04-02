@@ -2,26 +2,38 @@ import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {signUp, login} from '../redux-store-2.0/api/session'
-import {getSessionStartError} from '../redux-store-2.0/errors/selectors'
+import {getSessionStartError, getSignUpError} from '../redux-store-2.0/errors/selectors'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import Alert from './Alert'
+import {validateEmail} from '../utils/helpers'
+import {getSessionFetchStatus} from '../redux-store-2.0/session/selectors'
+import {SIGN_UP} from '../redux-store-2.0/constants'
 
 const SignUpLogin = () => {
     const dispatch = useDispatch()
     const loginError = useSelector(getSessionStartError())
+    const signUpError = useSelector(getSignUpError())
     const authedUser = useSelector(getAuthedUserId())
+    const sessionStatus = useSelector(getSessionFetchStatus()) 
 
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [formError, setFormError] = useState(null)
 
     const [loginUsername, setLoginUsername] = useState('')
     const [loginPassword, setLoginPassword] = useState('')
 
     const SignUpUser = async (e) => {
         e.preventDefault()
+
+        if (!validateEmail(email)) {
+            setFormError('Provided email adress is invalid!')
+            return
+        }
+
         const user = {
             userId: username.toLowerCase(),
             firstName,
@@ -29,8 +41,10 @@ const SignUpLogin = () => {
             password,
             email
         }
+
         await dispatch(signUp(user))
     }
+
     const LoginUser = async (e) => {
         e.preventDefault()
         const user = {
@@ -43,11 +57,16 @@ const SignUpLogin = () => {
     if (authedUser) {
         return <Redirect to='/' />
     }
+    //in case if email confirmation error will be redirected here with login error
     return (
         <div className='animated-gradient'>
             <div className='form-container'>
                 {console.log('rendering signup')}
-                {loginError && <Alert message={loginError}/>}
+                {sessionStatus === SIGN_UP && <Alert message={'Thank you! Please confirm your email adress to continue.'} 
+                                                    smallMessage={'NB! confirmation link is valid for 15 min. If you do not confirm your account during 24 hours, it will be deleted. You can request new confirmation link if needed.'}/>}
+                {loginError && <Alert message={loginError}/>} 
+                {signUpError && <Alert message={signUpError}/>}
+                {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
                 <form onSubmit={LoginUser} className='form'>
                     <h3 className='form-header'>Login </h3>
                     <div className='inputs-container'>

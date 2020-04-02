@@ -67,17 +67,17 @@ const Profile = (props) => {
         if (toUpdate) {
             props.history.push(`/profile/update`)
         }
-    }, [toUpdate])
+    }, [toUpdate, props.history])
     useEffect(() => {
         if (toTweetPageId) {
             props.history.push(`/tweet/${toTweetPageId}`)
         }
-    }, [toTweetPageId])
+    }, [toTweetPageId, props.history])
     useEffect(() => {
         if (toProfileId) {
             props.history.push(`/user/${toProfileId}`)
         }
-    }, [toProfileId])
+    }, [toProfileId, props.history])
 
     if (userFetchError === NOT_FOUND) {
         return <NotFound />
