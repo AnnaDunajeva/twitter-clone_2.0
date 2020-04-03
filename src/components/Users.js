@@ -6,7 +6,7 @@ import {getAllUsersPaginated} from '../redux-store-2.0/api/users'
 import {discoverUsersKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
-const UsersList = () => {
+const DiscoverUsers = () => {
     const userCredentials = useAuthedUserCredentials()
     const take = 7
     
@@ -37,4 +37,4 @@ const UsersList = () => {
     )
 }
 
-export default UsersList
+export default DiscoverUsers

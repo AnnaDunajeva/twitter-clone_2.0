@@ -34,7 +34,7 @@ const useCompositeDataUpdate = ({take, dispatchData, getUpdateFunc, stateKey}) =
 
     useEffect(() => {
         let updateInterval = null
-        if (initialFetchTime && scrollY < 400) {
+        if (initialFetchTime && scrollY < 450) {
             console.log('about to set interval to fetch update for ', stateKey)
             
             const getCompositeDataUpdate = () => {

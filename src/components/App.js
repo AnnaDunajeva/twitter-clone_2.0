@@ -90,22 +90,22 @@ const App = () => {
                 }
                 <div className={authedUser ? 'app-container' : null}>
                     {userProfile && 
-                    <React.Fragment>
-                        {sessionStatus === LOADED+''+SIGN_UP && <Alert message={'Welcome to the coolest twitter clone out there!!!'} smallMessage={'Hope you find tons of great content here <3'}/>}
-                        <NavBar/> 
-                        <Switch>
-                            <PrivateRoute path='/' exact component={Home}/>
-                            <Route path='/login' component={SignUpLogin}/>
-                            <PrivateRoute path='/newtweet' component={NewTweet}/>
-                            <PrivateRoute path='/tweet/:id' component={TweetPage}/>
-                            <PrivateRoute path='/user/:userId' component={Profile}/>
-                            <PrivateRoute path={`/profile/update`} component={ProfileUpdate}/>
-                            <PrivateRoute path='/users' component={Users}/>
-                            <Redirect from='/verify/:token' to='/' />
-                            <Route component={NotFound} />
-                        </Switch>
-                        <ToTopButton />
-                    </React.Fragment>
+                        <React.Fragment>
+                            <NavBar/> 
+                            <Switch>
+                                <PrivateRoute path='/' exact component={Home}/>
+                                <Route path='/login' component={SignUpLogin}/>
+                                <PrivateRoute path='/newtweet' component={NewTweet}/>
+                                <PrivateRoute path='/tweet/:id' component={TweetPage}/>
+                                <PrivateRoute path='/user/:userId' component={Profile}/>
+                                <PrivateRoute path={`/profile/update`} component={ProfileUpdate}/>
+                                <PrivateRoute path='/users' component={Users}/>
+                                <Redirect from='/verify/:token' to='/' />
+                                <Route component={NotFound} />
+                            </Switch>
+                            <ToTopButton />
+                            {sessionStatus === LOADED+''+SIGN_UP && <Alert message={'Welcome to the coolest twitter clone out there!!!'} smallMessage={'We hope you find tons of great content here <3'}/>}
+                        </React.Fragment>
                     }
                 </div>
         </React.Fragment>

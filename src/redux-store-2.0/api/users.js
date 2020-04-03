@@ -20,7 +20,7 @@ import {
         USER_TOGGLE_FOLLOW,
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
         PROFILE_UPDATE } from '../action-types'
-import { discoverUsersKey, homeKey } from '../utils/compositeDataStateKeys'
+import { discoverUsersKey, homeKey, userFollowingsKey, userFollowersKey } from '../utils/compositeDataStateKeys'
 import { 
     compositeDataEntitiesFetch, 
     compositeDataEntitiesFetchSuccess,
@@ -337,3 +337,98 @@ export function deleteBackgroundImage (data) {
         }
     }
 }
+
+export const getUserFollowingsPaginated = (data) => async (dispatch) => {
+    dispatch(showLoading())
+
+    const userFollowings = userFollowingsKey(data.userId)
+    
+    dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${userFollowings}`))
+    dispatch(compositeDataEntitiesFetch(userFollowings))
+
+    try {
+        const usersResponseData = await fetch(`${URL}/user/${data.userId}/followings?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${data.user.token}`
+            }
+        })
+        const usersResponse = await usersResponseData.json()
+
+        if (usersResponse.error) {
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${userFollowings}`, usersResponse.error))
+            dispatch(compositeDataEntitiesFetchError(userFollowings, usersResponse.error, data.time))
+        } else {
+            const users = usersResponse.users
+
+            const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+            console.log('compositeDataUserFollowings ', compositeDataUsers) 
+            
+            const usersFetchStatus = mapValues(users, () => LOADED)
+
+            dispatch(usersFetchSuccess(users, usersFetchStatus))
+            dispatch(compositeDataEntitiesFetchSuccess(userFollowings, compositeDataUsers, data.time))
+        }
+
+        dispatch(hideLoading())
+    }
+    catch (err) { 
+        console.log(err.message)
+        dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${userFollowings}`, err.message))
+        dispatch(compositeDataEntitiesFetchError(userFollowings, err.message, data.time))
+                    
+        dispatch(hideLoading())
+    }
+}
+
+export const getUserFollowersPaginated = (data) => {
+    return async (dispatch) => {
+        console.log('inside getUserFollowersPaginated')
+        dispatch(showLoading())
+    
+        const userFollowers = userFollowersKey(data.userId)
+        
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${userFollowers}`))
+        dispatch(compositeDataEntitiesFetch(userFollowers))
+    
+        try {
+            const usersResponseData = await fetch(`${URL}/user/${data.userId}/followers?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${data.user.token}`
+                }
+            })
+            const usersResponse = await usersResponseData.json()
+    
+            if (usersResponse.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${userFollowers}`, usersResponse.error))
+                dispatch(compositeDataEntitiesFetchError(userFollowers, usersResponse.error, data.time))
+            } else {
+                const users = usersResponse.users
+    
+                const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('compositeDataUserFollowers ', compositeDataUsers) 
+                
+                const usersFetchStatus = mapValues(users, () => LOADED)
+    
+                dispatch(usersFetchSuccess(users, usersFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(userFollowers, compositeDataUsers, data.time))
+            }
+    
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${userFollowers}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(userFollowers, err.message, data.time))
+                        
+            dispatch(hideLoading())
+        }
+    }
+}
+
+

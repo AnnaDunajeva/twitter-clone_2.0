@@ -90,7 +90,7 @@ const Profile = (props) => {
             {console.log('props.match.url ', props.match.url)}
             {userFetchStatus === LOADED || userFetchStatus === UPDATED ?
                 <React.Fragment>
-                    <ProfileCard user={user} setToUpdate={setToUpdate}/>
+                    <ProfileCard user={user} setToUpdate={setToUpdate} handleToProfile={setToProfileId}/>
                     <ProfileNav url={props.match.url}/>
                     <div 
                         className='profile-tweets big-container' 

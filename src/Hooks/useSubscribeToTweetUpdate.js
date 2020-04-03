@@ -7,8 +7,9 @@ const useSubscribeToTweetUpdate = (tweet) => {
 
     //also would be nice to subscribe to parent update, cause it might for example get deleted
 
-    //problem: it will try to subscribe multiple times to tweet if it renders somewhere again
-    //it wont be allowed on the backend thoug, just not optimal to send multiple requests
+    //problem: when tweet mounted it will try to subscribe to update, even if it was subscribed before (cause we dont unsubscribe it 
+    //on dismount). But on the backend it wont be allow to subscribe to the same tweet multiple times. Problem though is that 
+    //it sends all these unnesessary requests
     //all will be unsubscribed when socket closed
 
     useEffect(()=>{

@@ -7,7 +7,7 @@ import {LOADED, LOADING, PENDING_UPDATE} from '../redux-store-2.0/constants'
 import {getCompositeDataFetchStatus, getCompositeDataLastFetchTime, getCompositeDataDoneStatus} from '../redux-store-2.0/composite-data/selectors'
 import {compositeDataSetFetchStatus, compositeDataSetDone} from '../redux-store-2.0/composite-data/actions'
 
-const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText, noDataText, stateKey, children}) => {
+const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText, noDataText, stateKey, key, scrollableTarget, children}) => {
     const dispatch = useDispatch()
     const ids = useSelector(stateSelector)
     const fetchStatus = useSelector(getCompositeDataFetchStatus(stateKey))
@@ -89,6 +89,8 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
                     dataLength={ids.length}
                     next={fetchScroll}
                     hasMore={!done}
+                    key={key}
+                    scrollableTarget={scrollableTarget}
                     scrollThreshold={0.85}
                     loader={<Loading text='Fetching' speed={200}/>}
                     endMessage={
@@ -99,7 +101,7 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
                     {children(ids)}
                 </InfiniteScroll>
             }
-            {ids.length === 0 && fetchStatus === LOADED && <p className='header-small' style={{marginBottom: '20px'}}>{noDataText}</p>}
+            {ids.length === 0 && fetchStatus === LOADED && <p className='header-small' style={{marginBottom: '20px'}}>{noDataText || 'nothing to show yet'}</p>}
         </React.Fragment>
     )
 }

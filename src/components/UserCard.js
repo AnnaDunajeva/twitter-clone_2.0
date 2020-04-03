@@ -6,7 +6,7 @@ import {getUserById} from '../redux-store-2.0/entities/users/selectors'
 import useSubscribeToUserUpdate from '../Hooks/useSubscribeToUserUpdate'
 import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
-const UserCard = ({userId}) => {
+const UserCard = ({userId, style, handleToProfile}) => {
     const userCredentials= useAuthedUserCredentials()
     const user = useSelector(getUserById(userId))
     const dispatch = useDispatch()
@@ -27,7 +27,7 @@ const UserCard = ({userId}) => {
     }
 
     return (
-        <div className='tweet-container clickable'>
+        <div className='tweet-container clickable' style={style}>
             <img 
                 src={user.avatar} 
                 alt={`Avatar for ${user.firstName} ${user.lastName}`} 
@@ -35,8 +35,10 @@ const UserCard = ({userId}) => {
             />
             <div className='tweet-meta'>
                 <div 
-                    onClick={()=>history.push(`/user/${userId}`)
-                    } 
+                    onClick={handleToProfile 
+                        ? () =>handleToProfile(userId) 
+                        : ()=>history.push(`/user/${userId}`)
+                        } 
                     className='pseudo-link clickable'>
                 </div>
                 <h3>{`${user.firstName} ${user.lastName}`}</h3>
@@ -45,14 +47,16 @@ const UserCard = ({userId}) => {
                         Following {user.followingsCount} | Followers {user.followersCount}
                 </div>
             </div>
-            <div className='btn-follow-container'>
-                <button 
-                    className={`btn-usercard btn-${user.following ? 'unfollow' : 'follow'} position-relative`} 
-                    onClick={handleFollowUnfollow}
-                > 
-                    {user.following ? 'Unfollow' : "Follow"} 
-                </button>
-            </div>
+            {userId !== userCredentials.user.userId && 
+                <div className='btn-follow-container'>
+                    <button 
+                        className={`btn-usercard btn-${user.following ? 'unfollow' : 'follow'} position-relative`} 
+                        onClick={handleFollowUnfollow}
+                    > 
+                        {user.following ? 'Unfollow' : "Follow"} 
+                    </button>
+                </div>
+            }
         </div>
     )
 }

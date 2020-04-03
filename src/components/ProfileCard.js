@@ -4,14 +4,14 @@ import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import ProfileBackgroundWithAvatar from './ProfileBackgroundWithAvatar'
 import ProfileDataSmall from './ProfileDataSmall'
 
-const ProfileCard = ({user, setToUpdate}) => {
+const ProfileCard = ({user, setToUpdate, handleToProfile}) => {
     const authedUser = useSelector(getAuthedUserId())
     const isAuthedUser = user.userId === authedUser ? true : false
     
     return (
         <React.Fragment>
             <ProfileBackgroundWithAvatar user={user} />
-            <ProfileDataSmall user={user} isAuthedUser={isAuthedUser} setToUpdate={setToUpdate}/>
+            <ProfileDataSmall user={user} isAuthedUser={isAuthedUser} setToUpdate={setToUpdate} handleToProfile={handleToProfile}/>
         </React.Fragment>
     )
 }

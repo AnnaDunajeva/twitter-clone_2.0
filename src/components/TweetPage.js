@@ -47,7 +47,7 @@ const TweetPage = (props) => {
                 <React.Fragment>
                     <Tweet id={tweetId} stateKey={conversationKey(tweetId)}/>
                     {!mainTweet?.deleted && 
-                        <NewTweet replyingTo={tweetId}/>
+                        <div style={{marginBottom: '15px'}}><NewTweet replyingTo={tweetId}/></div>
                     }
                 </React.Fragment>
             }
