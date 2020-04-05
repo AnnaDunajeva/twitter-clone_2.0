@@ -7,6 +7,7 @@ import {
     NEW_TWEET_ADD_TO_REPLIES,
     NEW_TWEET_ADD_TO_USER_TWEETS,
     COMPOSITE_DATA_CLEAR,
+    NEW_TWEET_ADD_TO_USER_REPLIES,
     NEW_TWEET_ADD_TO_USER_IMAGES,
     NEW_LIKE_ADD_TO_USER_LIKES,
     NEW_LIKE_REMOVE_FROM_USER_LIKES,
@@ -64,8 +65,9 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             if (action.stateKey === homeKey()) { //just to make sure you dont add tweet with wrong action and stateKey
                 const tweet = {
                     ...action.tweet,
-                    sortindex: state.entities[0]?.sortindex - 1 || Date.now() //in case feed is empty. After recent modification if
-                                                                                //feed is empty, then i dont add new tweet thereat all so no need for date.now
+                    sortindex: state.entities[0]?.sortindex + 1 || Date.now() //in case feed is empty. After recent modification if
+                                                                                //feed is empty, then i dont add new tweet there at all so no need for date.now
+                                                                                //but i think its fine to leave just in case
                 }
                 return {
                     ...state,
@@ -79,7 +81,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             if (action.stateKey === conversationKey(action.parentId)) {
                 const tweet = {
                     ...action.tweet,
-                    sortindex: state.entities[1]?.sortindex - 1 || Date.now(),  // 0 index for main tweet
+                    sortindex: state.entities[0]?.sortindex + 1 || Date.now(),  // main tweet is last
                     type: 'reply'
                 }
                 return {
@@ -91,11 +93,12 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
                 return state
             }
         case NEW_TWEET_ADD_TO_USER_TWEETS:
-        case NEW_TWEET_ADD_TO_REPLIES:
+        case NEW_TWEET_ADD_TO_USER_REPLIES:
             if (action.stateKey === userTweetsKey(action.author) || action.stateKey === userRepliesKey(action.author)) {
+                console.log('action.stateKey:  ', action.stateKey)
                 const tweet = {
                     ...action.tweet,
-                    sortindex: state.entities[0]?.sortindex - 1 || Date.now(), 
+                    sortindex: state.entities[0]?.sortindex + 1 || Date.now(), 
                 }
                 return {
                     ...state,
@@ -109,7 +112,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             if (action.stateKey === userTweetImagesKey(action.author)) {
                 const tweet = {
                     ...action.tweet,
-                    sortindex: state.entities[0]?.sortindex - 1 || Date.now()
+                    sortindex: state.entities[0]?.sortindex + 1 || Date.now()
                 }
                 return {
                     ...state,
@@ -123,7 +126,7 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             if (action.stateKey === userTweetLikesKey(action.userId)) {
                 const tweet = {
                     ...action.tweet,
-                    sortindex: state.entities[0]?.sortindex - 1 || Date.now()
+                    sortindex: state.entities[0]?.sortindex + 1 || Date.now()
                 }
                 const filteresTweets = state.entities.filter(tweet => tweet.id !== action.tweet.id)
                 return {

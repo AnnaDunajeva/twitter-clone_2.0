@@ -16,7 +16,7 @@ const UsersList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleT
                     noDataText={noDataText || null}
                     stateKey={stateKey}
                     headerText={headerText || null}
-                    key={stateKey}
+                    reset={true}
                     >
             {(ids)=>(
                 ids.map((id) => (

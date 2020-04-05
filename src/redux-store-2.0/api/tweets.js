@@ -24,6 +24,7 @@ import {
     compositeDataEntitiesUpdateFetchSuccess,
     newTweetAddToFeed,
     newTweetAddToReplies,
+    newTweetAddToUserReplies,
     newTweetAddToUserTweets,
     newTweetAddToUserImages, 
     newLikeAddToUserLikes,
@@ -440,6 +441,9 @@ export function postTweet (data) {
 
                 if (tweet[tweetId].replyingToTweetId) {
                     dispatch(newTweetAddToReplies(tweetShort, tweet[tweetId].replyingToTweetId, tweet[tweetId].user))
+                    if (compositeData[userRepliesKey(tweet[tweetId].user)]) {
+                        dispatch(newTweetAddToUserReplies(tweetShort, tweet[tweetId].replyingToTweetId, tweet[tweetId].user))
+                    }
                 } else if (compositeData[userTweetsKey(data.user.userId)]) {
                     //need this check cause there is a chance this view was not loaded yet and keyed reducer will create it then
                     //whith loaded status and wont refetch then

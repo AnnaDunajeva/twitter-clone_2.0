@@ -5,9 +5,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from './Loading.js'
 import {LOADED, LOADING, PENDING_UPDATE} from '../redux-store-2.0/constants'
 import {getCompositeDataFetchStatus, getCompositeDataLastFetchTime, getCompositeDataDoneStatus} from '../redux-store-2.0/composite-data/selectors'
-import {compositeDataSetFetchStatus, compositeDataSetDone} from '../redux-store-2.0/composite-data/actions'
+import {compositeDataSetFetchStatus, compositeDataSetDone, compositeDataClear} from '../redux-store-2.0/composite-data/actions'
 
-const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText, noDataText, stateKey, key, scrollableTarget, children}) => {
+const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText, noDataText, stateKey, scrollableTarget, children, reset}) => {
     const dispatch = useDispatch()
     const ids = useSelector(stateSelector)
     const fetchStatus = useSelector(getCompositeDataFetchStatus(stateKey))
@@ -68,6 +68,16 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
     }, [fetchStatus, ids, savedIdsLength, take, done, stateKey, dispatch])
 
 
+    useEffect(()=>{
+        //id reset true, then set all to null
+        return ()=> {
+            if (reset) {
+                console.log('scrollUtil: about to cleat all data cause reset is true')
+                dispatch(compositeDataClear(stateKey))
+            }
+        }
+    }, [reset, dispatch, stateKey])
+
     // useEffect(()=>{
     //     return ()=>dispatch(compositeDataSetFetchStatus(stateKey, PENDING_UPDATE)) //dont need it for now really
     // }, [dispatch, stateKey])
@@ -89,7 +99,6 @@ const ScrollUtil = ({getDataFetch, dispatchData, stateSelector, take, headerText
                     dataLength={ids.length}
                     next={fetchScroll}
                     hasMore={!done}
-                    key={key}
                     scrollableTarget={scrollableTarget}
                     scrollThreshold={0.85}
                     loader={<Loading text='Fetching' speed={200}/>}

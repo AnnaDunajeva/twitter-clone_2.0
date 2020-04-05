@@ -64,6 +64,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 		// don't allow coercion of key name: null => 0
 		const itemKey = get( action, keyPath, undefined );
 
+		//some action that need to be performed on multiple keys and where we dont want to create key if it wasnt in the store
 		if (action.type === SESSION_END_SUCCESS) {
 			console.log(action)
 			return {}
@@ -73,7 +74,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 			return mapValues(state, (value) => ({
 				...value,
 				entities: value.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
-				fetchStatus: value.done ? LOADED : PENDING_UPDATE //safeguard to avoid setting hasMore to false
+				fetchStatus: value.done ? LOADED : PENDING_UPDATE //safeguard to avoid setting hasMore to false in scrollUtil
 			}))
 		}
 		if (action.type === TWEET_DELETE_EXEPT_REPLIES) {
@@ -89,9 +90,55 @@ export const keyedReducer = ( keyPath, reducer ) => {
 				return value
 			})
 		}
-		if (action.type === USER_TOGGLE_FOLLOW) {
-
-		}
+		// if (action.type === USER_TOGGLE_FOLLOW) {
+		// 	const authedUser = localStorage.getItem('userId') //quicky hacky solution. I guess better to just attach it to action
+		// 	return mapValues(state, (value, key) => {
+		// 		if (key === userFollowingsKey(authedUser)) {
+		// 			const ids = value.entities.map(user => user.userId) //also contain sortindex
+		// 			if (ids.includes(action.userId)) {
+		// 				console.log('user wants to unfollow')
+		// 				return {
+		// 					...value,
+		// 					fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+		// 					entities: value.entities.filter(user => user.userId !== action.userId)
+		// 				}
+		// 			} else {
+		// 				console.log('user wants to follow')
+		// 				const user = {
+		// 					userId: action.userId,
+		// 					sortindex: value[0]?.sortindex + 1 || Date.now()
+		// 				}
+		// 				return {
+		// 					...value,
+		// 					fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+		// 					entities: [user].concat(value.entities)
+		// 				}
+		// 			}
+		// 		}
+		// 		if (key === userFollowersKey(action.userId)) {
+		// 			const ids = value.entities.map(user => user.userId) //also contain sortindex
+		// 			if (ids.includes(authedUser)) {
+		// 				return {
+		// 					...value,
+		// 					fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+		// 					entities: value.entities.filter(user => user.userId !== authedUser)
+		// 				}
+		// 			} else {
+		// 				const user = {
+		// 					userId: authedUser,
+		// 					sortindex: value[0]?.sortindex + 1 || Date.now()
+		// 				}
+		// 				return {
+		// 					...value,
+		// 					fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+		// 					entities: [user].concat(value.entities)
+		// 				}
+		// 			}
+		// 		}
+		// 		return value
+		// 	})
+		// }
+		
 		// if (action.type === TWEET_DELETE) {
 		// 	return mapValues(state, (value) => ({
 		// 		...value,

@@ -15,7 +15,7 @@ import {
 
 const initialState = {
     userId: localStorage.getItem('userId') || null,
-    fetchStatus: null,
+    fetchStatus: localStorage.getItem('userId') ? LOADED : null,
     error: null
 }
 
@@ -31,8 +31,8 @@ export default function (state = initialState, action) {
         case SESSION_START_SUCCESS:
             return {
                 ...state,
-                userId: action.userId,
-                fetchStatus: action.fetchStatus,
+                userId: action.userId, //saved on refersh because of initial state
+                fetchStatus: action.fetchStatus, 
                 error: null
             }
         case SESSION_END_ERROR: 
