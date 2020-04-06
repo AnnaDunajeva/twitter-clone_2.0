@@ -6,7 +6,11 @@ import {
     SESSION_START_ERROR,
     SESSION_START_SUCCESS,
     SIGN_UP_ERROR,
-    SIGN_UP_SUCCESS
+    SIGN_UP_SUCCESS,
+    RESET_PASSWORD_LINK_SUCCESS,
+    RESET_PASSWORD_LINK_ERROR,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_ERROR,
 } from '../action-types'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { URL, LOADED, SIGN_UP } from "../constants"
@@ -105,7 +109,7 @@ export function verifyAccount (token) {
         dispatch(globalErrorRemove(SESSION_START_ERROR))
         dispatch(globalErrorRemove(SIGN_UP_ERROR))
         try {
-            const response = await fetch(`${URL}/user/verify/${token}`, {
+            const response = await fetch(`${URL}/identity/verify/${token}`, {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
@@ -211,6 +215,81 @@ export function logOut(user) {
         catch (err) {
             console.log(err.message)
 
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function sendResetPasswordLink (email) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        // dispatch({type: SESSION_START})
+        dispatch(globalErrorRemove(RESET_PASSWORD_LINK_ERROR))
+        dispatch(globalErrorRemove(SESSION_START_ERROR)) //possible that user tried to log in and got error
+        try {
+            const response = await fetch(`${URL}/identity/getResetPasswordLink`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: email})
+            })
+            const data = await response.json()
+
+            if (data.error) { //maybe check for status?
+                console.log(`Error! ${data.error}`)
+                dispatch(globalErrorAdd(RESET_PASSWORD_LINK_ERROR, data.error))
+            }
+            else {
+                dispatch({type: RESET_PASSWORD_LINK_SUCCESS}) //sets session fetch status to reset password link sent
+            }
+            dispatch(hideLoading())
+        }
+        catch (err) {
+            console.log(err.message)
+            // dispatch({type: SESSION_START_ERROR, error: err.message})
+            dispatch(globalErrorAdd(RESET_PASSWORD_LINK_ERROR, err.message))
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export function resetPassword (data) {
+    return async (dispatch) => {
+        dispatch(showLoading())
+        dispatch(globalErrorRemove(SESSION_START_ERROR)) //need to think if i need it here
+        dispatch(globalErrorRemove(RESET_PASSWORD_LINK_ERROR))
+        dispatch(globalErrorRemove(RESET_PASSWORD_ERROR))
+        try {
+            const response = await fetch(`${URL}/identity/resetPassword/${data.token}`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({password: data.password})
+            })
+            const responseData = await response.json()
+
+            console.log(responseData)
+
+            if (responseData.error) { //maybe check for status?
+                console.log(`Error! ${responseData.error}`)
+                dispatch(globalErrorAdd(RESET_PASSWORD_ERROR, responseData.error)) //seems like should not duplicate info like that, I have to 
+                                                                        //deside how am i going to store errors, not both ways
+            }
+            else {
+                localStorage.removeItem('userId')
+                localStorage.removeItem('token')
+                dispatch({type: SESSION_END_SUCCESS})
+                dispatch({type: RESET_PASSWORD_SUCCESS}) //set session fetch status to password reset and logs out user
+            }
+            dispatch(hideLoading())
+        }
+        catch (err) {
+            console.log(err.message)
+            dispatch(globalErrorAdd(RESET_PASSWORD_ERROR, err.message))
             dispatch(hideLoading())
         }
     }

@@ -21,7 +21,7 @@ const General = (props) => {
 
     const [firstName, setFirstName] = useState(user.firstName)
     const [lastName, setLastName] = useState(user.lastName)
-    const [email, setEmail] = useState(user.email)
+    // const [email, setEmail] = useState(user.email)
     const [avatar, setAvatar] = useState(null)
     const [crop, setCrop] = useState(null)
     const [cropResult, setCropResult] = useState(null)
@@ -36,9 +36,9 @@ const General = (props) => {
         if (lastName !== '' && lastName !== user.lastName) {
             data.user.lastName = lastName
         }
-        if (email !== '' && email !== user.email) {
-            data.user.email = email        
-        }
+        // if (email !== '' && email !== user.email) {
+        //     data.user.email = email        
+        // }
         if (avatar !== null) {
             data.file = avatar
             data.user.avatar = true
@@ -70,9 +70,9 @@ const General = (props) => {
     const isDisabled = () => {
         const isFirstName = firstName !== '' && firstName !== user.firstName
         const isLastName = lastName !== '' && lastName !== user.lastName
-        const isEmail = email !== '' && email !== user.email
+        // const isEmail = email !== '' && email !== user.email
         const isAvatar = avatar !== null && crop !== null
-        if (isFirstName || isLastName || isEmail || isAvatar) {
+        if (isFirstName || isLastName || isAvatar) {
             return false
         }
         return true
@@ -103,13 +103,13 @@ const General = (props) => {
                     type='text'
                     className='profile-update-data-container-input'
                 />
-                <label htmlFor='email'>e-mail</label>
+                {/* <label htmlFor='email'>e-mail</label>
                 <input 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     type='text'
                     className='profile-update-data-container-input'
-                />
+                /> */}
                 <p>Profile image</p>
                 <button 
                     onClick={()=>setDeleteAvatar(true)} 

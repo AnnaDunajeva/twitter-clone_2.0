@@ -2,7 +2,9 @@ import {
     LOADED, 
     LOADING, 
     ERROR, 
-    SIGN_UP} from "../constants"
+    SIGN_UP,
+    PASSWORD_RESET,
+    PASSWORD_RESET_LINK_SENT} from "../constants"
 import { 
     SESSION_START_SUCCESS, 
     SESSION_START_ERROR, 
@@ -10,7 +12,10 @@ import {
     SESSION_END, 
     SESSION_END_ERROR, 
     SESSION_END_SUCCESS, 
-    SIGN_UP_SUCCESS
+    SIGN_UP_SUCCESS,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_LINK_SUCCESS,
+    SET_SESSION_FETCHSTATUS
 } from '../action-types'
 
 const initialState = {
@@ -49,10 +54,25 @@ export default function (state = initialState, action) {
                 fetchStatus: null,
                 error: null
             }
+        case SET_SESSION_FETCHSTATUS: 
+            return {
+                ...state,
+                fetchStatus: action.fetchStatus
+            }
         case SIGN_UP_SUCCESS:
             return {
                 ...state,
                 fetchStatus: SIGN_UP
+            }
+        case RESET_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                fetchStatus: PASSWORD_RESET
+            }
+        case RESET_PASSWORD_LINK_SUCCESS:
+            return {
+                ...state,
+                fetchStatus: PASSWORD_RESET_LINK_SENT
             }
         default:
             return state

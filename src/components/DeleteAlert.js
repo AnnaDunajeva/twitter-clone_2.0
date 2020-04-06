@@ -12,7 +12,7 @@ const DeleteAlert = ({message, onClose, onDelete}) => {
     }
     const handleDelete = (e) => {
         e.preventDefault()
-        if (onClose) {
+        if (onDelete) {
             onDelete()
         } 
         setIsVisible(false)

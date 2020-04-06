@@ -18,23 +18,38 @@ import Alert from './Alert'
 import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
 import ToTopButton from './ToTopButton'
 import io from 'socket.io-client';
-import {URL, LOADED, SIGN_UP} from '../redux-store-2.0/constants'
+import {URL, LOADED, SIGN_UP, PASSWORD_RESET} from '../redux-store-2.0/constants'
+import {SESSION_END_SUCCESS} from '../redux-store-2.0/action-types'
 import {setSocket} from '../redux-store-2.0/socket/actions'
 import {tweetUpdate, tweetDeleteExeptReplies} from '../redux-store-2.0/entities/tweets/actions'
 import {userUpdate} from '../redux-store-2.0/entities/users/actions'
 import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
 import EmailConfirmation from './EmailConfirmation'
+import ResetPassword from './ResetPassword'
+import {isAuthenticationError} from '../redux-store-2.0/errors/selectors'
 
 const App = () => {
     const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
     const userProfile = useSelector(getAuthedUserProfile())
     const sessionStatus = useSelector(getSessionFetchStatus())
+    const authenticationError = useSelector(isAuthenticationError())
     
     useScrollToTopOnRouteChange()
 
+    useEffect(() => {
+        if (authenticationError) {
+            console.log('authenticationError')
+            
+            localStorage.removeItem('userId')
+            localStorage.removeItem('token')
+
+            dispatch({type: SESSION_END_SUCCESS})
+        }
+    }, [authenticationError, dispatch])
+
     useEffect(()=>{
-        if (authedUser) {//need this otherwise it wont rerun after user loagout. 
+        if (authedUser) {//need this otherwise it wont rerun after user loagout and login again cause app didn unmount. 
                         //Also cant put into login component cause then socket wont be open on page refresh
             const socket = io(URL)
             socket.on('connect', () => {
@@ -85,6 +100,7 @@ const App = () => {
                     <Switch>
                         <Route path='/login' component={SignUpLogin}/>
                         <Route path='/verify/:token' component={EmailConfirmation}/>
+                        <Route path='/resetPassword/:token' component={ResetPassword}/>
                         <Route component={NotFound} />
                     </Switch>
                 }
@@ -108,6 +124,7 @@ const App = () => {
                         </React.Fragment>
                     }
                 </div>
+                {sessionStatus === PASSWORD_RESET && <Alert message={'Your password has been reset!'} smallMessage={'Please login to continue to your account.'}/>}
         </React.Fragment>
     )
 }

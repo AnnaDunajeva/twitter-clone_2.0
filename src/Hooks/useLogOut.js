@@ -10,7 +10,7 @@ const useLogOut = () => {
     
     const logOutUser = () => {
         const user = {
-            userId: authedUser,
+            userId: authedUser || localStorage.getItem('userId'),
             token: localStorage.getItem('token')
         }
         socket.close()

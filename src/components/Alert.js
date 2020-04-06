@@ -8,7 +8,8 @@ const Alert = ({message, closable, onClose, smallMessage}) => {
     const handleClose = () => {
         if (onClose) {
             onClose()
-        } else if (isClosable) {
+        }
+        if (isClosable) {
             setIsVisible(false)
         }
     }
