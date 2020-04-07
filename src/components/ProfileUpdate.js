@@ -37,14 +37,14 @@ const ProfileUpdate = (props) => {
         dispatch(updateProfile(data))
     }
 
-    const handleCLoseUpdateDialog = () => {
-        dispatch(usersFetchStatusSet({[userId]: LOADED}))
-    }
+    // const handleCLoseUpdateDialog = () => {
+    //     dispatch(usersFetchStatusSet({[userId]: LOADED}))
+    // }
 
     return (
         <Router>
             {console.log('rendedring profile update')}
-            {profileUpdateError && 
+            {/* {profileUpdateError && 
                 <Alert message={`Oops, Could not update profile. ${profileUpdateError}`} />
             }
             {userFetchStatus === UPDATING && 
@@ -52,7 +52,7 @@ const ProfileUpdate = (props) => {
             }
             {userFetchStatus === UPDATED && 
                 <Alert message={'Profile updated!'} onClose={handleCLoseUpdateDialog}/>
-            }
+            } */}
             {userFetchStatus === LOADED || userFetchStatus === UPDATED
                 ?<React.Fragment>
                     <ProfileBackgroundWithAvatar user={user}/>

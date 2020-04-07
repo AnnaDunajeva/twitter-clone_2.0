@@ -63,6 +63,7 @@ const Profile = (props) => {
         }
     }, [dispatch, userId, userFetchStatus, authedUserId])
 
+    //maybe make hook for it?
     useEffect(() => {
         if (toUpdate) {
             props.history.push(`/profile/update`)

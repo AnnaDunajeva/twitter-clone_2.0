@@ -29,24 +29,27 @@ const ResetPassword = (props) => {
     return (
         <React.Fragment>
             {console.log('rendering reset password')}
-            {resetPasswordError && <Alert message={resetPasswordError} onClose={() => history.push('/')}/> }
-            <form onSubmit={handleResetPassword}>
-                <h3 className='header'>Enter your new password </h3>
-                <div className='inputs-container'>
-                    <label htmlFor='password'>Password</label>
-                    <input 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type='password'
-                    />
-                </div>
-                <button
-                    type='submit'
-                    disabled={password === ''}
-                    className='btn btn-form'
-                >RESET PASSWORD
-                </button>
-            </form>
+            {/* {resetPasswordError && <Alert message={resetPasswordError} onClose={() => history.push('/')}/> } */}
+            <div className='reset-password-form-container'>
+                <form onSubmit={handleResetPassword}>
+                    <h3 className='header'>Enter your new password </h3>
+                    <div className='alert-input-container'>
+                        <label htmlFor='password'>Password</label>
+                        <input 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type='password'
+                        />
+                    </div>
+                    <button
+                        type='submit'
+                        disabled={password === ''}
+                        style={{margin: '35px auto', width: '250px', display: 'block'}}
+                        className='btn btn-form'
+                    >RESET PASSWORD
+                    </button>
+                </form>
+            </div>
         </React.Fragment>
     )
 }

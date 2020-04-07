@@ -73,17 +73,17 @@ const SignUpLogin = () => {
             <div className='form-container'>
                 {console.log('rendering signup')}
 
-                {forgotPassword && !resetPasswordLinkError && sessionStatus !== PASSWORD_RESET_LINK_SENT &&
+                {forgotPassword && 
                     <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
-                {sessionStatus === SIGN_UP && <Alert message={'Thank you! Please confirm your email adress to continue.'} 
+                {/* {sessionStatus === SIGN_UP && <Alert message={'Thank you! Please confirm your email adress to continue.'} 
                                                     smallMessage={'NB! confirmation link is valid for 15 min. If you do not confirm your account during 24 hours, it will be deleted. You can request new confirmation link if needed.'}/>}
                 {sessionStatus === PASSWORD_RESET_LINK_SENT && 
                     <Alert message={'We have sent reset password link to your email adress.'}
                             smallMessage={'NB! Link is valid for 15 minutes. If you do not reset your password during this period, your old password will remain valid.'}
-                            onClose={()=>dispatch(setSessionFetchStatus(null))}/>}
-                {loginError && <Alert message={loginError}/>} 
+                            onClose={()=>dispatch(setSessionFetchStatus(null))}/>} */}
+                {/* {loginError && <Alert message={loginError}/>} 
                 {signUpError && <Alert message={signUpError}/>}
-                {resetPasswordLinkError && <Alert message={resetPasswordLinkError} onClose={handleCloseResetPsswordLinkErrorAlert}/>}
+                {resetPasswordLinkError && <Alert message={resetPasswordLinkError} onClose={handleCloseResetPsswordLinkErrorAlert}/>} */}
                 {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
 
                 <form onSubmit={LoginUser} className='form'>
@@ -111,7 +111,7 @@ const SignUpLogin = () => {
                     <div 
                         className='clickable hover-blue-circle-background' 
                         onClick={()=>setForgotPassword(true)}
-                        style={{marginTop: '10px'}} 
+                        style={{marginTop: '10px', width: '160px', textAlign: 'center'}} 
                         tabIndex={0}>
                             Forgot password?
                     </div>

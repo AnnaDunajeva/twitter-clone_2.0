@@ -18,6 +18,8 @@ const dragConfig = {
     previewWidth: 100
 }
 
+//should probably use useReducer here
+
 const NewTweet = ({replyingTo, showHeader}) => {
     const userCredentials = useAuthedUserCredentials()
     const dispatch = useDispatch()
