@@ -10,6 +10,6 @@ export const AUTHENTICATION_FAILED = 'authentication failed'
 export const PASSWORD_RESET_LINK_SENT = 'password reset link sent'
 export const PASSWORD_RESET = 'password reset'
 
-export const URL = 'http://localhost:3001'
+export const URL = 'http://localhost/api'
 
 export const defaultBackgroundColor = '#97bad1'

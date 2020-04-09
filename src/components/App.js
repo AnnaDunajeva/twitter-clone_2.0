@@ -62,7 +62,7 @@ const App = () => {
             dispatch(getUser({
                 user: {
                     userId: authedUser,
-                    token: localStorage.getItem('token')
+                    // token: localStorage.getItem('token')
                 },
                 userId: authedUser
             }))

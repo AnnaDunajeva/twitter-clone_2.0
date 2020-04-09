@@ -14,7 +14,7 @@ const useSocketSetup = () => {
     useEffect(()=>{
         if (authedUser) {//need this otherwise it wont rerun after user loagout and login again cause app didn unmount. 
                         //Also cant put into login component cause then socket wont be open on page refresh
-            const socket = io(URL)
+            const socket = io('http://localhost', {path: '/api/socket.io'})
             socket.on('connect', () => {
                 console.log('socket created and connected to server!')
                 dispatch(setSocket(socket))

@@ -43,7 +43,7 @@ export function getUser (data) {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const userData = await userResponse.json()

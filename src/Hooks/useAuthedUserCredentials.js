@@ -9,7 +9,7 @@ const useAuthedUserCredentials = () => {
     return {
         user: {
             userId: authedUser || localStorage.getItem('userId'),
-            token: localStorage.getItem('token')
+            // token: localStorage.getItem('token')
         }
     }
 }

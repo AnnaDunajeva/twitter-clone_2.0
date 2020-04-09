@@ -5,7 +5,8 @@ import {
     getSessionStartError, 
     getSignUpError, 
     getResetPasswordLinkError, 
-    getProfileUpdateError, 
+    getProfileUpdateError,
+    isAuthenticationError, 
     getResetPasswordError} from '../redux-store-2.0/errors/selectors'
 import Alert from './Alert'
 // import {RESET_PASSWORD_LINK_ERROR} from '../redux-store-2.0/action-types'
@@ -19,6 +20,7 @@ const GlobalErrors = () => {
     const resetPasswordLinkError = useSelector(getResetPasswordLinkError())
     const profileUpdateError = useSelector(getProfileUpdateError())
     const resetPasswordError = useSelector(getResetPasswordError())
+    const authenticationError = useSelector(isAuthenticationError())
 
     // const handleCloseResetPsswordLinkErrorAlert = () => {
     //     dispatch(globalErrorRemove(RESET_PASSWORD_LINK_ERROR))
@@ -36,6 +38,8 @@ const GlobalErrors = () => {
                 <Alert message={resetPasswordError} onClose={() => history.push('/')}/> }
             {profileUpdateError && 
                 <Alert message={`Oops, Could not update profile. ${profileUpdateError}`} />} 
+            {authenticationError && //after this error store is cleared, so need after that to add error again to show it...
+                <Alert message={'Authentication failed. Please log in.'}/>}
         </React.Fragment>           
     )
 }

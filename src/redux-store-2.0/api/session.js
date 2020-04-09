@@ -129,7 +129,7 @@ export function verifyAccount (token) {
             else {
                 const userId = Object.keys(data.user)[0]
                 localStorage.setItem('userId', userId)
-                localStorage.setItem('token', data.token)
+                // localStorage.setItem('token', data.token)
                 dispatch({type: SESSION_START_SUCCESS, userId, fetchStatus: LOADED+''+SIGN_UP})
             }
             dispatch(hideLoading())
@@ -169,8 +169,8 @@ export function login(userData) {
             }
             else if (data.user) {
                 localStorage.setItem('userId', userData.userId)
-                localStorage.setItem('token', data.token)
-                dispatch({type: SESSION_START_SUCCESS, entities: data.user, userId: userData.userId, fetchStatus: LOADED})
+                // localStorage.setItem('token', data.token)
+                dispatch({type: SESSION_START_SUCCESS, users: data.user, userId: userData.userId, fetchStatus: LOADED})
             }
             dispatch(hideLoading())
         }
@@ -206,7 +206,7 @@ export function logOut(user) {
             }
             else {
                 localStorage.removeItem('userId')
-                localStorage.removeItem('token')
+                // localStorage.removeItem('token')
 
                 dispatch({type: SESSION_END_SUCCESS})
             }
@@ -281,7 +281,7 @@ export function resetPassword (data) {
             }
             else {
                 localStorage.removeItem('userId')
-                localStorage.removeItem('token')
+                // localStorage.removeItem('token')
                 dispatch({type: SESSION_END_SUCCESS})
                 dispatch({type: RESET_PASSWORD_SUCCESS}) //set session fetch status to password reset and logs out user
             }

@@ -4,10 +4,6 @@ import {MdClose, MdCheck} from "react-icons/md"
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css'
 
-// const dropContainer = {
-//     display: 'flex',
-//     margin: '10px 10px 0'
-// }
 const baseStyle = {
     flex: 1,
     display: 'flex',
@@ -104,19 +100,6 @@ function DragAndDrop({cropResult, handleAcceptImage, handleRemoveImage, file, se
         isDragAccept
     ]);
 
-    // const handleRemove = (e) => {
-    //     e.preventDefault() 
-    //     props.setFile(null)
-    //     setPreview(null)
-    //     setCropResult(null)
-    // }
-    // const handleAccept = () => {
-    //     const crop = cropper.current.cropper.getData()
-    //     props.setCrop(crop)
-    //     setPreview(null)
-    //     setCropResult(cropper.current.getCroppedCanvas().toDataURL())
-    // }
-
     return (
         <div>
         {!file && !cropResult &&
@@ -168,20 +151,6 @@ function DragAndDrop({cropResult, handleAcceptImage, handleRemoveImage, file, se
                 <MdClose style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleRemoveImage}/>
             </div>
         }
-        {/* {preview &&
-            <div style={resultContainer}>
-                <div style={thumbsContainer}>
-                    <div style={thumbInner}>
-                        <img
-                        src={preview}
-                        style={img}
-                        alt=''
-                        />
-                    </div>
-                </div>
-                <MdClose style={removeBtn} className='clickable hover-blue hover-blue-circle-background' onClick={handleRemove}/>
-            </div>
-        } */}
         </div>
     );
 }

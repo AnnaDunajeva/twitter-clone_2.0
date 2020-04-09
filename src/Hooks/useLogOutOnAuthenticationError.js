@@ -14,9 +14,11 @@ const useLogOutOnAuthenticatonError = () => {
             console.log('authenticationError')
             
             localStorage.removeItem('userId')
-            localStorage.removeItem('token')
+            // localStorage.removeItem('token')
 
-            socket.close()
+            if (socket) {
+                socket.close()
+            }
             dispatch({type: SESSION_END_SUCCESS})
         }
     }, [authenticationError, dispatch, socket])
