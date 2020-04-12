@@ -17,7 +17,8 @@ import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import {MdClose} from "react-icons/md"
 import DeleteAlert from './DeleteAlert'
 import useSubscribeToTweetUpdate from '../Hooks/useSubscribeToTweetUpdate'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const linkifyOptions = {
     validate: {
@@ -29,11 +30,12 @@ const linkifyOptions = {
 const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
     const dispatch = useDispatch()
 
-    const userCredentials = useAuthedUserCredentials()
+    // const userCredentials = useAuthedUserCredentials()
 
     const tweet = useSelector(getTweetById(id))
     const author = useSelector(getUserById(tweet?.user))
-    const authedUser = useSelector(getAuthedUserId())
+    // const authedUser = useSelector(getAuthedUserId())
+    const authedUser = getUserIdFromCookie()
 
     const [isDeleteTweet, setIsDeleteTweet] = useState(false)
 
@@ -53,13 +55,13 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
         e.preventDefault()
         dispatch(toggleTweetsLike({
             tweetId: id,
-            ...userCredentials,
+            // ...userCredentials,
         }))
     }
     const handleDelete = () => { //async?
         dispatch(deleteTweet({
             tweetId: id,
-            ...userCredentials,
+            // ...userCredentials,
             stateKey
         }))
         setIsDeleteTweet(false)

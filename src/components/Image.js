@@ -7,19 +7,18 @@ import { TiHeartOutline } from "react-icons/ti";
 import { TiHeart } from "react-icons/ti";
 import useHover from '../Hooks/useHover'
 import useSubscribeToTweetUpdate from '../Hooks/useSubscribeToTweetUpdate'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const Image = ({id, setToTweetPageId}) => {
     const dispatch = useDispatch()
     const tweet = useSelector(getTweetById(id))
     const {hovering, onMouseOver, onMouseOut} = useHover()
-    const userCredentials = useAuthedUserCredentials()
+    // const userCredentials = useAuthedUserCredentials()
 
     const handleLike = (e) => {
         e.preventDefault()
         dispatch(toggleTweetsLike({
-            tweetId: id,
-            ...userCredentials
+            tweetId: id
         }))
     }
 

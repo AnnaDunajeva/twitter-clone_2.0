@@ -306,6 +306,7 @@ li {
 .profile-meta-text {
   font-size: 18px;
   margin: 15px 20px;
+  padding: 10px;
 }
 /* .profile-meta div:first-of-type {
   padding-top: 58px;

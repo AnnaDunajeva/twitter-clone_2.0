@@ -15,7 +15,7 @@ import {
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { URL, LOADED, SIGN_UP } from "../constants"
 import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
-
+import {getUserIdFromCookie} from '../../utils/helpers'
 
 
 export function signUp (userData) {
@@ -26,8 +26,8 @@ export function signUp (userData) {
         dispatch(globalErrorRemove(SESSION_START_ERROR))
         try {
             const response = await fetch(`${URL}/user`, {
-                method: 'POST',
-                mode: 'cors',
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -109,12 +109,13 @@ export function verifyAccount (token) {
         dispatch(globalErrorRemove(SESSION_START_ERROR))
         dispatch(globalErrorRemove(SIGN_UP_ERROR))
         try {
-            const response = await fetch(`${URL}/identity/verify/${token}`, {
-                method: 'GET',
-                mode: 'cors',
+            const response = await fetch(`${URL}/identity/verify`, {
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({token})
             })
             const data = await response.json()
 
@@ -128,7 +129,7 @@ export function verifyAccount (token) {
             }
             else {
                 const userId = Object.keys(data.user)[0]
-                localStorage.setItem('userId', userId)
+                // localStorage.setItem('userId', userId)
                 // localStorage.setItem('token', data.token)
                 dispatch({type: SESSION_START_SUCCESS, userId, fetchStatus: LOADED+''+SIGN_UP})
             }
@@ -151,10 +152,11 @@ export function login(userData) {
 
         try {
             const response = await fetch(`${URL}/user/login`, {
-                method: 'POST',
-                mode: 'cors',
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    // 'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)_csrf\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
                 },
                 body: JSON.stringify(userData)
             })
@@ -168,7 +170,7 @@ export function login(userData) {
                                                                         //deside how am i going to store errors, not both ways
             }
             else if (data.user) {
-                localStorage.setItem('userId', userData.userId)
+                // localStorage.setItem('userId', userData.userId)
                 // localStorage.setItem('token', data.token)
                 dispatch({type: SESSION_START_SUCCESS, users: data.user, userId: userData.userId, fetchStatus: LOADED})
             }
@@ -190,11 +192,11 @@ export function logOut(user) {
         dispatch(globalErrorRemove(SESSION_END_ERROR))
         try {
             const response = await fetch(`${URL}/user/logout`, {
-                method: 'POST',
-                mode: 'cors',
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1")
                 }
             })
             const data = await response.json()
@@ -205,7 +207,7 @@ export function logOut(user) {
                 dispatch(globalErrorAdd(SESSION_END_ERROR, data.error))
             }
             else {
-                localStorage.removeItem('userId')
+                // localStorage.removeItem('userId')
                 // localStorage.removeItem('token')
 
                 dispatch({type: SESSION_END_SUCCESS})
@@ -228,8 +230,8 @@ export function sendResetPasswordLink (email) {
         dispatch(globalErrorRemove(SESSION_START_ERROR)) //possible that user tried to log in and got error
         try {
             const response = await fetch(`${URL}/identity/getResetPasswordLink`, {
-                method: 'POST',
-                mode: 'cors',
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -262,13 +264,16 @@ export function resetPassword (data) {
         dispatch(globalErrorRemove(RESET_PASSWORD_LINK_ERROR))
         dispatch(globalErrorRemove(RESET_PASSWORD_ERROR))
         try {
-            const response = await fetch(`${URL}/identity/resetPassword/${data.token}`, {
-                method: 'POST',
-                mode: 'cors',
+            const response = await fetch(`${URL}/identity/resetPassword`, {
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({password: data.password})
+                body: JSON.stringify({
+                    password: data.password,
+                    token: data.token
+                })
             })
             const responseData = await response.json()
 
@@ -280,7 +285,7 @@ export function resetPassword (data) {
                                                                         //deside how am i going to store errors, not both ways
             }
             else {
-                localStorage.removeItem('userId')
+                // localStorage.removeItem('userId')
                 // localStorage.removeItem('token')
                 dispatch({type: SESSION_END_SUCCESS})
                 dispatch({type: RESET_PASSWORD_SUCCESS}) //set session fetch status to password reset and logs out user

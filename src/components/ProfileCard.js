@@ -3,9 +3,11 @@ import {useSelector} from 'react-redux'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import ProfileBackgroundWithAvatar from './ProfileBackgroundWithAvatar'
 import ProfileDataSmall from './ProfileDataSmall'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const ProfileCard = ({user, setToUpdate, handleToProfile}) => {
-    const authedUser = useSelector(getAuthedUserId())
+    // const authedUser = useSelector(getAuthedUserId())
+    const authedUser = getUserIdFromCookie()
     const isAuthedUser = user.userId === authedUser ? true : false
     
     return (

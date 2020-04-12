@@ -9,16 +9,16 @@ import PrivateRoute from './PrivateRoute'
 import Users from './Users'
 import Profile from './Profile'
 import NotFound from './NotFound'
-import {Route, Switch, Redirect } from 'react-router-dom'
+import {Route, Switch, Redirect, useRouteMatch } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
 import ProfileUpdate from './ProfileUpdate'
-import {getAuthedUserId, getSessionFetchStatus} from '../redux-store-2.0/session/selectors'
+import {getAuthedUserId, getSessionFetchStatus, isSessionError} from '../redux-store-2.0/session/selectors'
 import {getUser} from '../redux-store-2.0/api/users'
 // import Alert from './Alert'
 import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
 import ToTopButton from './ToTopButton'
 // import io from 'socket.io-client';
-// import {URL, LOADED, SIGN_UP, PASSWORD_RESET} from '../redux-store-2.0/constants'
+import {URL, LOADED, SIGN_UP, PASSWORD_RESET, LOADING} from '../redux-store-2.0/constants'
 import {SESSION_END_SUCCESS} from '../redux-store-2.0/action-types'
 // import {setSocket} from '../redux-store-2.0/socket/actions'
 // import {tweetUpdate, tweetDeleteExeptReplies} from '../redux-store-2.0/entities/tweets/actions'
@@ -31,14 +31,17 @@ import GlobalErrors from './GlobalErrors'
 import GlobalAlerts from './GlobalAlerts'
 import useSocketSetup from '../Hooks/useSocketSetup'
 import useLogoutOnAuthenticationError from '../Hooks/useLogOutOnAuthenticationError'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const App = () => {
-    const authedUser = useSelector(getAuthedUserId())
+    const authedUser = getUserIdFromCookie()
     const dispatch = useDispatch()
     const userProfile = useSelector(getAuthedUserProfile())
     // const sessionStatus = useSelector(getSessionFetchStatus())
-    const authenticationError = useSelector(isAuthenticationError())
-    
+    // const authenticationError = useSelector(isAuthenticationError())
+    // const match = useRouteMatch()
+    // const sessionError = useSelector(isSessionError())
+
     useLogoutOnAuthenticationError()
 
     useScrollToTopOnRouteChange()
@@ -57,8 +60,10 @@ const App = () => {
     // }, [authenticationError, dispatch])
 
     useEffect(() => {
+        // console.log(match)
         if (authedUser) {
-        console.log('fetching user profile')
+        // if (!userProfile?.userId && match.path !== '/login' && match.path !== '/verify/:token' && match.path !=='/resetPassword/:token' && sessionStatus !== LOADING && sessionStatus !== LOADED && !sessionError ){
+            console.log('fetching user profile')
             dispatch(getUser({
                 user: {
                     userId: authedUser,

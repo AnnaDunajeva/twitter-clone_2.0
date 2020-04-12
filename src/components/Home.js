@@ -4,14 +4,14 @@ import {getFeedIds } from '../redux-store-2.0/composite-data/selectors'
 import {homeKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
 import NewTweet from './NewTweet'
 import TweetsList from './TweetsList'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 import {getFeedUpdate} from '../redux-store-2.0/api/tweets'
 import useCompositeDataUpdate from '../Hooks/useCompositeDataUpdate'
 
 
 const Home = () => {
     const feedIds = useCallback(getFeedIds(), [])
-    const dispatchData = useAuthedUserCredentials()
+    const dispatchData = {}
     
     useCompositeDataUpdate({take: 1, dispatchData, getUpdateFunc: getFeedUpdate, stateKey: homeKey()})
 

@@ -15,9 +15,11 @@ import {userTweetsKey, userTweetLikesKey, userRepliesKey} from '../redux-store-2
 import ImageList from './ImagesList'
 import useSubscribeToUserUpdate from '../Hooks/useSubscribeToUserUpdate'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const Profile = (props) => {
-    const authedUserId = useSelector(getAuthedUserId())
+    // const authedUserId = useSelector(getAuthedUserId())
+    const authedUserId = getUserIdFromCookie()
     const userId = props.match.params.userId
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
@@ -37,10 +39,10 @@ const Profile = (props) => {
     const dispatch = useDispatch()
 
     const dispatchData = useMemo(()=>({
-        user: {
-            userId: localStorage.getItem('userId'),
-            token: localStorage.getItem('token')
-        },
+        // user: {
+        //     userId: localStorage.getItem('userId'),
+        //     token: localStorage.getItem('token')
+        // },
         userId
     }), [userId])
 
@@ -50,10 +52,10 @@ const Profile = (props) => {
         //in future needs to be redone using Suspense, which is not implemented in react yet
         const asyncDispatch = async () => {
             await dispatch(getUser({
-                user: {
-                    userId: localStorage.getItem('userId'),
-                    token: localStorage.getItem('token')
-                },
+                // user: {
+                //     userId: localStorage.getItem('userId'),
+                //     token: localStorage.getItem('token')
+                // },
                 userId
             }))
         }

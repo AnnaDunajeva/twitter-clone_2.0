@@ -73,3 +73,5 @@ export const validateEmail = (email) => {
 //       :defaultBackgroundColor
 //   }
 // }
+
+export const getUserIdFromCookie = () => document.cookie.replace(/(?:(?:^|.*;\s*)id\s*\=\s*([^;]*).*$)|^.*$/, "$1")

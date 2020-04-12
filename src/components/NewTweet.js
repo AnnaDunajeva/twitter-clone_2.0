@@ -8,7 +8,7 @@ import emoji from '../utils/emoji'
 import TextareaAutosize from 'react-textarea-autosize';
 import {FiImage} from "react-icons/fi"
 import DragAndDrop from './DragAndDrop'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const dragConfig = {
     height: 300,
@@ -21,7 +21,7 @@ const dragConfig = {
 //should probably use useReducer here
 
 const NewTweet = ({replyingTo, showHeader}) => {
-    const userCredentials = useAuthedUserCredentials()
+    // const userCredentials = useAuthedUserCredentials()
     const dispatch = useDispatch()
 
     const [text, setText] = useState('')
@@ -42,8 +42,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
             tweet: { 
                 text, 
                 replyingTo: !replyingTo ? null : replyingTo
-                },
-            ...userCredentials
+                }
         }
         if (file) {
             data.file = file

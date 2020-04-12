@@ -37,7 +37,7 @@ import {
     userTweetImagesKey,
     userTweetLikesKey,
     userRepliesKey } from '../utils/compositeDataStateKeys'
-
+import {getUserIdFromCookie} from '../../utils/helpers'
 
 export function getFeedPaginated(data) {
     return async (dispatch) => {
@@ -48,10 +48,10 @@ export function getFeedPaginated(data) {
             console.log('inside action getFeedPaginated')
             const feedResponse = await fetch(`${URL}/user/feed?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getParents=false`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             
@@ -95,10 +95,10 @@ export function getFeedUpdate(data) {
             console.log('inside action getFeedPaginated')
             const feedResponse = await fetch(`${URL}/user/feed/update?take=${data.take}&time=${data.time}&getUsers=true&getParents=false`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             
@@ -143,10 +143,10 @@ export function getConversationPaginated (data) {
             console.log('inside action getRepliesPaginated ', data)
             const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getMainTweet=${data.getMainTweet}`, { 
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{tweets: {someId: {...}}}
@@ -196,10 +196,10 @@ export function getConversationUpdate (data) {
             console.log('inside action getConversationUpdate ', data)
             const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation/update?take=${data.take}&time=${data.time}&getUsers=true`, { 
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{tweets: {someId: {...}}}
@@ -246,10 +246,10 @@ export function getUserTweetsPaginated (data) {
             console.log('inside action handleGetUserTweetsPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false&getParents=false`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const tweetsData = await tweetsResponse.json()
@@ -291,10 +291,10 @@ export function getUserTweetImagesPaginated (data) {
             console.log('inside action getUserTweetImagesPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/media?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false&getParents=false`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const tweetsData = await tweetsResponse.json()
@@ -327,17 +327,19 @@ export function getUserTweetImagesPaginated (data) {
 
 export function toggleTweetsLike (data) {
     return async (dispatch, getState) => {
+        const userId = getUserIdFromCookie()
         dispatch(showLoading())
         dispatch(tweetToggleLike(data.tweetId)) //provides instant UI feedback to user
         dispatch(globalErrorRemove(`${TWEET_TOGGLE_LIKE}/${data.tweetId}`))
 
         try {
             const response = await fetch(`${URL}/user/tweets/like/${data.tweetId}`, {
-                method: 'POST',
-                mode: 'cors',
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{message: 'success', tweet: {...}, parents:{...}} or {error: {...}}
@@ -348,16 +350,16 @@ export function toggleTweetsLike (data) {
                 const tweet = responseData.tweet
                 const tweetId = Object.keys(tweet)[0]
 
-                const userTweetLikes = getState().compositeData[userTweetLikesKey(data.user.userId)]
+                const userTweetLikes = getState().compositeData[userTweetLikesKey(userId)]
 
                 //a lot og troubles, should just refresh it on like... like i do with followers
                 if (userTweetLikes !== undefined) {
                     const tweetShort = pick(tweet[tweetId], ['id', 'sortindex'])
                     if (tweet[tweetId].liked) {
-                        dispatch(newLikeAddToUserLikes(tweetShort, data.user.userId))
+                        dispatch(newLikeAddToUserLikes(tweetShort, userId))
                     } else {
                         // dispatch(newLikeRemoveFromUserLikes(data.tweetId, data.user.userId))
-                        dispatch(compositeDataClear(userTweetLikesKey(data.user.userId)))
+                        dispatch(compositeDataClear(userTweetLikesKey(userId)))
                     }
                 }
             }
@@ -386,6 +388,7 @@ export function toggleTweetsLike (data) {
 
 export function postTweet (data) {
     return async (dispatch, getState) => {
+        const userId = getUserIdFromCookie()
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_POST}`))
         console.log(data)
@@ -401,10 +404,10 @@ export function postTweet (data) {
             } 
 
             const tweetResponse = await fetch(`${URL}/user/tweet`, {
-                method: 'POST',
-                mode: 'cors',
+                method: 'PUT',
+                // mode: 'cors',
                 headers: {
-                    'Authorization': `Bearer ${data.user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1")
                 },
                 body: formData
             })
@@ -444,7 +447,7 @@ export function postTweet (data) {
                     if (compositeData[userRepliesKey(tweet[tweetId].user)]) {
                         dispatch(newTweetAddToUserReplies(tweetShort, tweet[tweetId].replyingToTweetId, tweet[tweetId].user))
                     }
-                } else if (compositeData[userTweetsKey(data.user.userId)]) {
+                } else if (compositeData[userTweetsKey(userId)]) {
                     //need this check cause there is a chance this view was not loaded yet and keyed reducer will create it then
                     //whith loaded status and wont refetch then
                     dispatch(newTweetAddToUserTweets(tweetShort, tweet[tweetId].user))
@@ -452,7 +455,7 @@ export function postTweet (data) {
                 if (compositeData[homeKey()]) {
                     dispatch(newTweetAddToFeed(tweetShort))
                 }
-                if (tweet[tweetId].media && compositeData[userTweetImagesKey(data.user.userId)]) {
+                if (tweet[tweetId].media && compositeData[userTweetImagesKey(userId)]) {
                     dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
                 }
             }
@@ -478,10 +481,9 @@ export function getUserTweetLikesPaginated (data) {
             console.log('inside action getUserTweetLikesPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/likes?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const tweetsData = await tweetsResponse.json()
@@ -529,10 +531,10 @@ export function getUserRepliesPaginated (data) {
             console.log('inside action getUserRepliesPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/replies?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const tweetsData = await tweetsResponse.json()
@@ -573,10 +575,11 @@ export function deleteTweet (data) {
         try {
             const response = await fetch(`${URL}/user/tweet/${data.tweetId}`, {
                 method: 'DELETE',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{message: 'success', status: 'ok' or {error: {...}}

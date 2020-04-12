@@ -4,10 +4,12 @@ import {useDispatch, useSelector} from 'react-redux'
 import {toggleUserFollow} from '../redux-store-2.0/api/users'
 import {getUserById} from '../redux-store-2.0/entities/users/selectors'
 import useSubscribeToUserUpdate from '../Hooks/useSubscribeToUserUpdate'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const UserCard = ({userId, style, handleToProfile}) => {
-    const userCredentials= useAuthedUserCredentials()
+    // const userCredentials= useAuthedUserCredentials()
+    const authedUser = getUserIdFromCookie()
     const user = useSelector(getUserById(userId))
     const dispatch = useDispatch()
     const history = useHistory()
@@ -17,7 +19,7 @@ const UserCard = ({userId, style, handleToProfile}) => {
     const handleFollowUnfollow = async () => {
         console.log('about to handle following')
         const data = {
-            ...userCredentials,
+            // ...userCredentials,
             userId: userId,
             following: user.following
         }
@@ -47,7 +49,7 @@ const UserCard = ({userId, style, handleToProfile}) => {
                         Following {user.followingsCount} | Followers {user.followersCount}
                 </div>
             </div>
-            {userId !== userCredentials.user.userId && 
+            {userId !== authedUser && 
                 <div className='btn-follow-container'>
                     <button 
                         className={`btn-usercard btn-${user.following ? 'unfollow' : 'follow'} position-relative`} 

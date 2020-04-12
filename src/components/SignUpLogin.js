@@ -12,12 +12,14 @@ import RequestResetPasswordLinkAlert from './RequestResetPasswordLinkAlert'
 import {RESET_PASSWORD_LINK_ERROR, SET_SESSION_FETCHSTATUS} from '../redux-store-2.0/action-types'
 import {globalErrorRemove} from '../redux-store-2.0/errors/actions'
 import {setSessionFetchStatus} from '../redux-store-2.0/session/actions'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const SignUpLogin = () => {
+    const authedUser = getUserIdFromCookie()
     const dispatch = useDispatch()
     const loginError = useSelector(getSessionStartError())
     const signUpError = useSelector(getSignUpError())
-    const authedUser = useSelector(getAuthedUserId())
+    // const authedUser = useSelector(getAuthedUserId())
     const sessionStatus = useSelector(getSessionFetchStatus()) 
     const resetPasswordLinkError = useSelector(getResetPasswordLinkError())
 

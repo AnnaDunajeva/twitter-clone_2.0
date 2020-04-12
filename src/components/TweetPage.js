@@ -9,7 +9,7 @@ import {getConversationPaginated} from '../redux-store-2.0/api/tweets'
 import {getTweetStatusById, getTweetErrorById, getTweetById} from '../redux-store-2.0/entities/tweets/selectors'
 import {LOADED, NOT_FOUND} from '../redux-store-2.0/constants'
 import TweetsList from './TweetsList'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 import {getConversationUpdate} from '../redux-store-2.0/api/tweets'
 import useCompositeDataUpdate from '../Hooks/useCompositeDataUpdate'
     
@@ -17,7 +17,7 @@ const TweetPage = (props) => {
     const tweetId = props.match.params.id
     const take = 2
     
-    const userCredentials = useAuthedUserCredentials()
+    // const userCredentials = useAuthedUserCredentials()
     const mainTweet = useSelector(getTweetById(tweetId)) 
     const mainTweetFetchStatus = useSelector(getTweetStatusById(tweetId))
     const mainTweetFetchError = useSelector(getTweetErrorById(tweetId))
@@ -26,7 +26,7 @@ const TweetPage = (props) => {
     const repliesSelector = useCallback(getConversationRepliesIds((tweetId)), [])
 
     const dispatchData = {
-        ...userCredentials,
+        // ...userCredentials,
         tweetId,
         getMainTweet: conversationMainTweetId ? false : true
     }

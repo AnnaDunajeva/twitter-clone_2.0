@@ -16,11 +16,13 @@ import Alert from './Alert'
 import {usersFetchStatusSet} from '../redux-store-2.0/entities/users/actions'
 import {deleteAvatar} from '../redux-store-2.0/api/users'
 import {deleteBackgroundImage} from '../redux-store-2.0/api/users'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const ProfileUpdate = (props) => {
-    const userCredentials = useAuthedUserCredentials()
-    const userId = userCredentials.user.userId
+    // const userCredentials = useAuthedUserCredentials()
+    // const userId = userCredentials.user.userId
+    const userId = getUserIdFromCookie()
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
     const profileUpdateError = useSelector(getProfileUpdateError())
@@ -28,7 +30,7 @@ const ProfileUpdate = (props) => {
 
     const updateProfileData = (userDataAndFile) => {
         const data = {
-            ...userCredentials,
+            // ...userCredentials,
             userData: userDataAndFile.user
         }
         if (userDataAndFile.file) {

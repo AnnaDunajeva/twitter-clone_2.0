@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import DragAndDrop from './DragAndDrop'
 import DeleteAlert from './DeleteAlert'
 import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const dragConfig = {
     height: 300,
@@ -17,7 +17,6 @@ const General = (props) => {
     const dispatch = useDispatch()
 
     const user = useSelector(getAuthedUserProfile())
-    const userCredentials = useAuthedUserCredentials()
 
     const [firstName, setFirstName] = useState(user.firstName)
     const [lastName, setLastName] = useState(user.lastName)
@@ -54,7 +53,7 @@ const General = (props) => {
     }
 
     const handleDeleteAvatar = () => {
-        dispatch(props.handleDelete(userCredentials))
+        dispatch(props.handleDelete())
     }
 
     const handleRemoveImage = (e) => {

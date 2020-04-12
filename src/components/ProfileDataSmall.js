@@ -6,7 +6,7 @@ import { FaUser, FaUsers } from 'react-icons/fa'
 import {IoIosSettings} from "react-icons/io"
 import {toggleUserFollow} from '../redux-store-2.0/api/users'
 import {useDispatch, useSelector} from 'react-redux'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 import {useHistory} from 'react-router-dom'
 import UsersList from './UsersList'
 import ListPopUp from './ListPopUp'
@@ -17,7 +17,7 @@ import {getUserFollowersPaginated, getUserFollowingsPaginated} from '../redux-st
 const ProfileDataSmall = ({user, isAuthedUser, setToUpdate, handleToProfile}) => {   
     const history = useHistory() 
     const dispatch = useDispatch()
-    const userCredentials = useAuthedUserCredentials()
+    // const userCredentials = useAuthedUserCredentials()
 
     const [showFollowers, setShowFollowers] = useState(false)
     const [showFollowings, setShowFollowings] = useState(false)
@@ -26,17 +26,17 @@ const ProfileDataSmall = ({user, isAuthedUser, setToUpdate, handleToProfile}) =>
     const followersSelector = useCallback(getUserFollowersIds(user.userId), [])
 
     const dispatchData = {
-        user: {
-            userId: localStorage.getItem('userId'),
-            token: localStorage.getItem('token')
-        },
+        // user: {
+        //     userId: localStorage.getItem('userId'),
+        //     token: localStorage.getItem('token')
+        // },
         userId: user.userId
     }
 
     const handleFollowUnfollow = async () => {
         console.log('about to handle following')
         const data = {
-            ...userCredentials,
+            // ...userCredentials,
             userId: user.userId,
             following: user.following
         }

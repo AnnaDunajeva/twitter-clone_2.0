@@ -26,9 +26,11 @@ import {
     compositeDataEntitiesFetchSuccess,
     compositeDataEntitiesFetchError,
     compositeDataClear } from '../composite-data/actions'
+import {getUserIdFromCookie} from '../../utils/helpers'
 
 export function getUser (data) {
     return async (dispatch) => {
+        const userId = getUserIdFromCookie()
         console.log('inside getUser usersFetchstatus ', {[data.userId]: LOADING})
         dispatch(showLoading())
         dispatch(usersFetch([data.userId], {[data.userId]: LOADING}))
@@ -38,9 +40,9 @@ export function getUser (data) {
         const userFetchStatusError = {[data.userId]: ERROR}
 
         try {
-            const userResponse = await fetch(data.userId === data.user.userId ? `${URL}/user`:`${URL}/users/${data.userId}`, {
+            const userResponse = await fetch(userId === data.userId ? `${URL}/user`:`${URL}/users/${data.userId}`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                     // 'Authorization': `Bearer ${data.user.token}`
@@ -82,11 +84,11 @@ export function toggleUserFollow (data) {
         try {
             console.log(data, 'inside func toggleUserFollow')
             const usersResponse = await fetch(`${URL}/user/followings/${data.userId}`, {
-                method: data.following ? 'DELETE' : 'POST',
-                mode: 'cors',
+                method: data.following ? 'DELETE' : 'PUT',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
                 }
             })
             const users = await usersResponse.json()
@@ -126,10 +128,10 @@ export function getAllUsersPaginated (data) {
         try {
             const allUsersResponse = await fetch(`${URL}/users?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const allUsers = await allUsersResponse.json()
@@ -208,12 +210,13 @@ export function getAllUsersPaginated (data) {
 
 export function updateProfile (data) {
     return async (dispatch) => {
+        const userId = getUserIdFromCookie()
         console.log(data)
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
-        dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
-        const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
-        const userFetchStatusError = {[data.user.userId]: LOADED}
+        dispatch(usersFetch([userId], {[userId]: UPDATING}))
+        const userFetchStatusSuccess = {[userId]: UPDATED}
+        const userFetchStatusError = {[userId]: LOADED}
 
         try {
             const formData = new FormData()
@@ -227,9 +230,9 @@ export function updateProfile (data) {
             // throw new Error ('Test')
             const response = await fetch(`${URL}/user`, {
                 method: 'PATCH',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
-                    'Authorization': `Bearer ${data.user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
                 },
                 body: formData
             })
@@ -237,7 +240,7 @@ export function updateProfile (data) {
 
             if (userData.error) {
                 dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, userData.error))
-                dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                dispatch(usersFetchError({[userId]: userData.error}, userFetchStatusError))
                 
             } else {
                 const user = userData.user
@@ -251,7 +254,7 @@ export function updateProfile (data) {
             console.log(err.message)
 
             dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, err.message))
-            dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
+            dispatch(usersFetchError({[userId]: err.message}, userFetchStatusError))
 
             dispatch(hideLoading())
         }
@@ -261,24 +264,25 @@ export function updateProfile (data) {
 export function deleteAvatar (data) {
     return async (dispatch) => {
         dispatch(showLoading())
+        const userId = getUserIdFromCookie()
         dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
-        dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
-        const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
-        const userFetchStatusError = {[data.user.userId]: LOADED}
+        dispatch(usersFetch([userId], {[userId]: UPDATING}))
+        const userFetchStatusSuccess = {[userId]: UPDATED}
+        const userFetchStatusError = {[userId]: LOADED}
 
         try {
             const response = await fetch(`${URL}/user/avatar`, {
                 method: 'DELETE',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
-                    'Authorization': `Bearer ${data.user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
                 }
             })
             const userData = await response.json()
 
             if (userData.error) {
                 dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, userData.error))
-                dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                dispatch(usersFetchError({[userId]: userData.error}, userFetchStatusError))
                 
             } else {
                 const user = userData.user
@@ -291,7 +295,7 @@ export function deleteAvatar (data) {
             console.log(err.message)
 
             dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, err.message))
-            dispatch(usersFetchError({[data.user.userId]: err.message}, userFetchStatusError))
+            dispatch(usersFetchError({[userId]: err.message}, userFetchStatusError))
 
             dispatch(hideLoading())
         }
@@ -300,25 +304,26 @@ export function deleteAvatar (data) {
 
 export function deleteBackgroundImage (data) {
     return async (dispatch) => {
+        const userId = getUserIdFromCookie()
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
-        dispatch(usersFetch([data.user.userId], {[data.user.userId]: UPDATING}))
-        const userFetchStatusSuccess = {[data.user.userId]: UPDATED}
-        const userFetchStatusError = {[data.user.userId]: LOADED}
+        dispatch(usersFetch([userId], {[userId]: UPDATING}))
+        const userFetchStatusSuccess = {[userId]: UPDATED}
+        const userFetchStatusError = {[userId]: LOADED}
 
         try {
             const response = await fetch(`${URL}/user/background`, {
                 method: 'DELETE',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
-                    'Authorization': `Bearer ${data.user.token}`
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
                 }
             })
             const userData = await response.json()
 
             if (userData.error) {
                 dispatch(globalErrorAdd(`${PROFILE_UPDATE}`, userData.error))
-                dispatch(usersFetchError({[data.user.userId]: userData.error}, userFetchStatusError))
+                dispatch(usersFetchError({[userId]: userData.error}, userFetchStatusError))
                 
             } else {
                 const user = userData.user
@@ -349,10 +354,10 @@ export const getUserFollowingsPaginated = (data) => async (dispatch) => {
     try {
         const usersResponseData = await fetch(`${URL}/user/${data.userId}/followings?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
             method: 'GET',
-            mode: 'cors',
+            // mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${data.user.token}`
+                // 'Authorization': `Bearer ${data.user.token}`
             }
         })
         const usersResponse = await usersResponseData.json()
@@ -396,10 +401,10 @@ export const getUserFollowersPaginated = (data) => {
         try {
             const usersResponseData = await fetch(`${URL}/user/${data.userId}/followers?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
                 method: 'GET',
-                mode: 'cors',
+                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${data.user.token}`
+                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const usersResponse = await usersResponseData.json()

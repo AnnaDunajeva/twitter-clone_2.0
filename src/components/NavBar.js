@@ -4,9 +4,11 @@ import {useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import useLogOut from '../Hooks/useLogOut'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const NavBar = () => {
-    const authedUser = useSelector(getAuthedUserId())
+    // const authedUser = useSelector(getAuthedUserId())
+    const authedUser = getUserIdFromCookie()
     const logOutUser = useLogOut()
 
     if (!authedUser) {

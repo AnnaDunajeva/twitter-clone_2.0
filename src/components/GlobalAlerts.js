@@ -12,12 +12,13 @@ import {setSessionFetchStatus} from '../redux-store-2.0/session/actions'
 import {usersFetchStatusSet} from '../redux-store-2.0/entities/users/actions'
 import {getUserStatusById} from '../redux-store-2.0/entities/users/selectors'
 import {getAuthedUserId, getSessionFetchStatus} from '../redux-store-2.0/session/selectors'
-
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const GlobalAlerts = () => {
     const dispatch = useDispatch()
     const sessionStatus = useSelector(getSessionFetchStatus()) 
-    const authedUserId = useSelector(getAuthedUserId())
+    // const authedUserId = useSelector(getAuthedUserId())
+    const authedUserId = getUserIdFromCookie()
     const userFetchStatus = useSelector(getUserStatusById(authedUserId))
     // const handleCloseResetPsswordLinkErrorAlert = () => {
     //     dispatch(globalErrorRemove(RESET_PASSWORD_LINK_ERROR))

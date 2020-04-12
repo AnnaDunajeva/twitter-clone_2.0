@@ -7,7 +7,7 @@ import {IoMdColorFill} from 'react-icons/io'
 import {defaultBackgroundColor} from '../redux-store-2.0/constants'
 import DeleteAlert from './DeleteAlert'
 import DragAndDrop from './DragAndDrop'
-import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 
 const dragConfig = {
     height: 400,
@@ -22,7 +22,7 @@ const Additional = (props) => {
     const dispatch = useDispatch()
 
     const user = useSelector(getAuthedUserProfile())
-    const userCredentials = useAuthedUserCredentials()
+    // const userCredentials = useAuthedUserCredentials()
 
     const [file, setFile] = useState(null)
     const [crop, setCrop] = useState(null)
@@ -70,7 +70,7 @@ const Additional = (props) => {
         }
     }
     const handleDeleteBackground = () => {
-        dispatch(props.handleDelete(userCredentials))
+        dispatch(props.handleDelete({}))
     }
     const handleRemoveImage = (e) => {
         e.preventDefault() 
