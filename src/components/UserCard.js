@@ -7,7 +7,7 @@ import useSubscribeToUserUpdate from '../Hooks/useSubscribeToUserUpdate'
 // import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 import {getUserIdFromCookie} from '../utils/helpers'
 
-const UserCard = ({userId, style, handleToProfile}) => {
+const UserCard = ({userId, style, handleToProfile, showFollowButton}) => {
     // const userCredentials= useAuthedUserCredentials()
     const authedUser = getUserIdFromCookie()
     const user = useSelector(getUserById(userId))

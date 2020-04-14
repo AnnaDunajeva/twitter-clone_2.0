@@ -71,3 +71,5 @@ export const getCompositeDataFirstEntityCreatedAt = (stateKey) => {
 }
 
 export const getCompositeDataDoneStatus = (stateKey) => (state) => state.compositeData[stateKey]?.done || null
+
+export const getTweetLikesIds = (tweetId) => (state) => state.compositeData[keys.tweetLikesKey(tweetId)]?.entities.map(userData => userData.userId) || []

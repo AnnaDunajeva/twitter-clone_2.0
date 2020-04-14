@@ -689,12 +689,14 @@ li {
 .respons-container {
   display: flex;
   align-items: center;
+  color: #9b9999;
 }
 .respons {
   font-size: 17px;
-  color: #9b9999;
-  margin: 0 10px 0 5px;
-  padding-top: 2px;
+  /* color: #9b9999; */
+  /* margin: 0 10px 0 5px; */
+  padding: 10px;
+  /* padding-top: 2px; */
 }
 .icon {
   font-size: 25px;

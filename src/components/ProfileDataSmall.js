@@ -58,6 +58,7 @@ const ProfileDataSmall = ({user, isAuthedUser, setToUpdate, handleToProfile}) =>
                         stateSelector={followersSelector}
                         dispatchData={dispatchData}
                         scrollableTarget={userFollowersKey(user.userId)}
+                        showFollowButton={isAuthedUser}
                         getDataFetch={getUserFollowersPaginated}/>
                 </ListPopUp>
             }

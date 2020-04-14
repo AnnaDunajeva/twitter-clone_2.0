@@ -3,7 +3,7 @@ import UserCard from './UserCard'
 import ScrollUtil from './ScrollUtil'
 
 
-const UsersList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleToProfile, headerText, noDataText, scrollableTarget}) => {    
+const UsersList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleToProfile, headerText, noDataText, scrollableTarget, showFollowButton}) => {    
     useEffect(() => {
         console.log('rendering UserList')
     }, [])
@@ -20,7 +20,7 @@ const UsersList = ({stateSelector, getDataFetch, stateKey, dispatchData, handleT
                     >
             {(ids)=>(
                 ids.map((id) => (
-                    <UserCard userId={id} handleToProfile={handleToProfile} style={{width: '500px'}}/>
+                    <UserCard userId={id} handleToProfile={handleToProfile} style={{width: '500px'}} showFollowButton={showFollowButton}/>
                 ))
             )}
         </ScrollUtil>

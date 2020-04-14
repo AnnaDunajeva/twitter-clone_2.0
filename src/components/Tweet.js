@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useRef, useState, useCallback} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {formatDate} from '../utils/helpers'
 import {Link, withRouter} from 'react-router-dom'
@@ -19,6 +19,11 @@ import DeleteAlert from './DeleteAlert'
 import useSubscribeToTweetUpdate from '../Hooks/useSubscribeToTweetUpdate'
 // import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
 import {getUserIdFromCookie} from '../utils/helpers'
+import UsersList from './UsersList'
+import ListPopUp from './ListPopUp'
+import {getTweetLikesIds} from '../redux-store-2.0/composite-data/selectors'
+import {tweetLikesKey} from '../redux-store-2.0/utils/compositeDataStateKeys'
+import {getTweetLikesPaginated} from '../redux-store-2.0/api/tweets'
 
 const linkifyOptions = {
     validate: {
@@ -29,15 +34,14 @@ const linkifyOptions = {
 
 const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
     const dispatch = useDispatch()
-
-    // const userCredentials = useAuthedUserCredentials()
-
     const tweet = useSelector(getTweetById(id))
     const author = useSelector(getUserById(tweet?.user))
-    // const authedUser = useSelector(getAuthedUserId())
     const authedUser = getUserIdFromCookie()
 
     const [isDeleteTweet, setIsDeleteTweet] = useState(false)
+    const [showLikes, setShowLikes] = useState(false)
+
+    const tweetLikesSelector = useCallback(getTweetLikesIds(id), [])
 
     const urlsInTweet = useRef(tweet?.text 
                                 ? linkify.find(tweet.text).filter(urlObj => urlObj.type === 'url')
@@ -48,6 +52,10 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                                     .filter(videoData => videoData !== undefined && videoData.provider === 'youtube')
                                 :null
                                 )
+
+    const dispatchData = {
+        tweetId: id
+    }
     
     useSubscribeToTweetUpdate(tweet)
 
@@ -72,7 +80,22 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
 
     return (
         <React.Fragment>
-            {console.log('stateKey ', stateKey)}
+            {showLikes && tweet.likesCount !== 0 &&
+                <ListPopUp 
+                    header={'Liked by'}
+                    id={tweetLikesKey(id)}
+                    key={tweetLikesKey(id)}
+                    onClose={()=>setShowLikes(false)}>
+                    <UsersList 
+                        key={tweetLikesKey(id)}
+                        handleToProfile={handleToProfile}
+                        stateKey={tweetLikesKey(id)}
+                        stateSelector={tweetLikesSelector}
+                        dispatchData={dispatchData}
+                        scrollableTarget={tweetLikesKey(id)}
+                        getDataFetch={getTweetLikesPaginated}/>
+                </ListPopUp>
+            }
             {tweet?.deleted 
                 ? <div className='tweet-container' style={{justifyContent: 'center'}}>
                     <p style={{padding: '20px'}}>[Deleted]</p>
@@ -201,7 +224,7 @@ const Tweet = ({id, handleToTweetPage, handleToProfile, history, stateKey}) => {
                                     }
                                 </button>
 
-                                <div className='respons'>
+                                <div className='position-relative clickable hover-blue-circle-background' onClick={() => setShowLikes(true)}>
                                     {tweet.likesCount !== 0 ? tweet.likesCount : null}
                                 </div>
                             </div>

@@ -29,3 +29,5 @@ export const userRepliesKey = (userId) => {
 export const userFollowingsKey = (userId) => `userFollowings-${userId}`
 
 export const userFollowersKey = (userId) => `userFollowers-${userId}`
+
+export const tweetLikesKey = (tweetId) => `tweetLikes-${tweetId}`

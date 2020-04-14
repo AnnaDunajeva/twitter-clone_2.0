@@ -62,6 +62,7 @@ export default function (state = initialState, action) {
         case SIGN_UP_SUCCESS:
             return {
                 ...state,
+                error: null,
                 fetchStatus: SIGN_UP
             }
         case RESET_PASSWORD_SUCCESS:

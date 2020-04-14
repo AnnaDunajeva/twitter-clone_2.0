@@ -36,6 +36,7 @@ import {
     userTweetsKey,
     userTweetImagesKey,
     userTweetLikesKey,
+    tweetLikesKey,
     userRepliesKey } from '../utils/compositeDataStateKeys'
 import {getUserIdFromCookie} from '../../utils/helpers'
 
@@ -595,6 +596,52 @@ export function deleteTweet (data) {
         catch (err) { 
             console.log(err.message)
             dispatch(globalErrorAdd(`${TWEET_DELETE}/${data.tweetId}`, err.message))
+            dispatch(hideLoading())
+        }
+    }
+}
+
+export const getTweetLikesPaginated = (data) => {
+    return async (dispatch) => {
+        console.log('inside getTweetLikesPaginated')
+        dispatch(showLoading())
+    
+        const tweetLikesName = tweetLikesKey(data.tweetId)
+        
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${tweetLikesName}`))
+        dispatch(compositeDataEntitiesFetch(tweetLikesName))
+    
+        try {
+            const usersResponseData = await fetch(`${URL}/tweet/${data.tweetId}/likes?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const usersResponse = await usersResponseData.json()
+    
+            if (usersResponse.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${tweetLikesName}`, usersResponse.error))
+                dispatch(compositeDataEntitiesFetchError(tweetLikesName, usersResponse.error, data.time))
+            } else {
+                const users = usersResponse.users
+    
+                const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                console.log('compositeDataUserFollowers ', compositeDataUsers) 
+                
+                const usersFetchStatus = mapValues(users, () => LOADED)
+    
+                dispatch(usersFetchSuccess(users, usersFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(tweetLikesName, compositeDataUsers, data.time))
+            }
+    
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${tweetLikesName}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(tweetLikesName, err.message, data.time))
+                        
             dispatch(hideLoading())
         }
     }
