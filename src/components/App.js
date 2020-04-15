@@ -23,6 +23,7 @@ import ResetPassword from './pages/ResetPassword'
 import GlobalErrors from './utils/GlobalErrors'
 import GlobalAlerts from './utils/GlobalAlerts'
 import ToTopButton from './utils/ToTopButton'
+import SearchResults from './pages/SearchResults'
 
 const App = () => {
     const authedUser = getUserIdFromCookie()
@@ -76,8 +77,9 @@ const App = () => {
                                 <PrivateRoute path='/newtweet' component={NewTweet}/>
                                 <PrivateRoute path='/tweet/:id' component={TweetPage}/>
                                 <PrivateRoute path='/user/:userId' component={Profile}/>
-                                <PrivateRoute path={`/profile/update`} component={ProfileUpdate}/>
+                                <PrivateRoute path='/profile/update' component={ProfileUpdate}/>
                                 <PrivateRoute path='/users' component={Users}/>
+                                <PrivateRoute path='/find/:userId' component={SearchResults}/>
                                 <Redirect from='/verify/:token' to='/' />
                                 <Route component={NotFound} />
                             </Switch>

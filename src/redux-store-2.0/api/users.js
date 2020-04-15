@@ -20,7 +20,7 @@ import {
         USER_TOGGLE_FOLLOW,
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
         PROFILE_UPDATE } from '../action-types'
-import { discoverUsersKey, homeKey, userFollowingsKey, userFollowersKey } from '../utils/compositeDataStateKeys'
+import { discoverUsersKey, homeKey, userFollowingsKey, userFollowersKey, searchUserKey } from '../utils/compositeDataStateKeys'
 import { 
     compositeDataEntitiesFetch, 
     compositeDataEntitiesFetchSuccess,
@@ -436,4 +436,48 @@ export const getUserFollowersPaginated = (data) => {
     }
 }
 
+export const findUserPaginated = (data) => {
+    return async (dispatch) => {
+        dispatch(showLoading())
 
+        const searchUser = searchUserKey(data.userId)
+        
+        dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${searchUser}`))
+        dispatch(compositeDataEntitiesFetch(searchUser))
+
+        try {
+            const usersResponse = await fetch(`${URL}/users/find/${data.userId}?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            const foundUsers = await usersResponse.json()
+            console.log('foundUsers: ', foundUsers)
+
+            if (foundUsers.error) {
+                dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${searchUser}`, foundUsers.error))
+                dispatch(compositeDataEntitiesFetchError(searchUser, foundUsers.error, data.time))
+            } else {
+                const users = foundUsers.users
+
+                const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort()
+                console.log('compositeDataUsers ', compositeDataUsers) 
+               
+                const usersFetchStatus = mapValues(users, () => LOADED)
+    
+                dispatch(usersFetchSuccess(users, usersFetchStatus))
+                dispatch(compositeDataEntitiesFetchSuccess(searchUser, compositeDataUsers, data.time))
+            }
+
+            dispatch(hideLoading())
+        }
+        catch (err) { 
+            console.log(err.message)
+            dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${searchUser}`, err.message))
+            dispatch(compositeDataEntitiesFetchError(searchUser, err.message, data.time))
+                        
+            dispatch(hideLoading())
+        }
+    }
+}

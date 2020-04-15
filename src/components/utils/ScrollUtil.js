@@ -21,6 +21,7 @@ const ScrollUtil = ({
     take, 
     headerText, 
     noDataText, 
+    noDataHeader,
     stateKey, 
     scrollableTarget, 
     reset,
@@ -111,11 +112,14 @@ const ScrollUtil = ({
             {console.log('error!!!!!!!!!!!!!!!!!!!!!: ', error)}
             {console.log('rendering scroll', 'hasmore ', !done, savedIdsLength, 'skip ', skip, 'fetchStatus ', fetchStatus)}
             {console.log('ids ', ids)}
-            {headerText && (ids.length !== 0 || fetchStatus === LOADED) 
-                ? <h1 className='header'>
+            {headerText && ids.length !== 0 &&
+                <h1 className='header'>
                     {headerText}
-                </h1> 
-                : null}
+                </h1>} 
+            {ids.length === 0 && fetchStatus === LOADED &&
+                <h1 className='header'>
+                    {noDataHeader ? noDataHeader : headerText}
+                </h1>}
             {ids.length !== 0 &&
                 <InfiniteScroll
                     dataLength={ids.length}
@@ -127,8 +131,11 @@ const ScrollUtil = ({
                     endMessage={
                         <p className='header-small' style={{marginBottom: '20px'}}>
                             {error
-                                ? <b>Oops, something went wrong, try refreshing page.</b>
-                                : <b>Yay! You have seen it all</b>}
+                                ?<b>Oops, something went wrong, try refreshing page.</b>
+                                :ids.length > take
+                                    ?<b>Yay! You have seen it all</b>
+                                    :null
+                            }
                         </p>}
                     >
                     {children(ids)}

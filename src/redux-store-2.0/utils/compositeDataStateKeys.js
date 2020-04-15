@@ -31,3 +31,5 @@ export const userFollowingsKey = (userId) => `userFollowings-${userId}`
 export const userFollowersKey = (userId) => `userFollowers-${userId}`
 
 export const tweetLikesKey = (tweetId) => `tweetLikes-${tweetId}`
+
+export const searchUserKey = (userId) => `searchUser-${userId}`

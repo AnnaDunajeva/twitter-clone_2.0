@@ -33,7 +33,18 @@ const PrivateRoute = ({
           }} />
     )} />
   }
-  
+
+  if (path === '/find/:userId') {
+    return <Route computedMatch={computedMatch} {...rest} render={(props) => (
+      authedUser
+        ? <Component {...props} {...additionalProps || null} key={computedMatch.params.userId}/> //key change will allow component to remount when we change from one search result to other
+        : <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+    )} />
+  }
+
   return <Route computedMatch={computedMatch} {...rest} render={(props) => (
     authedUser
       ? <Component {...props} {...additionalProps || null}/> 

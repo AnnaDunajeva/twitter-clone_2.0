@@ -59,6 +59,7 @@ li {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
   text-decoration: none;
   font-size: 18px;
 }
@@ -68,7 +69,8 @@ li {
 
 .nav a {
   padding: 10px 15px;
-  margin: 0 5px 5px 0;
+  margin: 0 5px 0 0;
+  border-radius: 50%;
 }
 .nav a:focus,
 .nav a:hover {
@@ -76,6 +78,27 @@ li {
   background-color: #eff5f8;
   outline: none;
 }
+
+.btn-logout {
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 18px;  
+  color: #424242;
+  cursor: pointer;
+  margin: 0 15px 0 0;
+  padding: 10px 15px;
+}
+.btn-logout:hover,
+.btn-logout:focus {
+  border-radius: 20px;
+  background-color: #eff5f8;
+  outline: none;
+  color: #0994d4;
+}
+
 .header {
   text-align: center;
   font-size: 22px;
@@ -186,6 +209,29 @@ li {
   border-radius: 50px;
   background-color: #dfe7eb;
 }
+.search-input-container {
+  padding: 5px 10px;
+  border-radius: 40px;
+  background-color: #ffffff;
+  border: 1px solid rgb(151, 148, 148);
+  margin-right: 10px;
+}
+.search-input-container:hover {
+  box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #31baf0;
+}
+.search-input-container:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #31baf0;
+}
+.search-input {
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding-left: 5px;
+}
+.search-input:focus {
+  outline: none;
+}
 /* =========profile============ */
 .background-container {
   /* max-width: 970px; */
@@ -262,7 +308,7 @@ li {
 .profile-nav a {
   padding: 10px 15px;
   margin: 10px 30px;
-  border-radius: 40px;
+  border-radius: 50px;
 }
 .profile-nav a:focus,
 .profile-nav a:hover {
@@ -307,6 +353,7 @@ li {
   font-size: 18px;
   margin: 15px 20px;
   padding: 10px;
+  border-radius: 50%;
 }
 /* .profile-meta div:first-of-type {
   padding-top: 58px;
@@ -802,25 +849,6 @@ li {
 }
 /* =========TWEET======================== */
 
-.btn-logout {
-  background: transparent;
-  border: none;
-  text-align: center;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 18px;  
-  color: #424242;
-  cursor: pointer;
-  margin: 0 15px 5px 0;
-  padding: 10px 15px;
-}
-.btn-logout:hover,
-.btn-logout:focus {
-  border-radius: 20px;
-  background-color: #eff5f8;
-  outline: none;
-  color: #0994d4;
-}
 
 /* ====================ALERT================ */
 .alert-container {
