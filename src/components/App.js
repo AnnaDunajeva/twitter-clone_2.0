@@ -1,63 +1,39 @@
 import React, { useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import NavBar from './NavBar'
-import Home from './Home'
-import NewTweet from './NewTweet'
-import TweetPage from './TweetPage'
-import SignUpLogin from './SignUpLogin'
-import PrivateRoute from './PrivateRoute'
-import Users from './Users'
-import Profile from './Profile'
-import NotFound from './NotFound'
-import {Route, Switch, Redirect, useRouteMatch } from 'react-router-dom'
+import {Route, Switch, Redirect } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
-import ProfileUpdate from './ProfileUpdate'
-import {getAuthedUserId, getSessionFetchStatus, isSessionError} from '../redux-store-2.0/session/selectors'
 import {getUser} from '../redux-store-2.0/api/users'
-// import Alert from './Alert'
-import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
-import ToTopButton from './ToTopButton'
-// import io from 'socket.io-client';
-import {URL, LOADED, SIGN_UP, PASSWORD_RESET, LOADING} from '../redux-store-2.0/constants'
-import {SESSION_END_SUCCESS} from '../redux-store-2.0/action-types'
-// import {setSocket} from '../redux-store-2.0/socket/actions'
-// import {tweetUpdate, tweetDeleteExeptReplies} from '../redux-store-2.0/entities/tweets/actions'
-// import {userUpdate} from '../redux-store-2.0/entities/users/actions'
 import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
-import EmailConfirmation from './EmailConfirmation'
-import ResetPassword from './ResetPassword'
-import {isAuthenticationError} from '../redux-store-2.0/errors/selectors'
-import GlobalErrors from './GlobalErrors'
-import GlobalAlerts from './GlobalAlerts'
 import useSocketSetup from '../Hooks/useSocketSetup'
+import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
 import useLogoutOnAuthenticationError from '../Hooks/useLogOutOnAuthenticationError'
 import {getUserIdFromCookie} from '../utils/helpers'
+import NewTweet from './entities/NewTweet'
+import PrivateRoute from './utils/PrivateRoute'
+import Home from './pages/Home'
+import NavBar from './pages/mainNav/NavBar'
+import Users from './pages/Users'
+import Profile from './pages/Profile'
+import NotFound from './pages/NotFound'
+import TweetPage from './pages/TweetPage'
+import SignUpLogin from './pages/SignUpLogin'
+import EmailConfirmation from './pages/EmailConfirmation'
+import ProfileUpdate from './pages/ProfileUpdate'
+import ResetPassword from './pages/ResetPassword'
+import GlobalErrors from './utils/GlobalErrors'
+import GlobalAlerts from './utils/GlobalAlerts'
+import ToTopButton from './utils/ToTopButton'
 
 const App = () => {
     const authedUser = getUserIdFromCookie()
     const dispatch = useDispatch()
     const userProfile = useSelector(getAuthedUserProfile())
-    // const sessionStatus = useSelector(getSessionFetchStatus())
-    // const authenticationError = useSelector(isAuthenticationError())
-    // const match = useRouteMatch()
-    // const sessionError = useSelector(isSessionError())
 
     useLogoutOnAuthenticationError()
 
     useScrollToTopOnRouteChange()
 
     useSocketSetup()
-
-    // useEffect(() => {
-    //     if (authenticationError) {
-    //         console.log('authenticationError')
-            
-    //         localStorage.removeItem('userId')
-    //         localStorage.removeItem('token')
-
-    //         dispatch({type: SESSION_END_SUCCESS})
-    //     }
-    // }, [authenticationError, dispatch])
 
     useEffect(() => {
         // console.log(match)

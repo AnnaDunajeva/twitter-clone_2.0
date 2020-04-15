@@ -120,6 +120,7 @@ export function getFeedUpdate(data) {
                     dispatch(compositeDataEntitiesUpdateFetchSuccess(homeKey(), feedUpdate)) //it is important that composite data goes last
                     //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
                     //with stuff being undefined    
+                    //new tweets wont be loaded to other composite datas
                 }
             }
             dispatch(hideLoading())

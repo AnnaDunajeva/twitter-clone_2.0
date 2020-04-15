@@ -75,3 +75,7 @@ export const validateEmail = (email) => {
 // }
 
 export const getUserIdFromCookie = () => document.cookie.replace(/(?:(?:^|.*;\s*)id\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+
+export const isStateKeyInErrors = (stateKey, stringArray) => {
+  return stringArray.filter(error => error.includes(stateKey)) ? true : false 
+}
