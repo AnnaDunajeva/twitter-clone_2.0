@@ -6,6 +6,8 @@ import {getAuthedUserProfile} from '../../../redux-store-2.0/entities/users/sele
 import DeleteAlert from '../../modals/DeleteAlert'
 import DragAndDrop from '../../utils/DragAndDrop'
 import ColorPicker from '../../utils/ColorPicker'
+import MainButton from '../../styles/MainButton'
+import Form from '../../styles/Form'
 
 const dragConfig = {
     height: 400,
@@ -83,18 +85,17 @@ const Additional = (props) => {
     }
 
     return (
-        <form className='profile-update-data-container position-relative' onSubmit={handleUpdate}>
+        <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
             {deleteBackground && 
                 <DeleteAlert 
                     onDelete={handleDeleteBackground} 
                     onClose={()=>setDeleteBackground(false)} 
-                    message={'Are you sure you want to delete your current background image permanently?'}
-                />}
+                    message={'Are you sure you want to delete your current background image permanently?'}/>}
 
-            <h3 className='form-header'>Additional Information</h3>
+            <h3>Additional Information</h3>
 
-            <div className='inputs-container'>
-                <p>Description</p>
+            <div>
+                <label>Description</label>
                 <TextareaAutosize 
                     className='profile-update-data-container-input textarea-update'
                     maxLength={maxlength}
@@ -102,26 +103,25 @@ const Additional = (props) => {
                     value={description}
                     onChange={(e)=>setDescription(e.target.value)}
                     minRows={2}
-                    maxRows={6}
-                />
+                    maxRows={6}/>
 
                 <label htmlFor='location'>Location</label>
                 <input 
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    type='text'
-                    className='profile-update-data-container-input'/>
+                    type='text'/>
 
-                <p>Background color</p>
+                <label>Background color</label>
                 <ColorPicker handleChangeComplete={handleChangeComplete} color={color}/>
 
-                <p>Background image</p>
-                <button 
-                    onClick={()=>setDeleteBackground(true)} 
-                    className='profile-image-delete-btn btn-unfollow'> 
+                <label>Background image</label>
+
+                <MainButton 
+                    primary shadow={'lightShadow'}
+                    onClick={()=>setDeleteBackground(true)}>
                         Delete current background
-                </button>
-                <p>Upload new image</p>
+                </MainButton>
+                <label>Upload new image</label>
                 <DragAndDrop 
                     file={file} 
                     setFile={setFile} 
@@ -133,13 +133,13 @@ const Additional = (props) => {
                 />
             </div>
     
-            <button
-                type='submit'
+            <MainButton
+                blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
                 disabled={isDisabled()}
-                className='btn'
-                >Update
-            </button>
-        </form>
+                type='submit'>
+                Update
+            </MainButton>
+        </Form>
     )
 }
 

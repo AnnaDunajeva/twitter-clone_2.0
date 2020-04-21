@@ -60,7 +60,7 @@ const GlobalErrors = () => {
             {deleteTweetError &&
                 <Alert message={'Oops, could not delete tweet.'} smallMessage={deleteTweetError} /> }
             {followUserErrors.length !== 0 && 
-                followUserErrors.map(error => <Alert message={'Oops, could not follow user.'} smallMessage={error}/>) }
+                followUserErrors.map(error => <Alert message={'Oops, could not ddo that.'} smallMessage={error}/>) }
             {logoutError &&
                 <Alert message={logoutError} />}
             {

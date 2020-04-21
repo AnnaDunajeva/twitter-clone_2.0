@@ -4,33 +4,34 @@ import {getAllUsersPaginated} from '../../redux-store-2.0/api/users'
 import {discoverUsersKey} from '../../redux-store-2.0/utils/compositeDataStateKeys'
 import UserCard from '../entities/UserCard'
 import ScrollUtil from '../utils/ScrollUtil'
+import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const DiscoverUsers = () => {
     const take = 7
     const usersSelector = useCallback(getDiscoverUsersIds(), [])
 
     return (
-        <div className='big-container'>
-        <ScrollUtil 
-            getDataFetch={getAllUsersPaginated} 
-            dispatchData={{}} 
-            stateSelector={usersSelector} 
-            take={take} 
-            headerText={'Find interesting people to follow!'} 
-            noDataText={'No users joind yet!'}
-            stateKey={discoverUsersKey()}
-            >
-            {(ids)=>(
-                <ul>
-                    {ids.map((userId) => (
-                        <li key={userId}>
-                            <UserCard userId={userId}/>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </ScrollUtil>
-        </div>
+        <EntityBackgroundContainer>
+            <ScrollUtil 
+                getDataFetch={getAllUsersPaginated} 
+                dispatchData={{}} 
+                stateSelector={usersSelector} 
+                take={take} 
+                headerText={'Find interesting people to follow!'} 
+                noDataText={'No users joind yet!'}
+                stateKey={discoverUsersKey()}
+                >
+                {(ids)=>(
+                    <ul>
+                        {ids.map((userId) => (
+                            <li key={userId}>
+                                <UserCard userId={userId}/>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </ScrollUtil>
+        </EntityBackgroundContainer>
     )
 }
 

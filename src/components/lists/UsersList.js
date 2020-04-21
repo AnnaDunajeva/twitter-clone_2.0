@@ -32,8 +32,9 @@ const UsersList = ({
                 ids.map((id) => (
                     <UserCard 
                         userId={id} 
+                        key={id}
                         handleToProfile={handleToProfile} 
-                        style={{width: '500px'}} 
+                        size={'500px'} 
                         showFollowButton={showFollowButton}/>
                 ))
             )}

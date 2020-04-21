@@ -185,7 +185,7 @@ export function login(userData) {
     }
 }
 
-export function logOut(user) {
+export function logOut() {
     return async (dispatch) => {
         dispatch(showLoading())
         dispatch({type: SESSION_END})
@@ -193,7 +193,6 @@ export function logOut(user) {
         try {
             const response = await fetch(`${URL}/user/logout`, {
                 method: 'PUT',
-                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                     'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1")
@@ -207,9 +206,6 @@ export function logOut(user) {
                 dispatch(globalErrorAdd(SESSION_END_ERROR, data.error))
             }
             else {
-                // localStorage.removeItem('userId')
-                // localStorage.removeItem('token')
-
                 dispatch({type: SESSION_END_SUCCESS})
             }
             dispatch(hideLoading())

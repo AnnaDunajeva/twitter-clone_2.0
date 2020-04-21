@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {getCompositeDataFirstEntityCreatedAt} from '../redux-store-2.0/composite-data/selectors'
 
 const useCompositeDataUpdate = ({take, dispatchData, getUpdateFunc, stateKey}) => {
-    const initialFetchTime = useSelector(getCompositeDataFirstEntityCreatedAt(stateKey)) //what if first tweet got deleted...
+    const initialFetchTime = useSelector(getCompositeDataFirstEntityCreatedAt(stateKey)) 
     const [scrollY, setScrollY] = useState(window.scrollY);
     const dispatch = useDispatch()
     const [initialFetch, setInitialFetch] = useState(false)

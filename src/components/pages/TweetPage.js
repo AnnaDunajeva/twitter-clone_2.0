@@ -11,6 +11,7 @@ import NewTweet from '../entities/NewTweet'
 import Tweet from '../entities/Tweet'
 import NotFound from '../pages/NotFound'
 import TweetsList from '../lists/TweetsList'
+import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
     
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
@@ -42,7 +43,7 @@ const TweetPage = (props) => {
     } 
 
     return (
-        <div className='big-container'>
+        <EntityBackgroundContainer>
 
             {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
             {console.log('parent tweet', tweetId)}
@@ -67,7 +68,7 @@ const TweetPage = (props) => {
                 headerText={'Replies'} 
                 noDataText={mainTweet?.deleted ? '' : 'No replies yet!'}  
             />
-        </div>
+        </EntityBackgroundContainer>
     )
 }
 

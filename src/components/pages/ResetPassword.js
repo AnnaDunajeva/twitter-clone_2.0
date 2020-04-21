@@ -4,11 +4,16 @@ import {Redirect} from 'react-router-dom'
 import {PASSWORD_RESET} from '../../redux-store-2.0/constants'
 import {resetPassword} from '../../redux-store-2.0/api/session'
 import {getSessionFetchStatus} from '../../redux-store-2.0/session/selectors'
+import {getUserIdFromCookie} from '../../utils/helpers'
+import MainButtom from '../styles/MainButton'
+import Form from '../styles/Form'
+import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const ResetPassword = (props) => {    
     const token = props.match.params.token
     const dispatch = useDispatch()
     const sessionStatus = useSelector(getSessionFetchStatus())
+    const authedUserId = getUserIdFromCookie()
 
     const [password, setPassword] = useState('')
     
@@ -17,17 +22,21 @@ const ResetPassword = (props) => {
         dispatch(resetPassword({token, password}))
     }
 
+    if (authedUserId) {
+        return <Redirect to='/'/>
+    }
+
     if (sessionStatus === PASSWORD_RESET) { //login should display reset password success message
         return <Redirect to='/login'/>
     }
 
     return (
         <React.Fragment>
-            {console.log('rendering reset password')}
-            <div className='reset-password-form-container'>
-                <form onSubmit={handleResetPassword}>
-                    <h3 className='header'>Enter your new password </h3>
-                    <div className='alert-input-container'>
+            {console.log('rendering reset password, autheduser: ', !!authedUserId, ' sessionstatus: ', sessionStatus)}
+            <EntityBackgroundContainer padding={'1% 7%'} margin={'4% auto 0 auto'}>
+                <Form onSubmit={handleResetPassword} inputBorder shadow padding={'0 30px'}>
+                    <h3>Enter your new password </h3>
+                    <div>
                         <label htmlFor='password'>Password</label>
                         <input 
                             value={password}
@@ -35,15 +44,14 @@ const ResetPassword = (props) => {
                             type='password'
                         />
                     </div>
-                    <button
+                    <MainButtom
+                        medium margin={'35px auto'} shadow={'mediumLightShadow'}
                         type='submit'
-                        disabled={password === ''}
-                        style={{margin: '35px auto', width: '250px', display: 'block'}}
-                        className='btn btn-form'
-                    >RESET PASSWORD
-                    </button>
-                </form>
-            </div>
+                        disabled={password === ''}>
+                            Reset Password
+                    </MainButtom>
+                </Form>
+            </EntityBackgroundContainer>
         </React.Fragment>
     )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import {getUserById, getUserStatusById} from '../../../redux-store-2.0/entities/users/selectors'
@@ -14,12 +14,15 @@ import General from './GeneralUserData'
 import Additional from './AdditionalUserData'
 import ProfileDataSideBar from './ProfileDataSideBar'
 import ProfileBackgroundWithAvatar from '../Profile/ProfileBackgroundWithAvatar'
+import Alert from '../../modals/Alert'
+import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 
 const ProfileUpdate = (props) => {
     const userId = getUserIdFromCookie()
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
     const dispatch = useDispatch()
+    const [formError, setFormError] = useState(null)
 
     const updateProfileData = (userDataAndFile) => {
         const data = {
@@ -35,31 +38,35 @@ const ProfileUpdate = (props) => {
         <Router>
             {console.log('rendedring profile update')}
 
+            {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
+
             {userFetchStatus === LOADED || userFetchStatus === UPDATED
                 ?<React.Fragment>
                     <ProfileBackgroundWithAvatar user={user}/>
-                    <div className='data-container-update' style={{display: 'flex'}}>
+                    <div style={{display: 'flex'}}>
                         <ProfileDataSideBar path={`${props.match.path}`}/>
-                        <Switch>
-                            <PrivateRoute 
-                                path={`${props.match.path}/`} exact 
-                                component={General} 
-                                additionalProps={{updateProfileData, handleDelete: deleteAvatar}}/>
-                            <PrivateRoute 
-                                path={`${props.match.path}/additional`} 
-                                component={Additional} 
-                                additionalProps={{updateProfileData, handleDelete: deleteBackgroundImage}}/>
-                            <PrivateRoute 
-                                path={`${props.match.path}/security`} 
-                                component={ToBeImplemented}/>
-                            <PrivateRoute 
-                                path={`${props.match.path}/timeline`} 
-                                component={ToBeImplemented}/>
-                            <PrivateRoute 
-                                path={`${props.match.path}/theme`} 
-                                component={ToBeImplemented}/>
-                            <Route component={NotFound} />
-                        </Switch>
+                        <EntityBackgroundContainer profile={'true'} padding={'20px 100px'}>
+                            <Switch>
+                                <PrivateRoute 
+                                    path={`${props.match.path}/`} exact 
+                                    component={General} 
+                                    additionalProps={{updateProfileData, handleDelete: deleteAvatar, setFormError: setFormError}}/>
+                                <PrivateRoute 
+                                    path={`${props.match.path}/additional`} 
+                                    component={Additional} 
+                                    additionalProps={{updateProfileData, handleDelete: deleteBackgroundImage, setFormError: setFormError}}/>
+                                <PrivateRoute 
+                                    path={`${props.match.path}/security`} 
+                                    component={ToBeImplemented}/>
+                                <PrivateRoute 
+                                    path={`${props.match.path}/timeline`} 
+                                    component={ToBeImplemented}/>
+                                <PrivateRoute 
+                                    path={`${props.match.path}/theme`} 
+                                    component={ToBeImplemented}/>
+                                <Route component={NotFound} />
+                            </Switch>
+                        </EntityBackgroundContainer>
                     </div>
                 </React.Fragment>
                 :null

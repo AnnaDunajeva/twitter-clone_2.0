@@ -8,7 +8,8 @@ import Image from '../entities/Image'
 const ImagesList = ({ 
     userId, 
     dispatchData, 
-    handleToTweetPage
+    handleToTweetPage,
+    handleToProfile
 }) => {    
     const userImagesSelector = useCallback(getUserTweetsWithImagesIds(userId), []) //not sure if I need it
     return (
@@ -25,6 +26,7 @@ const ImagesList = ({
                         <Image 
                             id={id} 
                             key={id} 
+                            handleToProfile={handleToProfile}
                             handleToTweetPage={handleToTweetPage}/>
                     ))}
                 </div>  

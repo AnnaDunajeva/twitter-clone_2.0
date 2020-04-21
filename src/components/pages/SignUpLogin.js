@@ -1,11 +1,17 @@
 import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import {ThemeProvider} from 'styled-components'
 import {signUp, login} from '../../redux-store-2.0/api/session'
-import {validateEmail} from '../../utils/helpers'
-import {getUserIdFromCookie} from '../../utils/helpers'
+import {validateEmail, getUserIdFromCookie, isValidFisrtOrLastname, isValidUsername} from '../../utils/helpers'
 import Alert from '../modals/Alert'
 import RequestResetPasswordLinkAlert from '../modals/RequestResetPasswordLinkAlert'
+import MainButton from '../styles/MainButton'
+import ClearButton from '../styles/ClearButton'
+import Link from '../styles/Link'
+import Form from '../styles/Form'
+import {light, dark} from '../styles/themes'
+import AnimatedGradient from '../styles/AnimatedGradient'
 
 const SignUpLogin = () => {
     const authedUser = getUserIdFromCookie()
@@ -26,17 +32,34 @@ const SignUpLogin = () => {
     const SignUpUser = async (e) => {
         e.preventDefault()
 
+        if (!isValidUsername(username)) {
+            setFormError('You can only use in your username alphabetic characters, numbers, "-" or "_".')
+            return
+        }
+        if (!isValidFisrtOrLastname(firstName)) {
+            setFormError('You can only use alphabetic characters and "-" in your name.')
+            return
+        }
+        if (!isValidFisrtOrLastname(lastName)) {
+            setFormError('You can only use alphabetic characters and "-" in your name.')
+            return
+        }
+
         if (!validateEmail(email)) {
             setFormError('Provided email adress is invalid!')
             return
         }
+        if (password.length < 6) {
+            setFormError('Password should be at least 6 characters long.')
+            return
+        }
 
         const user = {
-            userId: username.toLowerCase(),
-            firstName,
-            lastName,
-            password,
-            email
+            userId: username.toLowerCase().trim(),
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            password: password,
+            email: email.trim()
         }
 
         await dispatch(signUp(user))
@@ -45,10 +68,12 @@ const SignUpLogin = () => {
     const LoginUser = async (e) => {
         e.preventDefault()
         const user = {
-            userId: loginUsername.toLowerCase(),
+            userId: loginUsername.toLowerCase().trim(),
             password: loginPassword
         }
-        await dispatch(login(user))
+        if (loginUsername.length !== 0 && loginPassword.length !== 0) {
+            await dispatch(login(user))
+        }
     }
 
     if (authedUser) {
@@ -56,97 +81,82 @@ const SignUpLogin = () => {
     }
     //in case if email confirmation error will be redirected here with login error
     return (
-        <div className='animated-gradient'>
-            <div className='form-container'>
-                {console.log('rendering signup')}
+        <ThemeProvider theme={dark}>
+            <AnimatedGradient>
+                <div className='form-container'>
+                    {console.log('rendering signup')}
 
-                {forgotPassword && 
-                    <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
-                {/* {sessionStatus === SIGN_UP && <Alert message={'Thank you! Please confirm your email adress to continue.'} 
-                                                    smallMessage={'NB! confirmation link is valid for 15 min. If you do not confirm your account during 24 hours, it will be deleted. You can request new confirmation link if needed.'}/>}
-                {sessionStatus === PASSWORD_RESET_LINK_SENT && 
-                    <Alert message={'We have sent reset password link to your email adress.'}
-                            smallMessage={'NB! Link is valid for 15 minutes. If you do not reset your password during this period, your old password will remain valid.'}
-                            onClose={()=>dispatch(setSessionFetchStatus(null))}/>} */}
-                {/* {loginError && <Alert message={loginError}/>} 
-                {signUpError && <Alert message={signUpError}/>}
-                {resetPasswordLinkError && <Alert message={resetPasswordLinkError} onClose={handleCloseResetPsswordLinkErrorAlert}/>} */}
-                {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
+                    {forgotPassword && 
+                        <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
+                
+                    {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
 
-                <form onSubmit={LoginUser} className='form'>
-                    <h3 className='form-header'>Login </h3>
-                    <div className='inputs-container'>
-                        <label htmlFor='loginUsername'>Username</label>
-                        <input 
-                            value={loginUsername}
-                            onChange={(e) => setLoginUsername(e.target.value)}
-                            type='text'
-                        />
-                        <label htmlFor='loginPassword'>Password</label>
-                        <input 
-                            value={loginPassword}
-                            onChange={(e) => setLoginPassword(e.target.value)}
-                            type='password'
-                        />
-                    </div>
-                    <button
-                        type='submit'
-                        disabled={loginUsername === '' || loginPassword === ''}
-                        className='btn btn-form'
-                    >Login
-                    </button>
-                    <div 
-                        className='clickable hover-blue-circle-background' 
-                        onClick={()=>setForgotPassword(true)}
-                        style={{marginTop: '10px', width: '160px', textAlign: 'center'}} 
-                        tabIndex={0}>
+                    <Form onSubmit={LoginUser} noInputBorder shadow inputShadow={'mediumDarkShadow'} labelColor={'mediumLightGrey'}>
+                        <h3>Login </h3>
+                            <div>
+                            <label htmlFor='loginUsername'>Username</label>
+                            <input 
+                                value={loginUsername}
+                                onChange={(e) => setLoginUsername(e.target.value)}
+                                type='text'/>
+                            <label htmlFor='loginPassword'>Password</label>
+                            <input 
+                                value={loginPassword}
+                                onChange={(e) => setLoginPassword(e.target.value)}
+                                type='password'/>
+                        </div>
+                        <MainButton
+                            mediumSmall blue disabledMediumLight shadow={'darkShadow'} uppercase margin={'20px auto'}
+                            type='submit'
+                            disabled={loginUsername === '' || loginPassword === ''}>
+                                Login
+                        </MainButton>
+                        <Link onClick={()=>setForgotPassword(true)}>
                             Forgot password?
-                    </div>
-                </form>
-                <div className='separator-line'></div>
-                <form onSubmit={SignUpUser} className='form'>
-                    <h3 className='form-header'>Sign Up to communicate with the World!</h3>
-                    <div className='inputs-container'>
-                        <label htmlFor='username'>Username</label>
-                        <input 
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            type='text'
-                        />
-                        <label htmlFor='firstName'>First Name</label>
-                        <input 
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            type='text'
-                        />
-                        <label htmlFor='lastName'>Last Name</label>
-                        <input 
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            type='text'
-                        />
-                        <label htmlFor='password'>Password</label>
-                        <input 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            type='password'
-                        />
-                        <label htmlFor='email'>e-mail</label>
-                        <input 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            type='text'
-                        />
-                    </div>
-                    <button
-                        type='submit'
-                        disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}
-                        className='btn btn-form'
-                        >Sign Up
-                    </button>
-                </form>
-            </div>
-        </div>
+                        </Link>
+                    </Form>
+
+                    <div className='separator-line'></div>
+
+                    <Form onSubmit={SignUpUser} noInputBorder inputWidth={'300px'} shadow inputShadow={'mediumDarkShadow'} labelColor={'mediumLightGrey'}>
+                        <h3>Sign Up to communicate with the World!</h3>
+                        <div>
+                            <label htmlFor='username'>Username</label>
+                            <input 
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                type='text'/>
+                            <label htmlFor='firstName'>First Name</label>
+                            <input 
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                type='text'/>
+                            <label htmlFor='lastName'>Last Name</label>
+                            <input 
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                type='text'/>
+                            <label htmlFor='password'>Password</label>
+                            <input 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                type='password'/>
+                            <label htmlFor='email'>e-mail</label>
+                            <input 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                type='text'/>
+                        </div>
+                        <MainButton
+                            mediumSmall blue disabledMediumLight shadow={'darkShadow'} uppercase margin={'10px auto'}
+                            type='submit'
+                            disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
+                                Sign Up
+                        </MainButton>
+                    </Form>
+                </div>
+            </AnimatedGradient>
+        </ThemeProvider>
     )
 }
 

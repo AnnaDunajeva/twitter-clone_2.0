@@ -15,6 +15,7 @@ import NotFound from '../NotFound'
 import TweetsList from '../../lists/TweetsList'
 import PrivateRoute from '../../utils/PrivateRoute'
 import ImageList from '../../lists/ImagesList'
+import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 
 const Profile = (props) => {
     const authedUserId = getUserIdFromCookie()
@@ -86,15 +87,14 @@ const Profile = (props) => {
                 <React.Fragment>
                     <ProfileCard user={user} setToUpdate={setToUpdate} handleToProfile={setToProfileId}/>
                     <ProfileNav url={props.match.url}/>
-                    <div 
-                        className='profile-tweets big-container' 
-                        style={{borderRadius: '2px', margin: '0px auto', alignSelf: 'stretch', width: 'initial', boxShadow: 'none'}}>
+                    <EntityBackgroundContainer profile={'true'}>
                         <Switch>
                             <PrivateRoute 
                                 path={`${props.match.path}`} exact 
                                 component={TweetsList} 
                                 additionalProps={{
                                     handleToTweetPage: setToTweetPageId, 
+                                    handleToProfile: setToProfileId, 
                                     stateSelector: userTweetsSelector, 
                                     getDataFetch: getUserTweetsPaginated, 
                                     stateKey: tweetsKey, 
@@ -125,10 +125,11 @@ const Profile = (props) => {
                                 additionalProps={{
                                     userId: userId, 
                                     handleToTweetPage: setToTweetPageId, 
+                                    handleToProfile: setToProfileId, 
                                     dispatchData}}/>
                             <Route component={NotFound} />
                         </Switch>
-                    </div>
+                    </EntityBackgroundContainer>
                 </React.Fragment>
                 : null
             }

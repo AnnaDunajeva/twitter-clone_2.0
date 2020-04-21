@@ -11,6 +11,10 @@ import {getUserFollowersIds, getUserFollowingsIds} from '../../../redux-store-2.
 import {userFollowersKey, userFollowingsKey} from '../../../redux-store-2.0/utils/compositeDataStateKeys'
 import {getUserFollowersPaginated, getUserFollowingsPaginated} from '../../../redux-store-2.0/api/users'
 import {toggleUserFollow} from '../../../redux-store-2.0/api/users'
+import ClearButton from '../../styles/ClearButton'
+import MainButton from '../../styles/MainButton'
+import IconButton from '../../styles/IconButton'
+import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 
 const ProfileDataSmall = ({
     user, 
@@ -40,7 +44,7 @@ const ProfileDataSmall = ({
     }
 
     return (
-        <div className='profile-meta' style={{paddingBottom: '20px'}}>
+        <EntityBackgroundContainer profile={'true'}>
             {showFollowers && user.followersCount !== 0 &&
                 <ListPopUp 
                     header={'Followers'}
@@ -75,22 +79,28 @@ const ProfileDataSmall = ({
                 </ListPopUp>
             }
             {isAuthedUser
-                ?<IoIosSettings 
+                ?<IconButton 
                     onClick={()=>setToUpdate(true)} 
-                    className='clickable hover-blue profile-setting-wheel' 
-                    size={35} 
-                />
+                    size={'50px'} pale circle hoverOnDark float={'right'}>
+                        <IoIosSettings size={35}/>
+                </IconButton>
                 :<div className='btn-follow-container' style={{float: 'right'}}>
-                    <button 
-                        className={`btn-usercard btn-${user.following ? 'unfollow' : 'follow'}`} 
-                        onClick={handleFollowUnfollow}
-                    > 
-                        {user.following ? 'Unfollow' : "Follow"} 
-                    </button>
+                    {user.following 
+                        ? <MainButton 
+                            onClick={handleFollowUnfollow} 
+                            small primary margin={'15px auto'}>
+                                Unfollow
+                        </MainButton>
+                        :<MainButton 
+                            onClick={handleFollowUnfollow} 
+                            small secondary margin={'15px auto'}>
+                                Follow
+                        </MainButton>
+                    }
                 </div>
             }
             <div>
-                <div className='profile-meta-text' style={{paddingBottom: '50px', height: '40px', paddingLeft: '140px'}}>
+                <div className='profile-meta-text' style={{marginTop: '0', height: '55px', paddingLeft: '140px'}}>
                     {user.description}
                 </div>
                 <span className='profile-meta-text'>
@@ -107,22 +117,22 @@ const ProfileDataSmall = ({
                         {user.location}
                     </span>
                 }
-                <div style={{marginTop: '15px'}}>
-                    <span 
-                        className='profile-meta-text clickable hover-blue hover-blue-circle-background' 
+                <div style={{marginTop: '15px', display: 'flex'}}>
+                    <IconButton
+                        fontSize={'mediumFont'} margin={'0 15px'} padding={'10px 15px'}
                         onClick={()=>setShowFollowings(true)}>
                             <FaUsers className='profile-icon' size={22}/>
                             Following {user.followingsCount}
-                    </span>
-                    <span 
-                        className='profile-meta-text clickable hover-blue hover-blue-circle-background' 
+                    </IconButton>
+                    <IconButton
+                        fontSize={'mediumFont'} padding={'10px 15px'}
                         onClick={()=>setShowFollowers(true)}>
                             <FaUsers className='profile-icon' size={22}/>
                             Followers {user.followersCount}
-                    </span>
+                    </IconButton>
                 </div>
             </div>
-        </div>
+        </EntityBackgroundContainer>
     )
 }
 

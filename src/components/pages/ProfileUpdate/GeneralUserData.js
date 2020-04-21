@@ -3,6 +3,9 @@ import {useSelector, useDispatch} from 'react-redux'
 import {getAuthedUserProfile} from '../../../redux-store-2.0/entities/users/selectors'
 import DragAndDrop from '../../utils/DragAndDrop'
 import DeleteAlert from '../../modals/DeleteAlert'
+import {isValidFisrtOrLastname} from '../../../utils/helpers'
+import MainButton from '../../styles/MainButton'
+import Form from '../../styles/Form'
 
 const dragConfig = {
     height: 300,
@@ -28,14 +31,19 @@ const General = (props) => {
         e.preventDefault()
         const data = {user: {}}
         if (firstName !== '' && firstName !== user.firstName) {
+            if (!isValidFisrtOrLastname(firstName)) {
+                props.setFormError('You can only use alphabetic characters and "-" in your name.')
+                return
+            }
             data.user.firstName = firstName
         }
         if (lastName !== '' && lastName !== user.lastName) {
+            if (!isValidFisrtOrLastname(lastName)) {
+                props.setFormError('You can only use alphabetic characters and "-" in your name.')
+                return
+            }
             data.user.lastName = lastName
         }
-        // if (email !== '' && email !== user.email) {
-        //     data.user.email = email        
-        // }
         if (avatar !== null) {
             data.file = avatar
             data.user.avatar = true
@@ -76,7 +84,7 @@ const General = (props) => {
     }
 
     return (
-        <form className='profile-update-data-container' onSubmit={handleUpdate}>
+        <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
             {deleteAvatar && 
                 <DeleteAlert 
                     onDelete={handleDeleteAvatar} 
@@ -84,37 +92,25 @@ const General = (props) => {
                     message={'Are you sure you want to delete your current avatar image permanently?'}
                 />
             }
-            <h3 className='form-header'>General Information</h3>
-            <div className='inputs-container'>
+            <h3>General Information</h3>
+            <div>
                 <label htmlFor='firstName'>First Name</label>
                 <input 
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    type='text'
-                    className='profile-update-data-container-input'
-                />
+                    type='text'/>
                 <label htmlFor='lastName'>Last Name</label>
                 <input 
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    type='text'
-                    className='profile-update-data-container-input'
-                />
-                {/* <label htmlFor='email'>e-mail</label>
-                <input 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type='text'
-                    className='profile-update-data-container-input'
-                /> */}
-                <p>Profile image</p>
-                <button 
-                    onClick={()=>setDeleteAvatar(true)} 
-                    className='profile-image-delete-btn btn-unfollow'
-                >
-                    Delete current avatar
-                </button>
-                <p>Upload new image</p>
+                    type='text'/>
+                <label>Profile image</label>
+                <MainButton 
+                    primary shadow={'lightShadow'}
+                    onClick={()=>setDeleteAvatar(true)}>
+                        Delete current avatar
+                </MainButton>
+                <label>Upload new image</label>
                 <DragAndDrop 
                     file={avatar} 
                     setFile={setAvatar} 
@@ -125,13 +121,14 @@ const General = (props) => {
                     handleRemoveImage={handleRemoveImage}
                 />
             </div>
-            <button
-                type='submit'
+
+            <MainButton
+                blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
                 disabled={isDisabled()}
-                className='btn'
-                >Update
-            </button>
-        </form>
+                type='submit'>
+                    Update
+            </MainButton>
+        </Form>
     )
 }
 

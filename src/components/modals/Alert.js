@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import {MdClose} from "react-icons/md"
+import IconButton from '../styles/IconButton'
+import AlertStyled from '../styles/Alert'
 
 const Alert = ({message, closable, onClose, smallMessage}) => {
     const [isVisible, setIsVisible] = useState(true)
@@ -16,23 +18,18 @@ const Alert = ({message, closable, onClose, smallMessage}) => {
 
     return (
         isVisible 
-            ? <div 
-                className='alert-container' 
-                onClick={handleClose}>
-                <div className='alert-box'>
+            ?<AlertStyled onClick={handleClose}>
+                <div>
                     {isClosable && 
-                        <MdClose 
-                            size={25} 
-                            className='close-alert-btn' 
-                            onClick={handleClose}/>}
-                    <div className='alert-content'>
-                        {message}
-                    </div>
-                    <div className='alert-content' style={{fontSize: '18px'}}>
-                        {smallMessage}
-                    </div>
+                        <IconButton 
+                            onClick={handleClose}
+                            pale circle hoverOnDark size={'36px'} float={'right'}>
+                                <MdClose size={25}/>
+                        </IconButton>}
+                    <p>{message}</p>
+                    <p>{smallMessage}</p>
                 </div>
-            </div>
+            </AlertStyled>
             : null
     )
 }

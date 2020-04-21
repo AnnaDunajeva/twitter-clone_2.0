@@ -1,38 +1,38 @@
 import React from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
 import useLogOut from '../../../Hooks/useLogOut'
 import {getUserIdFromCookie} from '../../../utils/helpers'
 import SearchBar from '../../utils/SearchBar'
+import ClearButton from '../../styles/ClearButton'
+import NavLink from '../../utils/NavLink'
+import MainNav from '../../styles/MainNav'
 
 const NavBar = () => {
     const authedUser = getUserIdFromCookie()
     const logOutUser = useLogOut()
 
-    if (!authedUser) {
-        return <Redirect to='/login'/>
-    }
     return (
-        <nav className='nav'>
+        <MainNav>
             <div>
-                <NavLink to='/' exact activeClassName='active'>
+                <ClearButton as={NavLink} to='/' exact size={'90px'} fontSize={'mediumFont'} margin={'0 5px 0 0'}>
                     Home
-                </NavLink>
-                <NavLink to={`/user/${authedUser}`} activeClassName='active'>
+                </ClearButton>
+                <ClearButton as={NavLink} to={`/user/${authedUser}`} size={'90px'} fontSize={'mediumFont'} margin={'0 5px 0 0'}>
                     Profile
-                </NavLink>
-                <NavLink to='/users' activeClassName='active'>
+                </ClearButton>
+                <ClearButton as={NavLink} to='/users' size={'110px'} fontSize={'mediumFont'} margin={'0 5px 0 0'}>
                     Discover
-                </NavLink>
+                </ClearButton>
 
             </div>
             <div>
                 <SearchBar/>
-
-                <button onClick={logOutUser} className='btn-logout hover-blue'>
-                    Log Out
-                </button>
+                <ClearButton
+                    bold uppercase fontSize={'mediumFont'}
+                    onClick={logOutUser}>
+                        Log Out
+                </ClearButton>
             </div>
-        </nav>
+        </MainNav>
     )
 }
 

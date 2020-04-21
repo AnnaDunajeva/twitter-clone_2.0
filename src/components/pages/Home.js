@@ -6,6 +6,7 @@ import {getFeedUpdate} from '../../redux-store-2.0/api/tweets'
 import useCompositeDataUpdate from '../../Hooks/useCompositeDataUpdate'
 import NewTweet from '../entities/NewTweet'
 import TweetsList from '../lists/TweetsList'
+import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const Home = () => {
     const feedIds = useCallback(getFeedIds(), [])
@@ -19,19 +20,18 @@ const Home = () => {
 
     return (
         <React.Fragment>
-            <div className='big-container'>
+            <EntityBackgroundContainer>
                 <NewTweet showHeader={false}/>
-            </div>
-            <div className='big-container'>
+            </EntityBackgroundContainer>
+            <EntityBackgroundContainer>
                 <TweetsList 
                     stateSelector={feedIds}
                     take={5} 
                     stateKey={(homeKey())}
                     dispatchData={dispatchData} 
                     getDataFetch={getFeedPaginated} 
-                    headerText={'Your Timeline'}
-                />
-            </div>
+                    headerText={'Your Timeline'}/>
+            </EntityBackgroundContainer>
         </React.Fragment>
     )
 }

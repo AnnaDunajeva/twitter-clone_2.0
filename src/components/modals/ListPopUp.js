@@ -1,5 +1,7 @@
 import React, {useState, useRef} from 'react'
 import {MdClose} from "react-icons/md"
+import IconButton from '../styles/IconButton'
+import ListPopUpBox from '../styles/ListPopUpBox'
 
 const ListPopUp = ({header, onClose, id, children}) => {
     const [isVisible, setIsVisible] = useState(true)
@@ -17,20 +19,25 @@ const ListPopUp = ({header, onClose, id, children}) => {
         if (onClose) {
             onClose()
         } 
-        setIsVisible(false)
+        setIsVisible(false) 
     }
 
     return (
         isVisible 
-            ? <div className='alert-container' onClick={handleClose} ref={closeArea}>
-                <div className='list-popup-box-wrapper'>
-                    <div id={id} className='list-popup-box'>
-                        <MdClose size={25} className='close-alert-btn' onClick={hanbleCloseButton}/>
-                        <p className='header'>{header}</p>
+            ?<ListPopUpBox onClick={handleClose} ref={closeArea}>
+                <div>
+                    <div id={id}>
+                        <IconButton 
+                            onClick={hanbleCloseButton}
+                            pale circle hoverOnDark size={'36px'}
+                            float={'right'}>
+                            <MdClose size={27}/>
+                        </IconButton>
+                        <p>{header}</p>
                         {children}
                     </div>
                 </div>
-            </div>
+            </ListPopUpBox>
             : null
     )
 }

@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react'
 import { ChromePicker  } from 'react-color';
 import {IoMdColorFill} from 'react-icons/io'
+import IconButton from '../styles/IconButton'
 
 const ColorPicker = ({handleChangeComplete, color}) => { 
 
@@ -18,10 +19,11 @@ const ColorPicker = ({handleChangeComplete, color}) => {
         <div className='color-picker-container position-relative'>
             <div className='profile-update-data-container-input color-input' style={{background: color}}>
             </div>
-            <IoMdColorFill 
-                className='icon color-picker-icon' 
+            <IconButton 
                 onClick={()=>setIsColorPickerVisible(!isColorPickerVisible)}
-            />
+                hoverOnDark circle size={'50px'} margin={'0 5px'}>
+                    <IoMdColorFill size={35}/>
+            </IconButton>
             {isColorPickerVisible && 
                 <React.Fragment>
                     <div 

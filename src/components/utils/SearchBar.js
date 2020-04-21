@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import {useHistory } from 'react-router-dom'
 import { IoIosSearch } from "react-icons/io";
-
+// import {FaSearch} from 'react-icons/fa'
+import {removeBlacklistChars} from '../../utils/helpers'
+import SearchBarForm from '../styles/SearchBar'
 
 const SearchBar = () => {
     const [userTofind, setUserToFind] = useState('')
@@ -9,24 +11,23 @@ const SearchBar = () => {
 
     const handleSearch = (e) => {
         e.preventDefault(); 
-        const userId = userTofind
+        const userId = removeBlacklistChars(userTofind) 
         setUserToFind('')
         history.push(`/find/${userId}`)
     }
 
 
     return (
-        <form onSubmit={(e)=>handleSearch(e)}>
-            <div className='search-input-container' tabIndex={0}>
+        <SearchBarForm onSubmit={(e)=>handleSearch(e)}>
+            <div>
                 <IoIosSearch />
+                {/* <FaSearch /> */}
                 <input
                     value={userTofind}
                     onChange={(e) => setUserToFind(e.target.value)}
-                    type='text'
-                    className='search-input'
-            />
+                    type='text'/>
             </div>
-        </form>
+        </SearchBarForm>
     )
 }
 

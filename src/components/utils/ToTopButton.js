@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {IoIosArrowUp} from "react-icons/io"
+import IconButton from '../styles/IconButton'
 
 const ToTopButton = () => {
     const [showButton, setShowButton] = useState(false)
@@ -30,13 +31,16 @@ const ToTopButton = () => {
         window.scrollTo(0, 0);
         setShowButton(false)
         setScrollY(window.scrollY);
-    }
+    } 
 
     return (
         showButton && 
-            <div style={{position: 'fixed', bottom: '10%', right: '10%'}}>
-                <IoIosArrowUp onClick={handleToTop} size={50} className='hover-blue-circle-background clickable hover-blue'/>
-            </div>
+            <IconButton 
+                onClick={handleToTop}
+                circle size={'45px'}
+                style={{position: 'fixed', bottom: '8%', right: '8%'}}>
+                <IoIosArrowUp size={40}/>
+            </IconButton>
     );
 };
 

@@ -3,20 +3,17 @@ import {useSelector, useDispatch} from 'react-redux'
 import {SESSION_END_SUCCESS} from '../redux-store-2.0/action-types'
 import {isAuthenticationError} from '../redux-store-2.0/errors/selectors'
 import {getSocket} from '../redux-store-2.0/socket/selectors'
-import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
+import {getUserIdFromCookie} from '../utils/helpers'
 
 const useLogOutOnAuthenticatonError = () => {
     const dispatch = useDispatch()
     const authenticationError = useSelector(isAuthenticationError())
-    const authedUser = useSelector(getAuthedUserId())
+    const authedUser = getUserIdFromCookie()
     const socket = useSelector(getSocket())
 
     useEffect(() => {
         if (authenticationError && authedUser) {
             console.log('authenticationError')
-            
-            localStorage.removeItem('userId')
-            // localStorage.removeItem('token')
 
             if (socket) {
                 socket.close()

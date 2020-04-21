@@ -23,8 +23,8 @@ const SearchResults = ({match}) => {
             stateSelector={usersSelector} 
             take={take} 
             headerText={`Search results for "${userToFind}"`} 
-            noDataHeader={'Sorry'}
-            noDataText={'could not find any users with this username.'}
+            noDataHeader={'Sorry :('}
+            noDataText={`We could not find any users with name or username "${userToFind}".`}
             stateKey={searchUserKey(userToFind)}
             >
             {(ids)=>(

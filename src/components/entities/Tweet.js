@@ -22,6 +22,10 @@ import {formatDate} from '../../utils/helpers'
 import UsersList from '../lists/UsersList'
 import ListPopUp from '../modals/ListPopUp'
 import DeleteAlert from '../modals/DeleteAlert'
+import IconButton from '../styles/IconButton'
+import CoverAllLink from '../styles/CoverAllLink'
+import EntityContainer from '../styles/EntityContainer'
+import Link from '../styles/Link'
 
 const linkifyOptions = {
     validate: {
@@ -78,12 +82,29 @@ const Tweet = ({
         }))
         setIsDeleteTweet(false)
     }
+    
     const toParent = () => {
         history.push(`/tweet/${tweet.replyingToTweetId}`)
     }
+    
+    const toProfile = () => handleToProfile 
+        ? handleToProfile(tweet.user) 
+        : history.push(`/user/${tweet.user}`)
+    
+    const toTweet = () => handleToTweetPage 
+        ? handleToTweetPage(id) 
+        : history.push(`/tweet/${id}`)
 
     return (
         <React.Fragment>
+            {isDeleteTweet && 
+                <DeleteAlert 
+                    onDelete={handleDelete} 
+                    onClose={()=>setIsDeleteTweet(false)} 
+                    message={'Are you sure you want to delete this tweet?'}
+                    smallMessage={'You will not be able to restore it.'}
+                />
+            }
             {showLikes && tweet.likesCount !== 0 &&
                 <ListPopUp 
                     header={'Liked by'}
@@ -105,68 +126,40 @@ const Tweet = ({
                     <p style={{padding: '20px'}}>[Deleted]</p>
                 </div>
                 : <React.Fragment>
-                    {isDeleteTweet && 
-                        <DeleteAlert 
-                            onDelete={handleDelete} 
-                            onClose={()=>setIsDeleteTweet(false)} 
-                            message={'Are you sure you want to delete this tweet?'}
-                        />
-                    }
-                    <div className='tweet-container'>
-                        <div 
-                            onClick={handleToTweetPage 
-                                ? () =>handleToTweetPage(id) 
-                                : ()=>history.push(`/tweet/${id}`)
-                            } 
-                            className='pseudo-link clickable'>
-                        </div>
+                    <EntityContainer>
+                        <CoverAllLink onClick={toTweet}/>
 
                         <img 
                             src={author.avatar} 
                             alt={`Avatar for ${author.firstName} ${author.lastName}`} 
                             className='avatar position-relative clickable'
                             tabIndex={0}
-                            onClick={handleToProfile 
-                                ? () => handleToProfile(author.userId) 
-                                : ()=>history.push(`/user/${author.userId}`)
-                            } 
+                            onClick={toProfile} 
                         />
 
                         <div className='tweet-meta'>
                             {authedUser === author.userId && 
-                                <MdClose 
+                                <IconButton 
                                     onClick={() => setIsDeleteTweet(true)} 
-                                    size={25} 
-                                    className='close-alert-btn position-relative'
-                                />
+                                    circle pale size={'36px'} float={'right'}>
+                                        <MdClose size={27}/>
+                                </IconButton>
                             }
-                            <span 
-                                className='position-relative clickable hover-blue' 
-                                tabIndex={0}
-                                onClick={handleToProfile 
-                                    ? () => handleToProfile(author.userId) 
-                                    : ()=>history.push(`/user/${author.userId}`)
-                                }
-                            >
-                                <span className='user-name'>{`${author.firstName} ${author.lastName} `}</span>
-                                <span className='meta-text'>@{author.userId}</span>
-                            </span>
+                            <Link 
+                                onClick={toProfile}>
+                                    <span className='user-name'>{`${author.firstName} ${author.lastName} `}</span>
+                                    <span className='meta-text'>@{author.userId}</span>
+                            </Link>
+                            
                             <div className='meta-text'>{formatDate(tweet.createdAt)}</div>
-
                             {tweet.replyingToTweetId !== null && 
-                                <span 
-                                    className='meta-text position-relative clickable hover-blue' 
-                                    tabIndex={0}
-                                    onClick={handleToTweetPage 
-                                        ? ()=>handleToTweetPage(tweet.replyingToTweetId) 
-                                        : toParent
-                                    }
-                                >
-                                    {tweet.replyingToUserId 
-                                        ? `Replying to @${tweet.replyingToUserId}` 
-                                        : 'Replying to [deleted]'
-                                    }
-                                </span>
+                                <Link secondary
+                                    onClick={toTweet}>
+                                            {tweet.replyingToUserId 
+                                                ? `Replying to @${tweet.replyingToUserId}` 
+                                                : 'Replying to [deleted]'
+                                            }
+                                </Link>
                             }
 
                             <Linkify 
@@ -212,33 +205,35 @@ const Tweet = ({
                             }
 
                             <div className='respons-container'> 
-                                <button 
-                                    onClick={handleToTweetPage 
-                                        ? () =>handleToTweetPage(id) 
-                                        : ()=>history.push(`/tweet/${id}`)
-                                    } 
-                                    className='btn-clear icon-container'
-                                >
-                                    <TiArrowBackOutline className='icon'/>
-                                </button>
+                                <IconButton 
+                                    onClick={toTweet} 
+                                    circle size={'36px'} >
+                                    <TiArrowBackOutline size={27}/>
+                                </IconButton>
 
-                                <div className='respons'>
-                                    {tweet.repliesCount !== 0 ? tweet.repliesCount : null}
-                                </div>
+                                {tweet.repliesCount !== 0 
+                                    ?<IconButton 
+                                        onClick={toTweet}
+                                        pale padding={'8px 10px'} fontSize={'17px'}>
+                                            {tweet.repliesCount}
+                                    </IconButton>
+                                    :<div style={{width:'30px'}}></div>}
 
-                                <button className='btn-clear icon-container' onClick={handleLike}>
-                                    {tweet.liked 
-                                        ? <TiHeart className='icon liked' />
-                                        : <TiHeartOutline className='icon' />
-                                    }
-                                </button>
+                                <IconButton 
+                                    onClick={handleLike}
+                                    circle size={'36px'} liked={!!tweet.liked}>
+                                        {tweet.liked ? <TiHeart size={27}/> : <TiHeartOutline size={27}/>}
+                                </IconButton>
 
-                                <div className='position-relative clickable hover-blue-circle-background' onClick={() => setShowLikes(true)}>
-                                    {tweet.likesCount !== 0 ? tweet.likesCount : null}
-                                </div>
+                                {tweet.likesCount !== 0 &&
+                                    <IconButton 
+                                        onClick={() => setShowLikes(true)} 
+                                        pale padding={'8px 10px'} fontSize={'17px'}>
+                                            {tweet.likesCount}
+                                    </IconButton>}
                             </div>
                         </div>
-                    </div>
+                    </EntityContainer>
                 </React.Fragment>
             }
         </React.Fragment>

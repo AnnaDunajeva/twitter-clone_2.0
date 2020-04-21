@@ -6,9 +6,14 @@ import {MdSentimentSatisfied} from "react-icons/md"
 import {postTweet} from '../../redux-store-2.0/api/tweets'
 import emoji from '../../utils/emoji'
 import TextareaAutosize from 'react-textarea-autosize';
-import {FiImage} from "react-icons/fi"
+// import {FiImage} from "react-icons/fi"
+// import {MdInsertPhoto} from 'react-icons/md'
+import {FaRegImage} from 'react-icons/fa'
 import DragAndDrop from '../utils/DragAndDrop'
-// import useAuthedUserCredentials from '../Hooks/useAuthedUserCredentials'
+import IconButton from '../styles/IconButton'
+import MainButton from '../styles/MainButton'
+import NewTweetForm from '../styles/NewTweet'
+import EmojiStyled from '../styles/Emoji'
 
 const dragConfig = {
     height: 300,
@@ -21,7 +26,6 @@ const dragConfig = {
 //should probably use useReducer here
 
 const NewTweet = ({replyingTo, showHeader}) => {
-    // const userCredentials = useAuthedUserCredentials()
     const dispatch = useDispatch()
 
     const [text, setText] = useState('')
@@ -30,7 +34,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
     const [toHome, setToHome] = useState(false)
     const [file, setFile] = useState(null)
     const [crop, setCrop] = useState(null)
-    const [cropResult, setCropResult] = useState(null)
+    const [cropResult, setCropResult] = useState(null) 
 
     const currentLength = text.length
     const maxlength = 280
@@ -40,7 +44,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
         e.preventDefault()
         const data = {
             tweet: { 
-                text, 
+                text: text.trim(), 
                 replyingTo: !replyingTo ? null : replyingTo
                 }
         }
@@ -75,13 +79,15 @@ const NewTweet = ({replyingTo, showHeader}) => {
         setCropResult(cropper.getCroppedCanvas().toDataURL())
     }
 
-    const handleToggleImage = () => {
+    const handleToggleImage = (e) => {
+        e.preventDefault()
         if (cropResult || !file) {
             setIsEmojiVisible(false)
             setIsImageVisible(state=>!state); 
         }
     }
-    const handleToggleEmoji = () => {
+    const handleToggleEmoji = (e) => {
+        e.preventDefault()
         if (!(file && !cropResult)) {
             setIsImageVisible(false); 
             setIsEmojiVisible(state=>!state)
@@ -97,9 +103,8 @@ const NewTweet = ({replyingTo, showHeader}) => {
                         ? 'Leave your reply' 
                         : 'Compose new tweet'}
                 </h1>}
-            <form className='new-tweet' onSubmit={handleSubmit}>
+            <NewTweetForm onSubmit={handleSubmit}>
                 <TextareaAutosize 
-                    className='textarea'
                     maxLength={maxlength}
                     placeholder={replyingTo ? 'What are your thoughts?' : "What's on your mind?"}
                     value={text}
@@ -107,22 +112,25 @@ const NewTweet = ({replyingTo, showHeader}) => {
                     minRows={1}
                     maxRows={10}
                 />
-                <div className='flex-space-between new-tweet-meta'>
+                <div>
                     <div style={{display: 'flex'}}>
-                        <div className='clickable hover-blue show-emoji-icon-container' tabIndex={0}>
-                            <MdSentimentSatisfied size={27} onClick={handleToggleEmoji} />
-                        </div>
-                        <div className='clickable hover-blue show-emoji-icon-container' tabIndex={0}>
-                            <FiImage size={27} onClick={handleToggleImage}/>
-                        </div>
+                        <IconButton 
+                            onClick={(e) => handleToggleEmoji(e)}
+                            circle size={'40px'} margin={'0 5px 0 0'}>
+                            <MdSentimentSatisfied size={27}/>
+                        </IconButton>
+                        <IconButton 
+                            onClick={(e) =>handleToggleImage(e)}
+                            circle size={'40px'} >
+                                <FaRegImage size={25}/>
+                        </IconButton>
                     </div>
-                    <div className='meta-text align-right '>{maxlength-currentLength} characters left</div>
+                    <p>{maxlength-currentLength} characters left</p>
                 </div>
-                {(isEmojiVisible && !isImageVisible)
-                    ?<div className='emoji-container'>
+                {isEmojiVisible && !isImageVisible &&
+                    <EmojiStyled>
                         {emoji.map((emoji, index) => <Emoji key={index} symbol={emoji} addEmoji={addEmoji}/>)}
-                    </div>
-                    : null
+                    </EmojiStyled>
                 }
                 {isImageVisible 
                     ?<DragAndDrop 
@@ -136,15 +144,15 @@ const NewTweet = ({replyingTo, showHeader}) => {
                     />
                     :null
                 }
-                {(text !== '' || (file !== null && crop !== null)) &&
-                    <button
-                        type='submit'
-                        disabled={!(text !== '' || (file !== null && crop !== null))}
-                        className='btn'
-                    >Post
-                    </button>
-                }
-            </form>
+            </NewTweetForm>
+            {(text !== '' || (file !== null && crop !== null)) &&
+                <MainButton
+                    onClick={handleSubmit}
+                    disabled={!(text !== '' || (file !== null && crop !== null))}
+                    blue mediumSmall uppercase margin={'10px auto 0 auto'}>
+                        Post
+                </MainButton>
+            }
         </React.Fragment>
     )
 }

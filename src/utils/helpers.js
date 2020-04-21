@@ -79,3 +79,18 @@ export const getUserIdFromCookie = () => document.cookie.replace(/(?:(?:^|.*;\s*
 export const isStateKeyInErrors = (stateKey, stringArray) => {
   return stringArray.filter(error => error.includes(stateKey)) ? true : false 
 }
+
+export const removeBlacklistChars = (input) => {
+  return input
+      .trim()
+      .replace(/[^\w\s\-]/g, "")
+}
+
+export const isValidUsername = (username) => {
+  return /^[0-9a-zA-Z_-]+$/.test(username.trim())
+}
+
+export const isValidFisrtOrLastname = (name) => {
+  return /^[a-zA-Z-]+$/.test(name.trim())
+}
+

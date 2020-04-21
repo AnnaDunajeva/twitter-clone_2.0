@@ -1,11 +1,14 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
+import ClearButton from '../../styles/ClearButton'
+import NavLink from '../../utils/NavLink'
+import ProfileNavStyled from '../../styles/ProfileNav'
 
 const ProfileNav = ({url}) => {
     return (
-        <nav className='profile-nav'>
+        <ProfileNavStyled>
             {console.log('ProfileNav url ', url)}
-            <NavLink to={`${url}`} exact activeClassName='active' className='header'>
+            {/* <NavLink to={`${url}`} exact activeClassName='active' className='header'>
                 Tweets
             </NavLink>
             <NavLink to={`${url}/replies`} activeClassName='active' className='header'>
@@ -16,8 +19,21 @@ const ProfileNav = ({url}) => {
             </NavLink>
             <NavLink to={`${url}/photos`} activeClassName='active' className='header'>
                 Photos
-            </NavLink>
-        </nav>
+            </NavLink> */}
+
+            <ClearButton as={NavLink} to={`${url}`} exact hoverOnDark fontsize={'largeFont'} margin={'10px 30px'}>
+                Tweets
+            </ClearButton>
+            <ClearButton as={NavLink} to={`${url}/replies`} hoverOnDark fontsize={'largeFont'} margin={'10px 30px'}>
+                Replies
+            </ClearButton>
+            <ClearButton as={NavLink} to={`${url}/likes`} hoverOnDark fontsize={'largeFont'} margin={'10px 30px'}>
+                Likes
+            </ClearButton>
+            <ClearButton as={NavLink} to={`${url}/photos`} hoverOnDark fontsize={'largeFont'} margin={'10px 30px'}>
+                Photos
+            </ClearButton>
+            </ProfileNavStyled>
     )
 }
 

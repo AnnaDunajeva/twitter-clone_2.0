@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
+import MainButton from '../styles/MainButton'
+import AlertStyled from '../styles/Alert'
 
-const DeleteAlert = ({message, onClose, onDelete}) => {
+const DeleteAlert = ({message, smallMessage, onClose, onDelete}) => {
     const [isVisible, setIsVisible] = useState(true)
 
     const handleClose = (e) => {
@@ -20,19 +22,41 @@ const DeleteAlert = ({message, onClose, onDelete}) => {
 
     return (
         isVisible 
-            ? <div className='alert-container'>
-                <div className='alert-box'>
-                    <div className='alert-content'>{message}</div>
-                    <div style={{display: 'flex', justifyContent: 'space-around'}}>
-                        <button onClick={handleDelete} className='btn-usercard btn-follow'>
-                            Delete
-                        </button>
-                        <button onClick={handleClose} className='btn-usercard btn-unfollow'>
-                            Cancel
-                        </button>
+            // ? <div className='alert-container'>
+            //     <div className='alert-box'>
+            //         <p className='alert-content'>{message}</p>
+            //         <div style={{display: 'flex', justifyContent: 'space-around'}}>
+            //             <MainButton 
+            //                 small margin={'20px'} 
+            //                 onClick={handleDelete}>
+            //                     Delete
+            //             </MainButton>
+            //             <MainButton 
+            //                 small primary margin={'20px'} 
+            //                 onClick={handleClose}>
+            //                     Cancel
+            //             </MainButton>
+            //         </div>
+            //     </div>
+            // </div>
+            ?<AlertStyled>
+                <div>
+                    <p>{message}</p>
+                    <p>{smallMessage}</p>
+                    <div>
+                        <MainButton 
+                            small margin={'20px'} 
+                            onClick={handleDelete}>
+                                Delete
+                        </MainButton>
+                        <MainButton 
+                            small primary margin={'20px'} 
+                            onClick={handleClose}>
+                                Cancel
+                        </MainButton>
                     </div>
                 </div>
-            </div>
+            </AlertStyled>
             : null
     )
 }
