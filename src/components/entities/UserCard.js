@@ -9,6 +9,8 @@ import MainButton from '../styles/MainButton'
 import CoverAllLink from '../styles/CoverAllLink'
 import EntityContainer from '../styles/EntityContainer'
 import Link from '../styles/Link'
+import {AvatarSmall} from '../styles/Avatar'
+import MetaText from '../styles/MetaText'
 
 const UserCard = ({userId, size, handleToProfile, showFollowButton}) => {
     const authedUser = getUserIdFromCookie()
@@ -36,19 +38,20 @@ const UserCard = ({userId, size, handleToProfile, showFollowButton}) => {
     return ( 
         <EntityContainer size={size}>
             <CoverAllLink onClick={toProfile} />
-            <img 
+            <AvatarSmall 
                 src={user.avatar} 
+                onClick={toProfile}
                 alt={`Avatar for ${user.firstName} ${user.lastName}`} 
-                className='avatar'
             />
-            <div className='tweet-meta'>
+
+            <div>
                 <Link onClick={toProfile}>
-                        <span className='user-name'>{`${user.firstName} ${user.lastName}`}</span>
+                        <h3>{`${user.firstName} ${user.lastName}`}</h3>
                 </Link>
-                <div className='meta-text'>@{userId}</div>
-                <div className='meta-text'>
+                <MetaText>@{userId}</MetaText>
+                <MetaText>
                         Following {user.followingsCount} | Followers {user.followersCount}
-                </div>
+                </MetaText>
             </div>
             {userId !== authedUser && 
                 <div className='btn-follow-container'>

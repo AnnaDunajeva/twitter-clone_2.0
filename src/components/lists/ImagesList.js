@@ -4,6 +4,7 @@ import {getUserTweetImagesPaginated} from '../../redux-store-2.0/api/tweets'
 import {getUserTweetsWithImagesIds} from '../../redux-store-2.0/composite-data/selectors'
 import {userTweetImagesKey} from '../../redux-store-2.0/utils/compositeDataStateKeys'
 import Image from '../entities/Image'
+import ImageGrid from '../styles/ImageGrid'
 
 const ImagesList = ({ 
     userId, 
@@ -21,7 +22,7 @@ const ImagesList = ({
                     stateKey={userTweetImagesKey(userId)}
                     >
             {(ids)=>(
-                <div className='image-grid'>
+                <ImageGrid>
                     {ids.map((id) => (
                         <Image 
                             id={id} 
@@ -29,7 +30,7 @@ const ImagesList = ({
                             handleToProfile={handleToProfile}
                             handleToTweetPage={handleToTweetPage}/>
                     ))}
-                </div>  
+                </ImageGrid>  
             )}
         </ScrollUtil>
     )

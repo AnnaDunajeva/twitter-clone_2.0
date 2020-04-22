@@ -85,61 +85,62 @@ const Additional = (props) => {
     }
 
     return (
-        <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+        <React.Fragment>
             {deleteBackground && 
                 <DeleteAlert 
                     onDelete={handleDeleteBackground} 
                     onClose={()=>setDeleteBackground(false)} 
                     message={'Are you sure you want to delete your current background image permanently?'}/>}
+            <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+                <h3>Additional Information</h3>
 
-            <h3>Additional Information</h3>
+                <div>
+                    <label>Description</label>
+                    <TextareaAutosize 
+                        className='profile-update-data-container-input textarea-update'
+                        maxLength={maxlength}
+                        placeholder={'Tell something about yourself...'}
+                        value={description}
+                        onChange={(e)=>setDescription(e.target.value)}
+                        minRows={2}
+                        maxRows={6}/>
 
-            <div>
-                <label>Description</label>
-                <TextareaAutosize 
-                    className='profile-update-data-container-input textarea-update'
-                    maxLength={maxlength}
-                    placeholder={'Tell something about yourself...'}
-                    value={description}
-                    onChange={(e)=>setDescription(e.target.value)}
-                    minRows={2}
-                    maxRows={6}/>
+                    <label htmlFor='location'>Location</label>
+                    <input 
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        type='text'/>
 
-                <label htmlFor='location'>Location</label>
-                <input 
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    type='text'/>
+                    <label>Background color</label>
+                    <ColorPicker handleChangeComplete={handleChangeComplete} color={color}/>
 
-                <label>Background color</label>
-                <ColorPicker handleChangeComplete={handleChangeComplete} color={color}/>
+                    <label>Background image</label>
 
-                <label>Background image</label>
-
-                <MainButton 
-                    primary shadow={'lightShadow'}
-                    onClick={()=>setDeleteBackground(true)}>
-                        Delete current background
+                    <MainButton 
+                        primary shadow={'lightShadow'}
+                        onClick={()=>setDeleteBackground(true)}>
+                            Delete current background
+                    </MainButton>
+                    <label>Upload new image</label>
+                    <DragAndDrop 
+                        file={file} 
+                        setFile={setFile} 
+                        setCrop={setCrop} 
+                        config={dragConfig}
+                        cropResult={cropResult}
+                        handleAcceptImage={handleAcceptImage} 
+                        handleRemoveImage={handleRemoveImage}
+                    />
+                </div>
+        
+                <MainButton
+                    blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
+                    disabled={isDisabled()}
+                    type='submit'>
+                    Update
                 </MainButton>
-                <label>Upload new image</label>
-                <DragAndDrop 
-                    file={file} 
-                    setFile={setFile} 
-                    setCrop={setCrop} 
-                    config={dragConfig}
-                    cropResult={cropResult}
-                    handleAcceptImage={handleAcceptImage} 
-                    handleRemoveImage={handleRemoveImage}
-                />
-            </div>
-    
-            <MainButton
-                blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
-                disabled={isDisabled()}
-                type='submit'>
-                Update
-            </MainButton>
-        </Form>
+            </Form>
+        </React.Fragment>
     )
 }
 

@@ -84,51 +84,52 @@ const General = (props) => {
     }
 
     return (
-        <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+        <React.Fragment>
             {deleteAvatar && 
                 <DeleteAlert 
                     onDelete={handleDeleteAvatar} 
                     onClose={()=>setDeleteAvatar(false)} 
-                    message={'Are you sure you want to delete your current avatar image permanently?'}
-                />
-            }
-            <h3>General Information</h3>
-            <div>
-                <label htmlFor='firstName'>First Name</label>
-                <input 
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    type='text'/>
-                <label htmlFor='lastName'>Last Name</label>
-                <input 
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    type='text'/>
-                <label>Profile image</label>
-                <MainButton 
-                    primary shadow={'lightShadow'}
-                    onClick={()=>setDeleteAvatar(true)}>
-                        Delete current avatar
-                </MainButton>
-                <label>Upload new image</label>
-                <DragAndDrop 
-                    file={avatar} 
-                    setFile={setAvatar} 
-                    setCrop={setCrop} 
-                    config={dragConfig}
-                    cropResult={cropResult}
-                    handleAcceptImage={handleAcceptImage} 
-                    handleRemoveImage={handleRemoveImage}
-                />
-            </div>
+                    message={'Are you sure you want to delete your current avatar image permanently?'}/>}
+                    
+            <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+                <h3>General Information</h3>
+                <div>
+                    <label htmlFor='firstName'>First Name</label>
+                    <input 
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        type='text'/>
+                    <label htmlFor='lastName'>Last Name</label>
+                    <input 
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        type='text'/>
+                    <label>Profile image</label>
+                    <MainButton 
+                        primary shadow={'lightShadow'}
+                        onClick={()=>setDeleteAvatar(true)}>
+                            Delete current avatar
+                    </MainButton>
+                    <label>Upload new image</label>
+                    <DragAndDrop 
+                        file={avatar} 
+                        setFile={setAvatar} 
+                        setCrop={setCrop} 
+                        config={dragConfig}
+                        cropResult={cropResult}
+                        handleAcceptImage={handleAcceptImage} 
+                        handleRemoveImage={handleRemoveImage}
+                    />
+                </div>
 
-            <MainButton
-                blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
-                disabled={isDisabled()}
-                type='submit'>
-                    Update
-            </MainButton>
-        </Form>
+                <MainButton
+                    blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
+                    disabled={isDisabled()}
+                    type='submit'>
+                        Update
+                </MainButton>
+            </Form>
+        </React.Fragment>
     )
 }
 

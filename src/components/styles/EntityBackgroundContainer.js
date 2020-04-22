@@ -21,6 +21,9 @@ const EntityBackgroundContainer = styled.div`
         margin: 10px 0;
         font-size: ${constants.largeFont};
     }
+    > p {
+        text-align: center;
+    }
 
 `
 

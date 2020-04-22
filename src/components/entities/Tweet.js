@@ -22,10 +22,14 @@ import {formatDate} from '../../utils/helpers'
 import UsersList from '../lists/UsersList'
 import ListPopUp from '../modals/ListPopUp'
 import DeleteAlert from '../modals/DeleteAlert'
+import TweetActions from '../utils/TweetActions'
 import IconButton from '../styles/IconButton'
 import CoverAllLink from '../styles/CoverAllLink'
 import EntityContainer from '../styles/EntityContainer'
 import Link from '../styles/Link'
+import {AvatarSmall} from '../styles/Avatar'
+import MetaText from '../styles/MetaText'
+import TweetText from '../styles/TweetText'
 
 const linkifyOptions = {
     validate: {
@@ -61,30 +65,20 @@ const Tweet = ({
                                 :null
                                 )
 
-    const dispatchData = {
-        tweetId: id
-    }
+    const dispatchData = {tweetId: id}
     
     useSubscribeToTweetUpdate(tweet)
 
     const handleLike = (e) => {
         e.preventDefault()
-        dispatch(toggleTweetsLike({
-            tweetId: id,
-            // ...userCredentials,
-        }))
+        dispatch(toggleTweetsLike({tweetId: id,}))
     }
-    const handleDelete = () => { //async?
+    const handleDelete = () => { 
         dispatch(deleteTweet({
             tweetId: id,
-            // ...userCredentials,
             stateKey
         }))
         setIsDeleteTweet(false)
-    }
-    
-    const toParent = () => {
-        history.push(`/tweet/${tweet.replyingToTweetId}`)
     }
     
     const toProfile = () => handleToProfile 
@@ -98,146 +92,112 @@ const Tweet = ({
     return (
         <React.Fragment>
             {isDeleteTweet && 
-                <DeleteAlert 
-                    onDelete={handleDelete} 
-                    onClose={()=>setIsDeleteTweet(false)} 
-                    message={'Are you sure you want to delete this tweet?'}
-                    smallMessage={'You will not be able to restore it.'}
-                />
-            }
+            <DeleteAlert 
+                onDelete={handleDelete} 
+                onClose={()=>setIsDeleteTweet(false)} 
+                message={'Are you sure you want to delete this tweet?'}
+                smallMessage={'You will not be able to restore it.'}/>}
+
             {showLikes && tweet.likesCount !== 0 &&
-                <ListPopUp 
-                    header={'Liked by'}
-                    id={tweetLikesKey(id)}
+            <ListPopUp 
+                header={'Liked by'}
+                id={tweetLikesKey(id)}
+                key={tweetLikesKey(id)}
+                onClose={()=>setShowLikes(false)}>
+                <UsersList 
                     key={tweetLikesKey(id)}
-                    onClose={()=>setShowLikes(false)}>
-                    <UsersList 
-                        key={tweetLikesKey(id)}
-                        handleToProfile={handleToProfile}
-                        stateKey={tweetLikesKey(id)}
-                        stateSelector={tweetLikesSelector}
-                        dispatchData={dispatchData}
-                        scrollableTarget={tweetLikesKey(id)}
-                        getDataFetch={getTweetLikesPaginated}/>
-                </ListPopUp>
-            }
+                    handleToProfile={handleToProfile}
+                    stateKey={tweetLikesKey(id)}
+                    stateSelector={tweetLikesSelector}
+                    dispatchData={dispatchData}
+                    scrollableTarget={tweetLikesKey(id)}
+                    getDataFetch={getTweetLikesPaginated}/>
+            </ListPopUp>}
+
             {tweet?.deleted 
-                ? <div className='tweet-container' style={{justifyContent: 'center'}}>
-                    <p style={{padding: '20px'}}>[Deleted]</p>
-                </div>
-                : <React.Fragment>
-                    <EntityContainer>
-                        <CoverAllLink onClick={toTweet}/>
+            ? <EntityContainer style={{justifyContent: 'center'}}>
+                <p style={{padding: '20px'}}>[Deleted]</p>
+            </EntityContainer>
+            : <React.Fragment>
+                <EntityContainer>
+                    <CoverAllLink onClick={toTweet}/>
 
+                    <AvatarSmall 
+                        src={author.avatar} 
+                        alt={`Avatar for ${author.firstName} ${author.lastName}`} 
+                        onClick={toProfile} />
+
+                    <div>
+                        {authedUser === author.userId && 
+                        <IconButton 
+                            onClick={() => setIsDeleteTweet(true)} 
+                            circle pale size={'36px'} float={'right'}>
+                                <MdClose size={27}/>
+                        </IconButton>}
+
+                        <Link 
+                            onClick={toProfile}>
+                                <h3>{`${author.firstName} ${author.lastName} `}</h3>
+                                <MetaText as='span'> @{author.userId}</MetaText>
+                        </Link>
+                        
+                        <MetaText>{formatDate(tweet.createdAt)}</MetaText>
+
+                        {tweet.replyingToTweetId !== null && 
+                        <Link 
+                            as={MetaText}
+                            onClick={toTweet}>
+                                {tweet.replyingToUserId 
+                                ? `Replying to @${tweet.replyingToUserId}` 
+                                : 'Replying to [deleted]'}
+                        </Link>}
+
+                        <TweetText as={Linkify} tagName="p" options={linkifyOptions}>
+                            {tweet.text}
+                        </TweetText>
+                        
+                        {tweet.media &&
                         <img 
-                            src={author.avatar} 
-                            alt={`Avatar for ${author.firstName} ${author.lastName}`} 
-                            className='avatar position-relative clickable'
-                            tabIndex={0}
-                            onClick={toProfile} 
-                        />
+                            src={tweet.media} 
+                            alt=''
+                            style={{width: 400, height: 400, borderRadius: 2}}/>}
 
-                        <div className='tweet-meta'>
-                            {authedUser === author.userId && 
-                                <IconButton 
-                                    onClick={() => setIsDeleteTweet(true)} 
-                                    circle pale size={'36px'} float={'right'}>
-                                        <MdClose size={27}/>
-                                </IconButton>
-                            }
-                            <Link 
-                                onClick={toProfile}>
-                                    <span className='user-name'>{`${author.firstName} ${author.lastName} `}</span>
-                                    <span className='meta-text'>@{author.userId}</span>
-                            </Link>
-                            
-                            <div className='meta-text'>{formatDate(tweet.createdAt)}</div>
-                            {tweet.replyingToTweetId !== null && 
-                                <Link secondary
-                                    onClick={toTweet}>
-                                            {tweet.replyingToUserId 
-                                                ? `Replying to @${tweet.replyingToUserId}` 
-                                                : 'Replying to [deleted]'
-                                            }
-                                </Link>
-                            }
+                        {youtubeUrls.current?.length > 0 &&
+                        <YouTube
+                            videoId={youtubeUrls.current[0].id}
+                            opts={{height: '262', width: '430'}}
+                            className='position-relative margin-bottom'/>}
 
-                            <Linkify 
-                                tagName="p" 
-                                className='text' 
-                                options={linkifyOptions}>
-                                    {tweet.text}
-                            </Linkify>
-                            
-                            {tweet.media &&
-                                <img 
-                                    src={tweet.media} 
-                                    className='tweet-image' 
-                                    alt=''
-                                    style={{width: 400, height: 400, borderRadius: 2}}
-                                />
-                            }
-                            {/* {urlsInTweet.current?.length > 0
-                                ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>
-                                    {
-                                        urlsInTweet.current.map(urlObj => 
-                                            <ReactTinyLink
-                                                cardSize="small"
-                                                showGraphic={true}
-                                                maxLine={2}
-                                                minLine={1}
-                                                url={urlObj.href}
-                                                key = {urlObj.href}
-                                            />
-                                        )
-                                    }
-                                </div>
-                                :null
-                            } */}
+                        <TweetActions 
+                            tweet={tweet}
+                            toTweet={toTweet}
+                            handleLike={handleLike}
+                            showLikes={()=>setShowLikes(true)}/>
 
-                            {youtubeUrls.current?.length > 0 
-                                ?<YouTube
-                                    videoId={youtubeUrls.current[0].id}
-                                    opts={{height: '262', width: '430'}}
-                                    className='position-relative margin-bottom'
-                                />
-                                :null
-                            }
-
-                            <div className='respons-container'> 
-                                <IconButton 
-                                    onClick={toTweet} 
-                                    circle size={'36px'} >
-                                    <TiArrowBackOutline size={27}/>
-                                </IconButton>
-
-                                {tweet.repliesCount !== 0 
-                                    ?<IconButton 
-                                        onClick={toTweet}
-                                        pale padding={'8px 10px'} fontSize={'17px'}>
-                                            {tweet.repliesCount}
-                                    </IconButton>
-                                    :<div style={{width:'30px'}}></div>}
-
-                                <IconButton 
-                                    onClick={handleLike}
-                                    circle size={'36px'} liked={!!tweet.liked}>
-                                        {tweet.liked ? <TiHeart size={27}/> : <TiHeartOutline size={27}/>}
-                                </IconButton>
-
-                                {tweet.likesCount !== 0 &&
-                                    <IconButton 
-                                        onClick={() => setShowLikes(true)} 
-                                        pale padding={'8px 10px'} fontSize={'17px'}>
-                                            {tweet.likesCount}
-                                    </IconButton>}
-                            </div>
-                        </div>
-                    </EntityContainer>
-                </React.Fragment>
+                    </div>
+                </EntityContainer>
+            </React.Fragment>
             }
         </React.Fragment>
     )
 }
 
 export default withRouter(Tweet)
+
+/* {urlsInTweet.current?.length > 0
+    ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>
+        {
+            urlsInTweet.current.map(urlObj => 
+                <ReactTinyLink
+                    cardSize="small"
+                    showGraphic={true}
+                    maxLine={2}
+                    minLine={1}
+                    url={urlObj.href}
+                    key = {urlObj.href}
+                />
+            )
+        }
+    </div>
+    :null
+} */

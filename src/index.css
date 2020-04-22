@@ -8,6 +8,7 @@
   max-width: 970px;
   min-width: 700px;
   margin: 0 auto;
+
 }
 /* a {
   text-decoration: none;
@@ -377,7 +378,7 @@ li {
 /* .profile-update-data-container .form-header {
   color: #454849;
 } */
-.profile-update-data-container-input {
+/* .profile-update-data-container-input {
   padding: 12px 25px;
   font-size: 19px;
   border-radius: 30px;
@@ -388,7 +389,7 @@ li {
   -moz-box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
   box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
   min-width: 370px;
-}
+} */
 /* .profile-update-data-container input:focus {
   outline: none;
 } 
@@ -407,7 +408,7 @@ li {
   resize: none;
   outline: none;
 } */
-.color-picker-container {
+/* .color-picker-container {
   display: flex;
 }
 .color-picker-container p {
@@ -427,7 +428,6 @@ li {
   align-self: center;
   border-radius: 30px;
   margin-left: 15px;
-  /* z-index: 2; */
 }
 .color-picker-icon:hover,
 .color-picker-icon:focus {
@@ -441,7 +441,7 @@ li {
 }
 .color-picker-close-container {
   background-color: transparent;
-}
+} */
 /* .profile-image-delete-btn {
   padding: 12px 25px;
   font-size: 19px;
@@ -453,16 +453,15 @@ li {
   box-shadow: 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
   min-width: 370px;
 } */
-.image-grid {
+/* .image-grid {
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* grid-auto-rows: auto; */
   grid-column-gap: 12px;
   grid-row-gap: 12px;
   justify-items: center;
   justify-content: center;
-}
+} */
 
 /* =============== follow button =========== */
 .btn-follow-container {
@@ -641,7 +640,7 @@ li {
   right: 0;
   bottom: 0;
 } */
-.avatar {
+/* .avatar {
   min-height: 65px;
   min-width: 65px;
   max-height: 65px;
@@ -652,15 +651,14 @@ li {
   border: 1px solid #ece7e7;
 }
 .avatar:hover {
-  /* border: 2px solid  #31baf0 */
   box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #31baf0;
 }
 .avatar:focus-within {
   outline: none;
   box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #31baf0;
-}
+} */
 
-.tweet-meta {
+/* .tweet-meta {
   margin: 15px 10px 15px 0;
   flex: 2;
 }
@@ -692,11 +690,8 @@ li {
 }
 .respons {
   font-size: 17px;
-  /* color: #9b9999; */
-  /* margin: 0 10px 0 5px; */
   padding: 10px;
-  /* padding-top: 2px; */
-}
+} */
 /* .icon {
   font-size: 25px;
   color: #444343;

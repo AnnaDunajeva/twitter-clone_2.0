@@ -2,6 +2,7 @@ import { get, omit, mapValues  } from 'lodash';
 import {SESSION_END_SUCCESS, TWEET_DELETE, TWEET_DELETE_EXEPT_REPLIES, USER_TOGGLE_FOLLOW} from '../action-types'
 import { PENDING_UPDATE, LOADED } from '../constants';
 import {conversationKey, userFollowingsKey, userFollowersKey} from './compositeDataStateKeys'
+import {getUserIdFromCookie} from '../../utils/helpers'
 
 /**
  * Creates a super-reducer as a map of reducers over keyed objects
@@ -91,7 +92,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 			})
 		}
 		if (action.type === USER_TOGGLE_FOLLOW) {
-			const authedUser = localStorage.getItem('userId') //quicky hacky solution. I guess better to just attach it to action
+			const authedUser = getUserIdFromCookie()
 			return mapValues(state, (value, key) => {
 				if (key === userFollowingsKey(authedUser)) {
 					const ids = value.entities.map(user => user.userId) //also contain sortindex
@@ -102,39 +103,40 @@ export const keyedReducer = ( keyPath, reducer ) => {
 							fetchStatus: value.done ? LOADED : PENDING_UPDATE,
 							entities: value.entities.filter(user => user.userId !== action.userId)
 						}
-					} else {
-						console.log('user wants to follow')
-						const user = {
-							userId: action.userId,
-							sortindex: value[0]?.sortindex + 1 || Date.now()
-						}
-						return {
-							...value,
-							fetchStatus: value.done ? LOADED : PENDING_UPDATE,
-							entities: [user].concat(value.entities)
-						}
-					}
+					} 
+					// else {
+					// 	console.log('user wants to follow')
+					// 	const user = {
+					// 		userId: action.userId,
+					// 		sortindex: value[0]?.sortindex + 1 || Date.now()
+					// 	}
+					// 	return {
+					// 		...value,
+					// 		fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+					// 		entities: [user].concat(value.entities)
+					// 	}
+					// }
 				}
-				if (key === userFollowersKey(action.userId)) {
-					const ids = value.entities.map(user => user.userId) //also contain sortindex
-					if (ids.includes(authedUser)) {
-						return {
-							...value,
-							fetchStatus: value.done ? LOADED : PENDING_UPDATE,
-							entities: value.entities.filter(user => user.userId !== authedUser)
-						}
-					} else {
-						const user = {
-							userId: authedUser,
-							sortindex: value[0]?.sortindex + 1 || Date.now()
-						}
-						return {
-							...value,
-							fetchStatus: value.done ? LOADED : PENDING_UPDATE,
-							entities: [user].concat(value.entities)
-						}
-					}
-				}
+				// if (key === userFollowersKey(action.userId)) {
+				// 	const ids = value.entities.map(user => user.userId) //also contain sortindex
+				// 	if (ids.includes(authedUser)) {
+				// 		return {
+				// 			...value,
+				// 			fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+				// 			entities: value.entities.filter(user => user.userId !== authedUser)
+				// 		}
+				// 	} else {
+				// 		const user = {
+				// 			userId: authedUser,
+				// 			sortindex: value[0]?.sortindex + 1 || Date.now()
+				// 		}
+				// 		return {
+				// 			...value,
+				// 			fetchStatus: value.done ? LOADED : PENDING_UPDATE,
+				// 			entities: [user].concat(value.entities)
+				// 		}
+				// 	}
+				// }
 				return value
 			})
 		}

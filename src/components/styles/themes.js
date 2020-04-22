@@ -1,10 +1,12 @@
 export const constants = {
     lightBlue: '#e6f0f5',
+    lightTransparentBlue: '#eff5f8be',
     mediumLightBlue: '#dae2e6',
     mediumBlue: '#31baf0',
     blue: '#1fa7dd',
     darkWhite: '#fcfbfb',
     lightGrey: '#f8f9fa',
+    lightTransparentGrey: '#e8eaeca8',
     mediumLightGrey: '#ededee',
     mediumLightGreyDarker: '#e7e7e9',
     mediumGreyLighter: '#e0e0e2',
@@ -62,36 +64,69 @@ export const light = {
     backgroundBehindModal: 'rgba(0,0,0,0.4)',
     modalShadow: '10px 10px 30px -7px rgb(80, 81, 82)',
     modalHeaderBackground: constants.black,
-    inputShadow: constants.lightShadow,
+    // inputShadow: constants.lightShadow,
     inputBackground: 'white',
     formaLabelColor: constants.mediumDarkGrey,
     formLabelFontSize: '13px',
     paleIcon: constants.mediumDarkGrey,
-    profileNavBackground: '#e8eaeca8',
+    profileNavBackground: constants.lightTransparentGrey,
     profileSidebarBackgroundHover: constants.mediumLightGreyDarker,
     profileSidebarBackgroundActive: constants.darkGrey,
+    tweetResponseOnContentBackground: constants.lightTransparentBlue,
 
     maxEntityWidth: '600px',
     minModalHeight: '150px',
+
+    disabledButtonBackground: 'white',
+    disabledButtonBackgroundPale: constants.mediumLightGrey,
+    disabledButtonColor: constants.mediumDarkGrey,
 }
 
 export const dark = {
-    mainColor: constants.mediumLightGrey,
+    mainColor: constants.mediumLightGreyDarker,
     invertedMainColor: constants.black,
 
     secondaryTextColor: constants.darkGrey,
     secondaryTextSize: constants.smallFont,
 
-    lightMainColor: constants.lightGrey,
+    lightMainColor: constants.darkWhite,
     blue: constants.blue,
     mediumBlue: constants.mediumBlue,
+    mediumGrey: constants.mediumDarkGrey,
+
     hoverLinkColor: '#7dd8ff',
     hoverOnLightBackground: constants.lightBlack,
-    hoverOnDarkBackground: constants.lightBlack,
+    hoverOnDarkBackground: '#797777',
 
     maxEntityWidth: '600px',
 
     formLabelFontSize: '13px',
+    
+    entityBorder: '#202222',
+    entityHoverBorder: '#686464',
+    entityHoverBackground: '#3d3c3c',
+    entityShadow: '0px 5px 10px -1px #2e2b2b',
+    entityContainerBackground: '#474545',
+    entityContainerBorder: '#474545',
+    entityContainerShadow: '0px 11px 31px -15px #0c0c0c',
+    navShadow: '-1px 15px 9px -9px rgba(20, 20, 20, 0.655)',
+    modalBackground: '#474545',
+    backgroundBehindModal: 'rgba(20, 20, 20, 0.655)',
+    modalShadow: '10px 10px 30px -7px #0c0c0c',
+    modalHeaderBackground: constants.black,
+    // inputShadow: constants.lightShadow,
     inputBackground: '#ffffff2a',
+    formaLabelColor: constants.darkGrey,
+    paleIcon: constants.darkGrey,
+    profileNavBackground: '#5c5959',
+    profileSidebarBackgroundHover: '#686464',
+    profileSidebarBackgroundActive: constants.darkGrey,
+    tweetResponseOnContentBackground: '#3532327a',
 
+    minModalHeight: '150px',
+
+    disabledButtonBackground: '#686464',
+    disabledButtonBackgroundPale: '#5c5959',
+    disabledButtonColor: constants.darkGrey,
+    buttonShadow: constants.lightShadow
 }

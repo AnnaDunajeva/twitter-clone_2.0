@@ -113,13 +113,9 @@ const ScrollUtil = ({
             {console.log('rendering scroll', 'hasmore ', !done, savedIdsLength, 'skip ', skip, 'fetchStatus ', fetchStatus)}
             {console.log('ids ', ids)}
             {headerText && ids.length !== 0 &&
-                <h1 className='header'>
-                    {headerText}
-                </h1>} 
+                <h3>{headerText}</h3>} 
             {ids.length === 0 && fetchStatus === LOADED &&
-                <h1 className='header'>
-                    {noDataHeader ? noDataHeader : headerText}
-                </h1>}
+                <h3>{noDataHeader ? noDataHeader : headerText} </h3>}
             {ids.length !== 0 &&
                 <InfiniteScroll
                     dataLength={ids.length}
@@ -129,7 +125,7 @@ const ScrollUtil = ({
                     scrollThreshold={0.85}
                     loader={<Loading text='Fetching' speed={200}/>}
                     endMessage={
-                        <p className='header-small' style={{marginBottom: '20px'}}>
+                        <p style={{margin: '20px', textAlign: 'center'}}>
                             {error
                                 ?<b>Oops, something went wrong, try refreshing page.</b>
                                 :ids.length > take
@@ -142,7 +138,7 @@ const ScrollUtil = ({
                 </InfiniteScroll>
             }
             {ids.length === 0 && (fetchStatus === LOADED || fetchStatus === ERROR )&& 
-                <p className='header-small' style={{marginBottom: '20px'}}>
+                <p style={{marginBottom: '20px', textAlign: 'center'}}>
                     {error
                         ?<b>Oops, something went wrong, try refreshing page.</b>
                         :<b>{noDataText || 'nothing to show yet'}</b>}

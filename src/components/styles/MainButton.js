@@ -14,6 +14,7 @@ import {constants} from './themes'
 // center, default false OR
 // margin: pixels, default 0
 // padding: default 10px 15px
+// bold 
 
 const MainButton = styled.button`
     display: block;
@@ -27,7 +28,7 @@ const MainButton = styled.button`
     background-color: ${props => 
         (props.primary && props.theme.mainColor) || 
         (props.blue && props.theme.blue) || 
-        (props.secondary && props.theme.invertedMainColor) || 
+        (props.secondary && 'transparent') || 
         'transparent'};
     border: 1px solid ${props => 
         ((props.primary || props.secondary) && props.theme.mainColor) || 
@@ -97,7 +98,7 @@ const MainButton = styled.button`
             (props.primary && props.theme.invertedMainColor) ||
             'white'};
         outline: none;
-        box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem ${props => 
+        box-shadow: 0 0 0 0.15rem ${props => props.theme.invertedMainColor}, 0 0 0 0.25rem ${props => 
             (props.blue && props.theme.mediumBlue) ||
             ((props.primary || props.secondary) && props.theme.blue) || 
             props.theme.blue};
@@ -105,15 +106,15 @@ const MainButton = styled.button`
     &:disabled,
     &:disabled:hover {
         background-color: ${props => 
-            (props.disabledLight && 'white') ||
-            (props.disabledMediumLight && constants.mediumLightGrey) ||
+            (props.disabledLight && props.theme.disabledButtonBackground) ||
+            (props.disabledMediumLight && props.theme.disabledButtonBackgroundPale) ||
             'transparent'};
-        border: 1px solid ${constants.mediumDarkGrey};
+        border: 1px solid ${props => props.theme.disabledButtonColor};
         box-shadow: 0 0 0 0.05rem ${props => 
-            constants.mediumDarkGrey
+           props.theme.disabledButtonColor
             + 
             (props.shadow ? ', '+constants[props.shadow] : '')};
-        color: ${constants.mediumDarkGrey};
+        color: ${props => props.theme.disabledButtonColor};
         cursor: default;
     }
 `

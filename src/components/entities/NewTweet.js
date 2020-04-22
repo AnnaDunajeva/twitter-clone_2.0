@@ -14,6 +14,7 @@ import IconButton from '../styles/IconButton'
 import MainButton from '../styles/MainButton'
 import NewTweetForm from '../styles/NewTweet'
 import EmojiStyled from '../styles/Emoji'
+import MetaText from '../styles/MetaText'
 
 const dragConfig = {
     height: 300,
@@ -125,7 +126,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
                                 <FaRegImage size={25}/>
                         </IconButton>
                     </div>
-                    <p>{maxlength-currentLength} characters left</p>
+                    <MetaText>{maxlength-currentLength} characters left</MetaText>
                 </div>
                 {isEmojiVisible && !isImageVisible &&
                     <EmojiStyled>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {constants} from './themes'
 
 //pros: 
 // size in pixels, default min 400 max 600
@@ -17,12 +18,25 @@ const EntityContainer = styled.div`
     border: 1px solid ${props => props.theme.entityBorder};
     box-shadow: ${props => props.theme.entityShadow};
 
+/* username */
+    h3 {
+        font-size: ${constants.mediumLargeFont};
+        font-weight: ${constants.boldFont};
+        display: inline-block;
+    }
+/* tweet meta container, first div is CoverAllLink */
+    > div:nth-of-type(2) {
+        margin: 15px 10px 15px 0;
+        flex: 2;
+    }
+
     &:hover,
     &:focus-within {
         background: ${props => props.theme.entityHoverBackground};
         border: 1px solid ${props => props.theme.entityHoverBorder};
         box-shadow: 0 0 0 0.05rem ${props => props.theme.entityHoverBorder}, ${props => props.theme.entityShadow};
     }
+
     &.item-appear {
         opacity: 0;
     }
@@ -47,5 +61,4 @@ const EntityContainer = styled.div`
 `
 
 export default EntityContainer
-
   

@@ -12,7 +12,7 @@ import {constants} from './themes'
 const ClearButton = styled(MainButton)`
     border: none;
     box-shadow: none;
-    background-color: 'transparent';
+    background-color: transparent;
     ${props => props.textLight && `color: white;`}
 
     &:hover, 

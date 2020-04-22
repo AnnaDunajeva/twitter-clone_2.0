@@ -15,6 +15,7 @@ import {toggleTweetsLike, deleteTweet} from '../../redux-store-2.0/api/tweets'
 import {MdClose} from "react-icons/md"
 import UsersList from '../lists/UsersList'
 import ListPopUp from '../modals/ListPopUp'
+import TweetActions from '../utils/TweetActions'
 
 const Image = ({id, handleToTweetPage, handleToProfile}) => {
     const dispatch = useDispatch()
@@ -35,6 +36,9 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
             tweetId: id
         }))
     }
+    const toTweet = () => handleToTweetPage 
+        ? handleToTweetPage(id) 
+        : history.push(`/tweet/${id}`)
 
     useSubscribeToTweetUpdate(tweet)
 
@@ -69,40 +73,13 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
                 onClick={()=>handleToTweetPage(tweet.id)}
             />
             {hovering && 
-            <div 
-                className='respons-container' 
-                style={{width: '100%', position: 'absolute', bottom: '0', backgroundColor:'#eff5f8be', padding: '5px',  justifyContent: 'flex-end'}}> 
-
-                <IconButton 
-                    onClick={()=>handleToTweetPage(tweet.id)} 
-                    circle onDark size={'36px'} >
-                        <TiArrowBackOutline size={27}/>
-                </IconButton>
-
-                {tweet.repliesCount !== 0 
-                    ?<IconButton 
-                        onClick={handleToTweetPage 
-                            ? () =>handleToTweetPage(id) 
-                            : ()=>history.push(`/tweet/${id}`)}
-                        padding={'8px 10px'} fontSize={'17px'} size={'60px'}>
-                            {tweet.repliesCount}
-                    </IconButton>
-                    :<div style={{width:'36px'}}></div>}
-
-                <IconButton
-                    onClick={handleLike}
-                    circle onDark size={'36px'} liked={!!tweet.liked}>
-                        {tweet.liked ? <TiHeart size={27}/> : <TiHeartOutline size={27}/>}
-                </IconButton>
-
-                {tweet.likesCount !== 0 &&
-                    <IconButton 
-                        onClick={() => setShowLikes(true)} 
-                        padding={'8px 10px'} fontSize={'17px'} size={'60px'}>
-                            {tweet.likesCount}
-                    </IconButton>}
-
-            </div>
+            <TweetActions 
+                secondary={true}
+                tweet={tweet}
+                toTweet={toTweet}
+                handleLike={handleLike}
+                showLikes={() => setShowLikes(true)}
+            />
             }
         </div>
         </React.Fragment>

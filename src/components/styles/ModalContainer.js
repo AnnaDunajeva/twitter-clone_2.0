@@ -9,7 +9,7 @@ const ModalContainer = styled.div`
     height: 100%; 
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: ${props =>props.theme.backgroundBehindModal}; /* Black w/ opacity */
+    background-color: ${props =>props.background || props.theme.backgroundBehindModal}; /* Black w/ opacity */
 
 `
 export default ModalContainer

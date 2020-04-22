@@ -13,14 +13,16 @@ const GlobalStyle = createGlobalStyle`
         background-color: ${props => props.theme.invertedMainColor}
     }
     a {
+        position: relative;
         text-decoration: none;
-        color: #424242;
+        color: ${props => props.theme.mainColor};
     }
-    a:hover {
-        color: ${props => props.theme.blue};
-    }
-    a:focus {
-        color: ${props => props.theme.blue};
+    a:hover,
+    a:focus  {
+        cursor: pointer;
+        outline: none;
+        color: ${props => props.theme.hoverLinkColor};
+        text-decoration: none;
     }
     li {
         list-style-type: none;

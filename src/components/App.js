@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Route, Switch, Redirect } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
@@ -32,6 +32,7 @@ const App = () => {
     const authedUser = getUserIdFromCookie()
     const dispatch = useDispatch()
     const userProfile = useSelector(getAuthedUserProfile())
+    const [theme, setTheme] = useState(localStorage.getItem('theme'))
 
     useLogoutOnAuthenticationError()
 
@@ -50,9 +51,20 @@ const App = () => {
             }))
         }
     }, [authedUser, dispatch])
+
+    const toggleTheme = (e) => {
+        e.preventDefault()
+        if (theme === 'dark') {
+            localStorage.setItem('theme', 'light')
+            setTheme('light')
+        } else {
+            localStorage.setItem('theme', 'dark')
+            setTheme('dark')
+        }
+    }
         
     return (
-        <ThemeProvider theme={light}>
+        <ThemeProvider theme={theme === 'dark' ? dark : light}>
         <GlobalStyle />
         {console.log('rendering app', !!authedUser, ' userProfile: ', userProfile)}
             <LoadingBar/>
@@ -61,7 +73,7 @@ const App = () => {
 
             <div className={authedUser ? 'app-container' : null}>
                 <React.Fragment>
-                    {authedUser && <NavBar/>}
+                    {authedUser && <NavBar toggleTheme={toggleTheme} theme={theme}/>}
                     <Switch>
                         <PrivateRoute path='/' exact component={Home}/>
                         <Route path='/login' component={SignUpLogin}/> 

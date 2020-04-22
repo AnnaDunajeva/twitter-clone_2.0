@@ -7,7 +7,8 @@ const Alert = ({message, closable, onClose, smallMessage}) => {
     const [isVisible, setIsVisible] = useState(true)
     const isClosable = closable !== undefined ? closable : true
 
-    const handleClose = () => {
+    const handleClose = (e) => {
+        e.preventDefault()
         if (onClose) {
             onClose()
         }
@@ -18,11 +19,11 @@ const Alert = ({message, closable, onClose, smallMessage}) => {
 
     return (
         isVisible 
-            ?<AlertStyled onClick={handleClose}>
+            ?<AlertStyled onClick={(e)=>handleClose(e)}>
                 <div>
                     {isClosable && 
                         <IconButton 
-                            onClick={handleClose}
+                            onClick={(e)=>handleClose(e)}
                             pale circle hoverOnDark size={'36px'} float={'right'}>
                                 <MdClose size={25}/>
                         </IconButton>}

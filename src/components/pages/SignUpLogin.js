@@ -89,7 +89,8 @@ const SignUpLogin = () => {
                     {forgotPassword && 
                         <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
                 
-                    {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
+                    {formError && 
+                        <Alert message={formError} onClose={()=>setFormError(null)}/>}
 
                     <Form onSubmit={LoginUser} noInputBorder shadow inputShadow={'mediumDarkShadow'} labelColor={'mediumLightGrey'}>
                         <h3>Login </h3>
@@ -105,12 +106,14 @@ const SignUpLogin = () => {
                                 onChange={(e) => setLoginPassword(e.target.value)}
                                 type='password'/>
                         </div>
-                        <MainButton
-                            mediumSmall blue disabledMediumLight shadow={'darkShadow'} uppercase margin={'20px auto'}
-                            type='submit'
-                            disabled={loginUsername === '' || loginPassword === ''}>
-                                Login
-                        </MainButton>
+                        <ThemeProvider theme={light}>
+                            <MainButton
+                                mediumSmall blue disabledMediumLight shadow={'darkShadow'} uppercase margin={'20px auto'}
+                                type='submit'
+                                disabled={loginUsername === '' || loginPassword === ''}>
+                                    Login
+                            </MainButton>
+                        </ThemeProvider>
                         <Link onClick={()=>setForgotPassword(true)}>
                             Forgot password?
                         </Link>
@@ -147,12 +150,14 @@ const SignUpLogin = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 type='text'/>
                         </div>
-                        <MainButton
-                            mediumSmall blue disabledMediumLight shadow={'darkShadow'} uppercase margin={'10px auto'}
-                            type='submit'
-                            disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
-                                Sign Up
-                        </MainButton>
+                        <ThemeProvider theme={light}>
+                            <MainButton
+                                mediumSmall blue disabledMediumLight shadow={'lightShadow'} uppercase margin={'10px auto'}
+                                type='submit'
+                                disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
+                                    Sign Up
+                            </MainButton>
+                        </ThemeProvider>
                     </Form>
                 </div>
             </AnimatedGradient>

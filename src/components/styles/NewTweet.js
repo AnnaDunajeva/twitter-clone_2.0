@@ -25,7 +25,7 @@ const NewTweet = styled.form`
         padding: 10px;
         font-size: 16px;
         outline: none;
-        background-color: white;
+        background-color: ${props => props.theme.invertedMainColor};
         border: none;
         margin: 2px;
     }
@@ -35,12 +35,9 @@ const NewTweet = styled.form`
     div:first-of-type {
         display: flex;
         justify-content: space-between;
-        background-color: white;
         align-items: center;
     }
     p:first-of-type {
-        color: ${props => props.theme.secondaryTextColor};
-        font-size: ${props => props.theme.secondaryTextSize};
         margin-right: 7px;
     }
 
