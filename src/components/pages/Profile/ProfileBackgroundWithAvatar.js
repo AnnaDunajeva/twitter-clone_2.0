@@ -1,25 +1,25 @@
 import React from 'react'
+import ProfileBackgroundAndAvatarStyled from '../../styles/ProfileBackgroundAndAvatar'
 
 const ProfileBackgroundWithAvatar = ({user}) => {    
     return (
-        <div 
-            className='background-container' 
+        <ProfileBackgroundAndAvatarStyled 
             style={{backgroundColor: user.backgroundColor}}>
             {user.backgroundImage && 
-                <img 
-                    src={user.backgroundImage} 
-                    alt={`background for ${user.firstName}  ${user.lastName}`}
-                    style={{width: '100%', maxWidth: '970px', height: '194px', objectFit: 'cover'}}/>
+            <img 
+                src={user.backgroundImage} 
+                alt={`background for ${user.firstName}  ${user.lastName}`}/>
             }
-            <div className='under-avatar'></div>
+            {/* under avatar */}
+            <div>
+            </div>
             <img 
                 src={user.avatar} 
-                alt={`Avatar for ${user.firstName}  ${user.lastName}`} 
-                className='profile-avatar'/>
-            <div className='profile-name'>
+                alt={`Avatar for ${user.firstName}  ${user.lastName}`} />
+            <h3>
                 {`${user.firstName}  ${user.lastName}`}
-            </div>
-        </div>
+            </h3>
+        </ProfileBackgroundAndAvatarStyled>
     )
 }
 

@@ -4,12 +4,12 @@
   box-sizing: border-box;
   font-family: sans-serif;
 } */
-.app-container {
-  max-width: 970px;
+/* .app-container {
+  max-width: 900px;
   min-width: 700px;
   margin: 0 auto;
 
-}
+} */
 /* a {
   text-decoration: none;
   color: #424242;
@@ -23,7 +23,7 @@ a:focus {
 li {
   list-style-type: none;
 } */
-.align-right {
+/* .align-right {
   text-align: right;
 }
 .center {
@@ -32,7 +32,7 @@ li {
 .flex-row-center {
   display: flex;
   justify-content: center;
-}
+} */
 /* .nav {
   max-width: 970px;
   min-width: 700px;
@@ -94,7 +94,7 @@ li {
   color: #0994d4;
 } */
 
-.header {
+/* .header {
   text-align: center;
   font-size: 22px;
   color: #454849;
@@ -116,7 +116,7 @@ li {
   -webkit-box-shadow: 0 0 0 0.05rem #bebebe, 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
   -moz-box-shadow: 0 0 0 0.05rem #bebebe, 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
   box-shadow: 0 0 0 0.05rem #bebebe, 0px 5px 10px -1px rgba(83, 84, 85, 0.103);
-}
+} */
 
 /* .btn {
   border: 1px solid #1fa7dd;
@@ -167,11 +167,8 @@ li {
 .btn-clear:hover {
   cursor: pointer;
 } */
-.separator-line{
+/* .separator-line{
   border-left: 1px solid  #ffffff;
-}
-.separator-line-bottom{
-  border-bottom: 1px solid  #ffffff;
 }
 .flex-space-between {
   display: flex;
@@ -182,7 +179,7 @@ li {
 }
 .hover-blue:hover {
   color: #0994d4;
-}
+} */
 /* .hover-blue-circle-background {
   padding: 10px;
 }
@@ -218,10 +215,8 @@ li {
   outline: none;
 } */
 /* =========profile============ */
-.background-container {
-  /* max-width: 970px; */
+/* .background-container {
   height: 194px;
-  /* border: 1px solid #c7c4c4; */
   border-radius: 2px;
   margin: 0 auto;
   margin-bottom: 7px;
@@ -229,12 +224,9 @@ li {
   background: #97bad1;
   width: 100%;
   max-width: 970px;
-  /* height: auto; */
 }
 .under-avatar {
   position: absolute;
-  /* top: 61%;
-  left: 2%; */
   top: 119px;
   left: 20px;
   min-height: 150px;
@@ -249,8 +241,6 @@ li {
 }
 .profile-avatar {
   position: absolute;
-  /* top: 61%;
-  left: 2%; */
   top: 119px;
   left: 20px;
   min-height: 150px;
@@ -268,20 +258,16 @@ li {
 .profile-name {
   position: absolute;
   top: 70%;
-  /* left: 20%; */
-  /* top: 140px; */
   left: 182px;
   font-size: 35px;
   font-weight: 600;
   color: white;
   text-shadow: 0px 0px 4px rgba(167, 163, 163, 0.555);
-}
-.profile-icon {
-  /* margin-top: 5px; */
+} */
+/* .profile-icon {
   vertical-align: bottom;
   margin-right: 5px;
-  /* color: #454849; */
-}
+} */
 /* .profile-nav {
   display: flex;
   justify-content: center;
@@ -315,12 +301,12 @@ li {
   color: #454849;
 } */
 
-.profile-meta-text {
+/* .profile-meta-text {
   font-size: 18px;
   margin: 15px 20px;
   padding: 10px;
   border-radius: 50%;
-}
+} */
 /* .profile-meta div:first-of-type {
   padding-top: 58px;
 } */
@@ -464,10 +450,10 @@ li {
 } */
 
 /* =============== follow button =========== */
-.btn-follow-container {
+/* .btn-follow-container {
   width: 160px;
   align-self: center;
-}
+} */
 /* .btn-usercard {
   border-radius: 2px;
   font-size: 20px;
@@ -511,11 +497,11 @@ li {
   box-shadow: 0 0 0 0.15rem #ffffff, 0 0 0 0.25rem #1fa7dd;
 } */
 /* =========FORM======================== */
-.form-container {
+/* .form-container {
   display: flex;
   justify-content: space-evenly;
   padding-top: 70px;
-}
+} */
 /* .form {
   display: flex;
   flex-direction: column;
@@ -797,18 +783,17 @@ li {
 
 
 /* ====================ALERT================ */
-.alert-container {
-  /* display: none; Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 2; /*Sit on top*/
+/* .alert-container {
+  position: fixed; 
+  z-index: 2; 
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+} */
 /* .alert-box {
   margin: 15% auto;
   padding: 20px;

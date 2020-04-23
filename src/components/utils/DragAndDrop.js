@@ -1,69 +1,10 @@
-import React, {useState, useMemo, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {MdClose, MdCheck} from "react-icons/md"
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css'
-
-const baseStyle = {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '5px',
-    borderWidth: 2,
-    borderRadius: 2,
-    borderColor: '#bfb6b8',
-    borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
-    outline: 'none',
-    transition: 'border .24s ease-in-out'
-  };
-
-
-  const activeStyle = {
-    borderColor: '#2196f3'
-  };
-  
-  const acceptStyle = {
-    borderColor: '#00e676'
-  };
-  
-  const rejectStyle = {
-    borderColor: '#ff1744'
-  };
-
-const thumbsContainer = {
-  display: 'flex',
-  justifyContent: 'center',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  width: 130,
-  height: 130,
-  padding: 4,
-};
-
-const thumbInner = {
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
-
-const text = {
-    margin: '20px'
-}
-const resultContainer = {
-    display: 'flex',
-}
-const removeBtn = {
-    fontSize: '40px',
-    marginLeft: '5px',
-    padding: '5px'
-}
+import IconButton from '../styles/IconButton'
+import {DragZoneContainer, CropperContainer, CropResult} from '../styles/DragAndDrop'
 
 
 function DragAndDrop({
@@ -77,7 +18,7 @@ function DragAndDrop({
     const [preview, setPreview] = useState(null)
     const cropper = useRef();
 
-    const maxSize = 1000000 //10MB for now
+    const maxSize = 500000 //5MB
     const {
         getRootProps,
         getInputProps,
@@ -95,31 +36,21 @@ function DragAndDrop({
             }  
         });
     const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
-    const style = useMemo(() => ({
-        ...baseStyle,
-        ...(isDragActive ? activeStyle : {}),
-        ...(isDragAccept ? acceptStyle : {}),
-        ...(isDragReject ? rejectStyle : {})
-    }), [
-        isDragActive,
-        isDragReject,
-        isDragAccept
-    ]);
 
     return (
         <div>
         {!file && !cropResult &&
-            <div {...getRootProps({style})} className='clickable'>
+            <DragZoneContainer {...getRootProps()} active={isDragActive} accepted={isDragAccept} rejected={isDragReject}>
                 <input {...getInputProps()}/>
-                {isFileTooLarge && !isDragActive && <p style={text}>File is too large.</p>}
-                {isDragReject && <p style={text}>File type not accepted, sorry!</p>}
-                {!isDragActive && !file && <p style={text}>Drag and drop image here, or click to select a file</p>}
-                {isDragActive && !isDragReject && <p style={text}>Drop your image here</p>}
-            </div>
+                {isFileTooLarge && !isDragActive && <p>File is too large, maximum size is 5MB</p>}
+                {isDragReject && <p>File type not accepted, sorry!</p>}
+                {!isDragActive && !file && !isFileTooLarge && <p>Drag and drop image here, or click to select a file</p>}
+                {isDragActive && !isDragReject && <p>Drop your image here</p>}
+            </DragZoneContainer>
         }
         {preview && file && !cropResult &&
-            <React.Fragment>
-                <div style={resultContainer}>
+            <CropperContainer>
+                <div>
                     <Cropper
                         ref={cropper}
                         src={preview}
@@ -133,40 +64,36 @@ function DragAndDrop({
                         guides={false} 
                         preview='.img-preview'
                     />
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                        <MdCheck 
-                            style={removeBtn} 
-                            className='clickable hover-blue hover-blue-circle-background' 
-                            onClick={() =>handleAcceptImage(cropper.current)}/>
-                        <MdClose 
-                            style={removeBtn} 
-                            className='clickable hover-blue hover-blue-circle-background' 
-                            onClick={handleRemoveImage}/>
+                    <div>
+                        <IconButton 
+                            onClick={() =>handleAcceptImage(cropper.current)} 
+                            circle size={'40px'} margin={'0 0 0 5px'}>
+                                <MdCheck size={30}/>
+                        </IconButton>
+                        <IconButton 
+                            onClick={handleRemoveImage} 
+                            circle size={'40px'} margin={'0 0 0 5px'}>
+                                <MdClose size={30}/>
+                        </IconButton>
                     </div>
                 </div>
-                <div >
-                    <div 
-                        className="img-preview" 
-                        style={{ width: config.previewWidth, height: config.previewHeight, overflow: 'hidden', marginTop: '3px' }} />
+                <div 
+                    className="img-preview" 
+                    style={{ width: config.previewWidth, height: config.previewHeight}} >
                 </div>
-            </React.Fragment>
+            </CropperContainer>
         }
         {cropResult &&
-            <div style={resultContainer}>
-                <div style={{...thumbsContainer, width: config.previewWidth, height: config.previewHeight}}>
-                    <div style={thumbInner}>
-                        <img
-                        src={cropResult}
-                        style={img}
-                        alt=''
-                        />
-                    </div>
+            <CropResult>
+                <div style={{width: config.previewWidth, height: config.previewHeight}}>
+                    <img
+                    src={cropResult}
+                    alt=''/>
                 </div>
-                <MdClose 
-                    style={removeBtn} 
-                    className='clickable hover-blue hover-blue-circle-background' 
-                    onClick={handleRemoveImage}/>
-            </div>
+                <IconButton onClick={handleRemoveImage} circle size={'40px'} margin={'0 0 0 5px'}>
+                    <MdClose size={30}/>
+                </IconButton>
+            </CropResult>
         }
         </div>
     );

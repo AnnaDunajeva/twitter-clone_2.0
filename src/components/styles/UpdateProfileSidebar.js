@@ -3,7 +3,7 @@ import {constants} from './themes'
 
 const UpdateprofileSidebar = styled.span.attrs({tabIndex: 0})`
         padding: 75px 0 40px 0;
-        width: 320px;
+        min-width: 280px;
         display: flex;
         flex-direction: column;
         margin: 0;
@@ -12,7 +12,7 @@ const UpdateprofileSidebar = styled.span.attrs({tabIndex: 0})`
 
         a {
             padding: 22px 0 22px 40px;
-            font-size: ${constants.mediumLargeFont};
+            font-size: ${constants.mediumFont};
         }
 
         a:hover,

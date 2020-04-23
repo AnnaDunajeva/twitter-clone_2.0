@@ -2,20 +2,16 @@ import React, {useState, useCallback} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import {getTweetById} from '../../redux-store-2.0/entities/tweets/selectors'
-import { TiArrowBackOutline } from "react-icons/ti";
-import { TiHeartOutline } from "react-icons/ti";
-import { TiHeart } from "react-icons/ti";
 import useHover from '../../Hooks/useHover'
 import useSubscribeToTweetUpdate from '../../Hooks/useSubscribeToTweetUpdate'
-import IconButton from '../styles/IconButton'
 import {getTweetLikesIds} from '../../redux-store-2.0/composite-data/selectors'
 import {tweetLikesKey} from '../../redux-store-2.0/utils/compositeDataStateKeys'
 import {getTweetLikesPaginated} from '../../redux-store-2.0/api/tweets'
-import {toggleTweetsLike, deleteTweet} from '../../redux-store-2.0/api/tweets'
-import {MdClose} from "react-icons/md"
+import {toggleTweetsLike} from '../../redux-store-2.0/api/tweets'
 import UsersList from '../lists/UsersList'
 import ListPopUp from '../modals/ListPopUp'
 import TweetActions from '../utils/TweetActions'
+import TweetImage from '../styles/EntityImage'
 
 const Image = ({id, handleToTweetPage, handleToProfile}) => {
     const dispatch = useDispatch()
@@ -61,15 +57,11 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
             </ListPopUp>
         }
         <div 
-            className='position-relative' 
+            style={{position: 'relative'}} 
             onMouseEnter={onMouseOver} 
             onMouseLeave={onMouseOut}>
-            <img 
+            <TweetImage 
                 src={tweet.media} 
-                alt='' 
-                className='tweet-image clickable' 
-                style={{width: '100%', height: 'auto', borderRadius: 2}}
-                tabIndex={0}
                 onClick={()=>handleToTweetPage(tweet.id)}
             />
             {hovering && 

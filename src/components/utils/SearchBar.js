@@ -21,7 +21,6 @@ const SearchBar = () => {
         <SearchBarForm onSubmit={(e)=>handleSearch(e)}>
             <div>
                 <IoIosSearch />
-                {/* <FaSearch /> */}
                 <input
                     value={userTofind}
                     onChange={(e) => setUserToFind(e.target.value)}

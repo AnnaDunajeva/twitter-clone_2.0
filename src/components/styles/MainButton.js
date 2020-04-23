@@ -15,11 +15,13 @@ import {constants} from './themes'
 // margin: pixels, default 0
 // padding: default 10px 15px
 // bold 
+// float
 
 const MainButton = styled.button`
     display: block;
     position: relative;
     text-align: center;
+    ${props => props.float && `float: ${props.float};`}
     color: ${props => 
         (props.primary && props.theme.invertedMainColor) || 
         (props.secondary && props.theme.mainColor) || 
@@ -40,7 +42,7 @@ const MainButton = styled.button`
             (props.blue && props.theme.blue) || 
             props.theme.mainColor )
             + 
-            (props.shadow ? ', '+constants[props.shadow] : '')};
+            (props.shadow ? (', '+ props.theme.entityShadow) : '')};
     ${props => props.scalable && 'min-'}width: ${props => 
         (props.small && '120px') || 
         (props.mediumSmall && '160px') ||
@@ -76,7 +78,7 @@ const MainButton = styled.button`
                 (props.blue && props.theme.mediumBlue) ||
                 props.theme.blue)
                 + 
-                (props.shadow ? ', '+constants[props.shadow] : '')};
+                (props.shadow ? (', '+ props.theme.entityShadow) : '')};
         color: ${props => 
             ((props.secondary || props.blue) && 'white') ||
             (props.primary && props.theme.invertedMainColor) ||
@@ -101,7 +103,7 @@ const MainButton = styled.button`
         box-shadow: 0 0 0 0.15rem ${props => props.theme.invertedMainColor}, 0 0 0 0.25rem ${props => 
             (props.blue && props.theme.mediumBlue) ||
             ((props.primary || props.secondary) && props.theme.blue) || 
-            props.theme.blue};
+            props.theme.blue} ${props =>props.shadow ? (', '+ props.theme.entityShadow) : ''};
     }
     &:disabled,
     &:disabled:hover {
@@ -113,7 +115,7 @@ const MainButton = styled.button`
         box-shadow: 0 0 0 0.05rem ${props => 
            props.theme.disabledButtonColor
             + 
-            (props.shadow ? ', '+constants[props.shadow] : '')};
+            (props.shadow ? (', '+ props.theme.entityShadow) : '')};
         color: ${props => props.theme.disabledButtonColor};
         cursor: default;
     }

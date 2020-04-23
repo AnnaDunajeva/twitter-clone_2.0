@@ -12,6 +12,7 @@ import Link from '../styles/Link'
 import Form from '../styles/Form'
 import {light, dark} from '../styles/themes'
 import AnimatedGradient from '../styles/AnimatedGradient'
+import SignInFormsContainer from '../styles/SingInFormsContainer'
 
 const SignUpLogin = () => {
     const authedUser = getUserIdFromCookie()
@@ -83,12 +84,11 @@ const SignUpLogin = () => {
     return (
         <ThemeProvider theme={dark}>
             <AnimatedGradient>
-                <div className='form-container'>
+                <SignInFormsContainer>
                     {console.log('rendering signup')}
 
                     {forgotPassword && 
                         <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
-                
                     {formError && 
                         <Alert message={formError} onClose={()=>setFormError(null)}/>}
 
@@ -108,7 +108,7 @@ const SignUpLogin = () => {
                         </div>
                         <ThemeProvider theme={light}>
                             <MainButton
-                                mediumSmall blue disabledMediumLight shadow={'darkShadow'} uppercase margin={'20px auto'}
+                                mediumSmall blue disabledMediumLight shadow uppercase margin={'20px auto'}
                                 type='submit'
                                 disabled={loginUsername === '' || loginPassword === ''}>
                                     Login
@@ -119,7 +119,8 @@ const SignUpLogin = () => {
                         </Link>
                     </Form>
 
-                    <div className='separator-line'></div>
+                    {/* separator line */}
+                    <div></div>
 
                     <Form onSubmit={SignUpUser} noInputBorder inputWidth={'300px'} shadow inputShadow={'mediumDarkShadow'} labelColor={'mediumLightGrey'}>
                         <h3>Sign Up to communicate with the World!</h3>
@@ -152,14 +153,14 @@ const SignUpLogin = () => {
                         </div>
                         <ThemeProvider theme={light}>
                             <MainButton
-                                mediumSmall blue disabledMediumLight shadow={'lightShadow'} uppercase margin={'10px auto'}
+                                mediumSmall blue disabledMediumLight shadow uppercase margin={'10px auto'}
                                 type='submit'
                                 disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
                                     Sign Up
                             </MainButton>
                         </ThemeProvider>
                     </Form>
-                </div>
+                </SignInFormsContainer>
             </AnimatedGradient>
         </ThemeProvider>
     )

@@ -45,7 +45,7 @@ const ResetPassword = (props) => {
                         />
                     </div>
                     <MainButtom
-                        medium margin={'35px auto'} shadow={'mediumLightShadow'}
+                        medium margin={'35px auto'} shadow
                         type='submit'
                         disabled={password === ''}>
                             Reset Password

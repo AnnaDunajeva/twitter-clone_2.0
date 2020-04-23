@@ -49,19 +49,6 @@ const TweetsList = ({
                     ))}
                 </TransitionGroup>
             )}
-            {/* {(ids)=>(
-                <CSSTransitionGroup
-                    transitionName='item-transition'
-                    transitionAppear={true}
-                    transitionAppearTimeout={200}
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={1000}
-                >
-                    {ids.map((id) => (
-                        <Tweet id={id} key={id} handleToTweetPage={handleToTweetPage} handleToProfile={handleToProfile} stateKey={stateKey}/>
-                    ))}
-                </CSSTransitionGroup>
-            )} */}
         </ScrollUtil>
     )
 }

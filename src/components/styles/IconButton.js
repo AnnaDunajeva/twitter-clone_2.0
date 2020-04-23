@@ -4,7 +4,6 @@ import ClearButton from './ClearButton'
 
 //pros: 
 // pale, bright, liked, default bright
-// float: right etc..., default null
 
 const IconButton = styled(ClearButton)`
     display: flex;
@@ -14,12 +13,11 @@ const IconButton = styled(ClearButton)`
         (props.pale && props.theme.paleIcon) || 
         (props.liked && constants.red) ||
         props.theme.mainColor};
-    ${props => props.float && `float: ${props.float};`}
 
     svg {
         fill: ${props => 
             (props.pale && props.theme.paleIcon) || 
-            (props.liked && constants.red) ||
+            (props.liked && props.theme.red) ||
             props.theme.mainColor};
     }
 

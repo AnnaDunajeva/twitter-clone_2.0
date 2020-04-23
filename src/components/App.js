@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Route, Switch, Redirect } from 'react-router-dom'
+import {Route, Switch } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
 import {getUser} from '../redux-store-2.0/api/users'
 import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
@@ -23,10 +23,10 @@ import GlobalErrors from './utils/GlobalErrors'
 import GlobalAlerts from './utils/GlobalAlerts'
 import ToTopButton from './utils/ToTopButton'
 import SearchResults from './pages/SearchResults'
-import ToBeImplemented from './utils/ToBeImplemented'
 import {ThemeProvider} from 'styled-components'
 import {light, dark} from './styles/themes'
 import GlobalStyle from './styles/GlobalStyle'
+import AppContainer from './styles/AppContainer'
 
 const App = () => {
     const authedUser = getUserIdFromCookie()
@@ -71,24 +71,22 @@ const App = () => {
             <GlobalErrors />
             <GlobalAlerts />
 
-            <div className={authedUser ? 'app-container' : null}>
-                <React.Fragment>
-                    {authedUser && <NavBar toggleTheme={toggleTheme} theme={theme}/>}
-                    <Switch>
-                        <PrivateRoute path='/' exact component={Home}/>
-                        <Route path='/login' component={SignUpLogin}/> 
-                        <Route path='/verify/:token' component={EmailConfirmation}/>
-                        <Route path='/resetPassword/:token' component={ResetPassword}/>
-                        <PrivateRoute path='/tweet/:id' component={TweetPage}/>
-                        <PrivateRoute path='/user/:userId' component={Profile}/>
-                        <PrivateRoute path='/profile/update' component={ProfileUpdate}/>
-                        <PrivateRoute path='/users' component={Users}/>
-                        <PrivateRoute path='/find/:userId' component={SearchResults}/>
-                        <Route component={NotFound} />
-                    </Switch>
-                    <ToTopButton />
-                </React.Fragment>
-            </div>
+            <AppContainer logged={authedUser ? true : false}>
+                {authedUser && <NavBar toggleTheme={toggleTheme} theme={theme}/>}
+                <Switch>
+                    <PrivateRoute path='/' exact component={Home}/>
+                    <Route path='/login' component={SignUpLogin}/> 
+                    <Route path='/verify/:token' component={EmailConfirmation}/>
+                    <Route path='/resetPassword/:token' component={ResetPassword}/>
+                    <PrivateRoute path='/tweet/:id' component={TweetPage}/>
+                    <PrivateRoute path='/user/:userId' component={Profile}/>
+                    <PrivateRoute path='/profile/update' component={ProfileUpdate}/>
+                    <PrivateRoute path='/users' component={Users}/>
+                    <PrivateRoute path='/find/:userId' component={SearchResults}/>
+                    <Route component={NotFound} />
+                </Switch>
+            </AppContainer>
+            <ToTopButton />
         </ThemeProvider>
     )
 }

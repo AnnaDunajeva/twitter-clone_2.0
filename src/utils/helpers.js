@@ -94,3 +94,7 @@ export const isValidFisrtOrLastname = (name) => {
   return /^[a-zA-Z-]+$/.test(name.trim())
 }
 
+export const isValidLocation = (location) => {
+  return /^[a-zA-Z-,\s]+$/.test(location.trim())
+}
+

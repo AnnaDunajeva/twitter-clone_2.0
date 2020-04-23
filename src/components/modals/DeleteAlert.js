@@ -22,23 +22,6 @@ const DeleteAlert = ({message, smallMessage, onClose, onDelete}) => {
 
     return (
         isVisible 
-            // ? <div className='alert-container'>
-            //     <div className='alert-box'>
-            //         <p className='alert-content'>{message}</p>
-            //         <div style={{display: 'flex', justifyContent: 'space-around'}}>
-            //             <MainButton 
-            //                 small margin={'20px'} 
-            //                 onClick={handleDelete}>
-            //                     Delete
-            //             </MainButton>
-            //             <MainButton 
-            //                 small primary margin={'20px'} 
-            //                 onClick={handleClose}>
-            //                     Cancel
-            //             </MainButton>
-            //         </div>
-            //     </div>
-            // </div>
             ?<AlertStyled>
                 <div>
                     <p>{message}</p>
@@ -46,12 +29,12 @@ const DeleteAlert = ({message, smallMessage, onClose, onDelete}) => {
                     <div>
                         <MainButton 
                             small margin={'20px'} 
-                            onClick={handleDelete}>
+                            onClick={(e)=>handleDelete(e)}>
                                 Delete
                         </MainButton>
                         <MainButton 
                             small primary margin={'20px'} 
-                            onClick={handleClose}>
+                            onClick={(e)=>handleClose(e)}>
                                 Cancel
                         </MainButton>
                     </div>

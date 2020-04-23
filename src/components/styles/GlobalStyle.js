@@ -7,7 +7,34 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
         font-family: sans-serif;
-        color: ${props => props.theme.mainColor}
+        color: ${props => props.theme.mainColor};
+        scrollbar-color: ${props => props.theme.paleIcon} ${props => props.theme.profileNavBackground};
+    }
+    ::-webkit-scrollbar {
+        width: 14px;
+        height: 10px;
+    }
+    ::-webkit-scrollbar-button {
+        width: 0px;
+        height: 0px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: ${props => props.theme.paleIcon};
+        border: 0px solid transparent;
+        border-radius: 0px;
+    }
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+        background:${props => props.theme.secondaryTextColor};
+    }
+
+    ::-webkit-scrollbar-track {
+        background: ${props => props.theme.profileNavBackground};
+        border: 0px none transparent;
+        border-radius: 0px;
+    }
+    ::-webkit-scrollbar-corner {
+        background: transparent;
     }
     body {
         background-color: ${props => props.theme.invertedMainColor}
@@ -26,6 +53,15 @@ const GlobalStyle = createGlobalStyle`
     }
     li {
         list-style-type: none;
+    }
+    h1 {
+        font-size: ${constants.largeFont};
+        text-align: center;
+        margin: 15px;
+    }
+    h3 {
+        text-align: center;
+        font-size: ${constants.mediumLargeFont};
     }
 `
 

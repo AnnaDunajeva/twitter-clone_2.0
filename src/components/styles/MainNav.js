@@ -11,7 +11,7 @@ const MainNav = styled.nav`
     justify-content: space-between;
     top: 0;
     z-index: 1;
-    padding: 5px;
+    padding: 5px 0px;
     box-shadow: ${props => props.theme.navShadow};
 
     div {

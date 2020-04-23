@@ -16,7 +16,7 @@ const Link = styled.span.attrs({tabIndex: 0})`
             cursor: pointer;
             outline: none;
             color: ${props => props.theme.hoverLinkColor};
-            text-decoration: underline;
+            /* text-decoration: underline; */
         }
     }
 

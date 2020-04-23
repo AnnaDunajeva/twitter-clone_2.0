@@ -6,8 +6,6 @@ import {MdSentimentSatisfied} from "react-icons/md"
 import {postTweet} from '../../redux-store-2.0/api/tweets'
 import emoji from '../../utils/emoji'
 import TextareaAutosize from 'react-textarea-autosize';
-// import {FiImage} from "react-icons/fi"
-// import {MdInsertPhoto} from 'react-icons/md'
 import {FaRegImage} from 'react-icons/fa'
 import DragAndDrop from '../utils/DragAndDrop'
 import IconButton from '../styles/IconButton'
@@ -23,7 +21,7 @@ const dragConfig = {
     previewHeight: 100,
     previewWidth: 100
 }
-
+ 
 //should probably use useReducer here
 
 const NewTweet = ({replyingTo, showHeader}) => {
@@ -99,7 +97,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
         <React.Fragment>
             {toHome && <Redirect to='/' />}
             {isShowHeader && 
-                <h1 className='header'>
+                <h1>
                     {replyingTo 
                         ? 'Leave your reply' 
                         : 'Compose new tweet'}

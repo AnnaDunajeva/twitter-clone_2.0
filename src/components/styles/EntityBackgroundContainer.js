@@ -19,10 +19,11 @@ const EntityBackgroundContainer = styled.div`
     > h3 {
         text-align: center;
         margin: 10px 0;
-        font-size: ${constants.largeFont};
+        font-size: ${constants.mediumLargeFont};
     }
     > p {
         text-align: center;
+        margin: 10px 0;
     }
 
 `

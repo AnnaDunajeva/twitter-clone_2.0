@@ -79,9 +79,11 @@ const Profile = (props) => {
             {console.log('profile: ', user)}
             {console.log('props.match.url ', props.match.url)}
             {userFetchStatus === ERROR && 
-                <div className='header'>
-                    <b>Oops, could not load profile data. Please try again.</b>
-                </div>
+                <EntityBackgroundContainer>
+                    <h3>
+                        Oops, could not load profile data. Please try again.
+                    </h3>
+                </EntityBackgroundContainer>
             }
             {userFetchStatus === LOADED || userFetchStatus === UPDATED ?
                 <React.Fragment>

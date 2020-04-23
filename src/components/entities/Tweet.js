@@ -1,14 +1,10 @@
 import React, {useRef, useState, useCallback} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import { TiArrowBackOutline } from "react-icons/ti";
-import { TiHeartOutline } from "react-icons/ti";
-import { TiHeart } from "react-icons/ti";
 import Linkify from 'linkifyjs/react';
 import * as linkify from 'linkifyjs'
 import videoUrlParser from "js-video-url-parser";
 import YouTube from 'react-youtube'
-import { ReactTinyLink } from 'react-tiny-link'
 import {getTweetLikesIds} from '../../redux-store-2.0/composite-data/selectors'
 import {tweetLikesKey} from '../../redux-store-2.0/utils/compositeDataStateKeys'
 import {getTweetLikesPaginated} from '../../redux-store-2.0/api/tweets'
@@ -30,6 +26,7 @@ import Link from '../styles/Link'
 import {AvatarSmall} from '../styles/Avatar'
 import MetaText from '../styles/MetaText'
 import TweetText from '../styles/TweetText'
+import TweetImage from '../styles/TweetImage'
 
 const linkifyOptions = {
     validate: {
@@ -71,7 +68,7 @@ const Tweet = ({
 
     const handleLike = (e) => {
         e.preventDefault()
-        dispatch(toggleTweetsLike({tweetId: id,}))
+        dispatch(toggleTweetsLike({tweetId: id}))
     }
     const handleDelete = () => { 
         dispatch(deleteTweet({
@@ -85,7 +82,7 @@ const Tweet = ({
         ? handleToProfile(tweet.user) 
         : history.push(`/user/${tweet.user}`)
     
-    const toTweet = () => handleToTweetPage 
+    const toTweet = (id) => handleToTweetPage 
         ? handleToTweetPage(id) 
         : history.push(`/tweet/${id}`)
 
@@ -120,7 +117,7 @@ const Tweet = ({
             </EntityContainer>
             : <React.Fragment>
                 <EntityContainer>
-                    <CoverAllLink onClick={toTweet}/>
+                    <CoverAllLink onClick={()=>toTweet(id)}/>
 
                     <AvatarSmall 
                         src={author.avatar} 
@@ -146,7 +143,7 @@ const Tweet = ({
                         {tweet.replyingToTweetId !== null && 
                         <Link 
                             as={MetaText}
-                            onClick={toTweet}>
+                            onClick={()=>toTweet(tweet.replyingToTweetId)}>
                                 {tweet.replyingToUserId 
                                 ? `Replying to @${tweet.replyingToUserId}` 
                                 : 'Replying to [deleted]'}
@@ -157,20 +154,19 @@ const Tweet = ({
                         </TweetText>
                         
                         {tweet.media &&
-                        <img 
-                            src={tweet.media} 
-                            alt=''
-                            style={{width: 400, height: 400, borderRadius: 2}}/>}
+                        <TweetImage 
+                            src={tweet.media} />}
 
                         {youtubeUrls.current?.length > 0 &&
-                        <YouTube
-                            videoId={youtubeUrls.current[0].id}
-                            opts={{height: '262', width: '430'}}
-                            className='position-relative margin-bottom'/>}
+                        <div style={{position: 'relative'}}>
+                            <YouTube
+                                videoId={youtubeUrls.current[0].id}
+                                opts={{height: '262', width: '430'}}/>
+                        </div>}
 
                         <TweetActions 
                             tweet={tweet}
-                            toTweet={toTweet}
+                            toTweet={()=>toTweet(id)}
                             handleLike={handleLike}
                             showLikes={()=>setShowLikes(true)}/>
 

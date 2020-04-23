@@ -45,7 +45,7 @@ const ProfileUpdate = (props) => {
                     <ProfileBackgroundWithAvatar user={user}/>
                     <div style={{display: 'flex'}}>
                         <ProfileDataSideBar path={`${props.match.path}`}/>
-                        <EntityBackgroundContainer profile={'true'} padding={'20px 100px'}>
+                        <EntityBackgroundContainer profile={'true'} padding={'5px 100px'}>
                             <Switch>
                                 <PrivateRoute 
                                     path={`${props.match.path}/`} exact 

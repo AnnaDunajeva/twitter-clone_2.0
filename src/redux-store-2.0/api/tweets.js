@@ -360,8 +360,9 @@ export function toggleTweetsLike (data) {
                     if (tweet[tweetId].liked) {
                         dispatch(newLikeAddToUserLikes(tweetShort, userId))
                     } else {
-                        // dispatch(newLikeRemoveFromUserLikes(data.tweetId, data.user.userId))
-                        dispatch(compositeDataClear(userTweetLikesKey(userId)))
+                        
+                        dispatch(newLikeRemoveFromUserLikes(data.tweetId, userId))
+                        // dispatch(compositeDataClear(userTweetLikesKey(userId)))
                     }
                 }
             }

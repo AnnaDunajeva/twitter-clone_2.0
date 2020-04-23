@@ -1,52 +1,30 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import NavLink from '../../utils/NavLink'
 import UpdateProfileSidebar from '../../styles/UpdateProfileSidebar'
 
 const ProfileDataSideBar = ({path}) => {    
     return (
         <UpdateProfileSidebar>
-            <NavLink to={`${path}/`} exact activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
+            <NavLink to={`${path}/`} exact>
                 General Informatiom
             </NavLink>
 
-            <NavLink to={`${path}/additional`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
+            <NavLink to={`${path}/additional`}>
                 Additional Informatiom
             </NavLink>
 
-            <NavLink to={`${path}/security`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
+            <NavLink to={`${path}/security`}>
                 Security
             </NavLink>
 
-            <NavLink to={`${path}/timeline`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
+            <NavLink to={`${path}/timeline`}>
                 Timeline
             </NavLink>
 
-            <NavLink to={`${path}/theme`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
+            <NavLink to={`${path}/theme`}>
                 Theme and Styles
             </NavLink>
         </UpdateProfileSidebar>
-        // <div className='profile-meta profile-sidebar' style={{width: '330px'}}>
-        //     <NavLink to={`${path}/`} exact activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
-        //         General Informatiom
-        //     </NavLink>
-
-        //     <NavLink to={`${path}/additional`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
-        //         Additional Informatiom
-        //     </NavLink>
-
-        //     <NavLink to={`${path}/security`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
-        //         Security
-        //     </NavLink>
-
-        //     <NavLink to={`${path}/timeline`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
-        //         Timeline
-        //     </NavLink>
-
-        //     <NavLink to={`${path}/theme`} activeClassName='active profile-sidebar-link-active' className='profile-sidebar-link'>
-        //         Theme and Styles
-        //     </NavLink>
-
-        // </div>
     )
 }
 

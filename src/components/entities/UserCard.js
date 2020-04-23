@@ -12,7 +12,7 @@ import Link from '../styles/Link'
 import {AvatarSmall} from '../styles/Avatar'
 import MetaText from '../styles/MetaText'
 
-const UserCard = ({userId, size, handleToProfile, showFollowButton}) => {
+const UserCard = ({userId, size, handleToProfile}) => {
     const authedUser = getUserIdFromCookie()
     const user = useSelector(getUserById(userId))
     const dispatch = useDispatch()
@@ -54,7 +54,7 @@ const UserCard = ({userId, size, handleToProfile, showFollowButton}) => {
                 </MetaText>
             </div>
             {userId !== authedUser && 
-                <div className='btn-follow-container'>
+                <div style={{ width: '160px', alignSelf: 'center'}}>
                     {user.following
                         ?<MainButton onClick={handleFollowUnfollow} primary center small>Unfollow</MainButton>
                         :<MainButton onClick={handleFollowUnfollow} secondary center small>Follow</MainButton> }

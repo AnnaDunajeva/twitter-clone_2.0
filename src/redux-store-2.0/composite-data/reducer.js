@@ -17,6 +17,7 @@ import {
 } 
 from '../action-types'
 import { homeKey, conversationKey, userTweetsKey, userTweetImagesKey, userTweetLikesKey, userRepliesKey } from '../utils/compositeDataStateKeys'
+import {LOADED, PENDING_UPDATE} from '../constants'
 
 const initialState = {
     entities: [],
@@ -141,7 +142,8 @@ const compositeData = (state = initialState, action) => {//keyedReducer chooses 
             if (action.stateKey === userTweetLikesKey(action.userId)) {
                 return {
                     ...state,
-                    entities: state.entities.filter(tweet => tweet.id !== action.tweetId)
+                    entities: state.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
+                    fetchStatus: state.done ? LOADED : PENDING_UPDATE //safeguard to avoid setting hasMore to false in scrollUtil
                 }
             }else {
                 return state

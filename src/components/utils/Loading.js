@@ -1,3 +1,4 @@
+//should rewrite it to be a spinner
 import React from 'react'
 import PropTypes from 'prop-types'
 

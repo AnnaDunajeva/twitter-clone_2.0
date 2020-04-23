@@ -8,6 +8,7 @@ import DragAndDrop from '../../utils/DragAndDrop'
 import ColorPicker from '../../utils/ColorPicker'
 import MainButton from '../../styles/MainButton'
 import Form from '../../styles/Form'
+import {isValidLocation} from '../../../utils/helpers'
 
 const dragConfig = {
     height: 400,
@@ -35,6 +36,10 @@ const Additional = (props) => {
         e.preventDefault()
         const data = {user: {}}
         if (location !== '' && location !== user.location) {
+            if (!isValidLocation(location)) {
+                props.setFormError('You can only use alphabetic characters, "-", "," or whitespace in your location.')
+                return
+            }
             data.user.location = location
         }
         if (description !== '' && description !== user.description) {
@@ -60,7 +65,8 @@ const Additional = (props) => {
     const handleChangeComplete = (color) => {
         setColor(color.hex)
     }
-    const handleDeleteBackground = () => {
+    const handleDeleteBackground = (e) => {
+        e.preventDefault() 
         dispatch(props.handleDelete({}))
     }
     const handleRemoveImage = (e) => {
@@ -92,12 +98,14 @@ const Additional = (props) => {
                     onClose={()=>setDeleteBackground(false)} 
                     message={'Are you sure you want to delete your current background image permanently?'}/>}
             <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+                {/* prevent for submission on enter */}
+                <button type="submit" disabled style={{display: "none"}}></button> 
+
                 <h3>Additional Information</h3>
 
                 <div>
                     <label>Description</label>
                     <TextareaAutosize 
-                        className='profile-update-data-container-input textarea-update'
                         maxLength={maxlength}
                         placeholder={'Tell something about yourself...'}
                         value={description}
@@ -117,8 +125,8 @@ const Additional = (props) => {
                     <label>Background image</label>
 
                     <MainButton 
-                        primary shadow={'lightShadow'}
-                        onClick={()=>setDeleteBackground(true)}>
+                        primary shadow
+                        onClick={(e)=>{e.preventDefault(); setDeleteBackground(true)}}>
                             Delete current background
                     </MainButton>
                     <label>Upload new image</label>
@@ -134,10 +142,10 @@ const Additional = (props) => {
                 </div>
         
                 <MainButton
-                    blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
+                    blue mediumSmall center disabledLight uppercase shadow
                     disabled={isDisabled()}
                     type='submit'>
-                    Update
+                     Update
                 </MainButton>
             </Form>
         </React.Fragment>

@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom'
 import {verifyAccount} from '../../redux-store-2.0/api/session'
 import {getSessionStartError} from '../../redux-store-2.0/errors/selectors'
 import {getUserIdFromCookie} from '../../utils/helpers'
+import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const EmailConfirmation = (props) => {    
     const token = props.match.params.token
@@ -26,16 +27,18 @@ const EmailConfirmation = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <EntityBackgroundContainer margin={'50px auto'}>
             {console.log('rendering email verification')}
-            <div className='header' style={{marginTop: '50px'}}>
+            <h3>
                 We are confirming your email account...
-            </div>
-            <div className='header-small'>
+            </h3>
+            <p>
                 It will take just a second. 
+            </p>
+            <p>
                 You will be redirected to your account shortly.
-            </div>
-        </React.Fragment>
+            </p>
+        </EntityBackgroundContainer>
     )
 }
 

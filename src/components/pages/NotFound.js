@@ -1,7 +1,6 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {getUserIdFromCookie} from '../../utils/helpers'
-import LoginBar from './mainNav/LoginBar'
 
 const NotFound = () => {
     const authedUser = getUserIdFromCookie()
@@ -11,11 +10,7 @@ const NotFound = () => {
     }
     return (
         <React.Fragment>
-            {authedUser
-                ? null
-                : <LoginBar/>
-            }
-            <div className='header'>Sorry, that page doesn’t exist!</div>
+            <h3>Sorry, that page doesn’t exist!</h3>
         </React.Fragment>
     )
 }

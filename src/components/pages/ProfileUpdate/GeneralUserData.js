@@ -91,7 +91,10 @@ const General = (props) => {
                     onClose={()=>setDeleteAvatar(false)} 
                     message={'Are you sure you want to delete your current avatar image permanently?'}/>}
                     
-            <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+            <Form onSubmit={(e)=>handleUpdate(e)} shadow padding={'0 0 20px 0'}>
+                {/* prevent for submission on enter, should check how it works in different browsers */}
+                <button type="submit" disabled style={{display:"none"}}></button>
+
                 <h3>General Information</h3>
                 <div>
                     <label htmlFor='firstName'>First Name</label>
@@ -106,8 +109,8 @@ const General = (props) => {
                         type='text'/>
                     <label>Profile image</label>
                     <MainButton 
-                        primary shadow={'lightShadow'}
-                        onClick={()=>setDeleteAvatar(true)}>
+                        primary shadow
+                        onClick={(e)=>{e.preventDefault(); setDeleteAvatar(true)}}>
                             Delete current avatar
                     </MainButton>
                     <label>Upload new image</label>
@@ -123,7 +126,7 @@ const General = (props) => {
                 </div>
 
                 <MainButton
-                    blue mediumSmall center disabledLight uppercase shadow={'lightShadow'}
+                    blue mediumSmall center disabledLight uppercase shadow
                     disabled={isDisabled()}
                     type='submit'>
                         Update

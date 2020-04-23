@@ -16,13 +16,13 @@ const NavBar = ({toggleTheme, theme}) => {
     return (
         <MainNav>
             <div>
-                <ClearButton as={NavLink} to='/' exact size={'90px'} fontSize={'mediumFont'} margin={'0 5px 0 0'}>
+                <ClearButton as={NavLink} to='/' exact size={'90px'} fontSize={'mediumFont'} margin={'0 10px 0 0'}>
                     Home
                 </ClearButton>
-                <ClearButton as={NavLink} to={`/user/${authedUser}`} size={'90px'} fontSize={'mediumFont'} margin={'0 5px 0 0'}>
+                <ClearButton as={NavLink} to={`/user/${authedUser}`} size={'90px'} fontSize={'mediumFont'} margin={'0 10px 0 0'}>
                     Profile
                 </ClearButton>
-                <ClearButton as={NavLink} to='/users' size={'110px'} fontSize={'mediumFont'} margin={'0 5px 0 0'}>
+                <ClearButton as={NavLink} to='/users' size={'110px'} fontSize={'mediumFont'} margin={'0 10px 0 0'}>
                     Discover
                 </ClearButton>
 
@@ -30,8 +30,8 @@ const NavBar = ({toggleTheme, theme}) => {
             <div>
                 <SearchBar/>
                 {theme === 'light'
-                ?<IconButton onClick={(e)=>toggleTheme(e)} circle size={'40px'} margin={'0 5px 0 0'}><FaRegMoon size={24}/></IconButton>
-                :<IconButton onClick={(e)=>toggleTheme(e)} circle size={'40px'} margin={'0 5px 0 0'}><WiDaySunny size={31}/></IconButton>}
+                ?<IconButton onClick={(e)=>toggleTheme(e)} circle size={'40px'} margin={'0 10px'}><FaRegMoon size={24}/></IconButton>
+                :<IconButton onClick={(e)=>toggleTheme(e)} circle size={'40px'} margin={'0 10px'}><WiDaySunny size={31}/></IconButton>}
                 <ClearButton
                     bold uppercase fontSize={'mediumFont'}
                     onClick={logOutUser}>

@@ -39,7 +39,7 @@ const ToTopButton = () => {
                 onClick={handleToTop}
                 circle size={'45px'}
                 style={{position: 'fixed', bottom: '8%', right: '8%'}}>
-                <IoIosArrowUp size={40}/>
+                    <IoIosArrowUp size={40}/>
             </IconButton>
     );
 };

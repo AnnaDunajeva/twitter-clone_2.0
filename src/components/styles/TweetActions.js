@@ -11,5 +11,6 @@ export const TweetActionsContainerSecondary = styled(TweetActionsContainer)`
     right: 0;
     background-color: ${props => props.theme.tweetResponseOnContentBackground};
     padding: 5px;
+    margin-top: 5px;
     justify-content: flex-end;
 `
