@@ -8,7 +8,6 @@ import {constants} from './themes'
 // circle
 // fontSize: in pixels, OR smallFont, mediumSmallFont, mediumFont, mediumLargeFont, largeFont, default mediumLargeFont
 // shadow: lightShadow, mediumLightShadow, darkShadow, blurredMediumShadow, bottomLightShadow, default none
-// scalable, default false
 // uppercase, default false
 // disabledMediumLight, disabledLight, default transparent
 // center, default false OR
@@ -43,7 +42,7 @@ const MainButton = styled.button`
             props.theme.mainColor )
             + 
             (props.shadow ? (', '+ props.theme.entityShadow) : '')};
-    ${props => props.scalable && 'min-'}width: ${props => 
+    width: ${props => 
         (props.small && '120px') || 
         (props.mediumSmall && '160px') ||
         (props.medium && '200px') || 

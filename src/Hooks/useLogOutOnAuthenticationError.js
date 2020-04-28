@@ -14,7 +14,7 @@ const useLogOutOnAuthenticatonError = () => {
     useEffect(() => {
         if (authenticationError && authedUser) {
             console.log('authenticationError')
-
+            document.cookie = 'id=;'
             if (socket) {
                 socket.close()
             }

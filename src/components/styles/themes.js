@@ -90,7 +90,7 @@ export const dark = {
     secondaryTextColor: constants.darkGrey,
     secondaryTextSize: constants.smallFont,
 
-    lightMainColor: constants.darkWhite,
+    lightMainColor: 'white',
     blue: constants.blue,
     red: constants.red,
 

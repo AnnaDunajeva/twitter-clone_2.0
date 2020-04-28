@@ -26,7 +26,7 @@ const Home = () => {
             <EntityBackgroundContainer>
                 <TweetsList 
                     stateSelector={feedIds}
-                    take={5} 
+                    take={15} 
                     stateKey={(homeKey())}
                     dispatchData={dispatchData} 
                     getDataFetch={getFeedPaginated} 

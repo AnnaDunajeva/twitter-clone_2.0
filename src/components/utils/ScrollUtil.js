@@ -128,7 +128,7 @@ const ScrollUtil = ({
                         <p style={{margin: '20px', textAlign: 'center'}}>
                             {error
                                 ?<b>Oops, something went wrong, try refreshing page.</b>
-                                :ids.length > take
+                                :ids.length > 5
                                     ?<b>Yay! You have seen it all</b>
                                     :null
                             }

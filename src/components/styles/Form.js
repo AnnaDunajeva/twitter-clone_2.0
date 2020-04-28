@@ -52,8 +52,8 @@ const Form = styled.form`
             border-radius: 40px;
             border: ${props => 
                 (props.noInputBorder && 'none') || 
-                (localStorage.getItem('theme') === 'dark' && `1px solid ${props.theme.entityContainerBackground}`) ||
                 (props.inputBorder && `1px solid ${props.theme.mainColor}`) ||
+                (localStorage.getItem('theme') === 'dark' && `1px solid ${props.theme.entityContainerBackground}`) ||
                 `1px solid ${props.theme.entityBorder}`};
             background-color: ${props => props.theme.inputBackground};
             color: ${props => props.theme.mainColor};

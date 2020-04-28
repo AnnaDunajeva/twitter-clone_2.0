@@ -7,7 +7,7 @@ import ScrollUtil from '../utils/ScrollUtil'
 import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const DiscoverUsers = () => {
-    const take = 7
+    const take = 15
     const usersSelector = useCallback(getDiscoverUsersIds(), [])
 
     return (

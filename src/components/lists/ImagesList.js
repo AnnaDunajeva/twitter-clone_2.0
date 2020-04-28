@@ -17,7 +17,7 @@ const ImagesList = ({
         <ScrollUtil getDataFetch={getUserTweetImagesPaginated} 
                     dispatchData={dispatchData} 
                     stateSelector={userImagesSelector}
-                    take={6} 
+                    take={15} 
                     noDataText={'No images to show yet!'}
                     stateKey={userTweetImagesKey(userId)}
                     >

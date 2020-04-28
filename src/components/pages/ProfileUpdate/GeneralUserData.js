@@ -75,7 +75,6 @@ const General = (props) => {
     const isDisabled = () => {
         const isFirstName = firstName !== '' && firstName !== user.firstName
         const isLastName = lastName !== '' && lastName !== user.lastName
-        // const isEmail = email !== '' && email !== user.email
         const isAvatar = avatar !== null && crop !== null
         if (isFirstName || isLastName || isAvatar) {
             return false

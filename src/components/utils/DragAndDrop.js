@@ -18,7 +18,7 @@ function DragAndDrop({
     const [preview, setPreview] = useState(null)
     const cropper = useRef();
 
-    const maxSize = 500000 //5MB
+    const maxSize = 10000000 //10MB
     const {
         getRootProps,
         getInputProps,
@@ -42,7 +42,7 @@ function DragAndDrop({
         {!file && !cropResult &&
             <DragZoneContainer {...getRootProps()} active={isDragActive} accepted={isDragAccept} rejected={isDragReject}>
                 <input {...getInputProps()}/>
-                {isFileTooLarge && !isDragActive && <p>File is too large, maximum size is 5MB</p>}
+                {isFileTooLarge && !isDragActive && <p>File is too large, maximum size is 10MB</p>}
                 {isDragReject && <p>File type not accepted, sorry!</p>}
                 {!isDragActive && !file && !isFileTooLarge && <p>Drag and drop image here, or click to select a file</p>}
                 {isDragActive && !isDragReject && <p>Drop your image here</p>}
