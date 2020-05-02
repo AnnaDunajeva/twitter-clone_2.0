@@ -25,7 +25,7 @@ const TweetActions = ({
             {tweet.repliesCount !== 0 
             ?<IconButton 
                 onClick={toTweet}
-                pale={secondary ? false : true} padding={'8px 10px'} margin={'0 3px 0 0'} fontSize={'17px'} size={secondary && '60px'} bold={secondary ? true : false}>
+                padding={'8px 10px'} margin={'0 3px 0 0'} fontSize={'17px'} size={secondary && '60px'} bold={secondary ? true : false}>
                     {tweet.repliesCount}
             </IconButton>
             :<div style={{width:'30px'}}></div>}
@@ -39,7 +39,7 @@ const TweetActions = ({
             {tweet.likesCount !== 0 &&
             <IconButton 
                 onClick={showLikes} 
-                pale={secondary ? false : true} padding={'8px 10px'} margin={'0 3px 0 0'} fontSize={'17px'} size={secondary && '60px'} bold={secondary ? true : false}>
+               padding={'8px 10px'} margin={'0 3px 0 0'} fontSize={'17px'} size={secondary && '60px'} bold={secondary ? true : false}>
                     {tweet.likesCount}
             </IconButton>}
         </TweetActionsContainer>

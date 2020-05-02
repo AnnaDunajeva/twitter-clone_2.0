@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const AnimatedGradient = styled.div`
 
-width: 100%;
+    width: 100%;
     height: 100vh;
     color: white;
     background: linear-gradient(135deg, rgba(114,191,204,1) 0%, rgba(110,149,194,1) 29%, rgba(127,121,189,1) 50%, rgba(157,111,181,1) 70%, rgba(199,134,166,1) 88%, rgba(235,150,150,1) 100%);

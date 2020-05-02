@@ -7,7 +7,8 @@ const ModalWithHeaderAndCard = styled(ModalContainer)`
         padding: 0 0 10px 0;
         border-radius: 10px;
         background-color: ${props => props.theme.modalBackground};
-        box-shadow: ${props => props.theme.modalShadow};
+        /* box-shadow: ${props => props.theme.modalShadow}; */
+        box-shadow: 0px 14px 66px 5px rgba(0,0,0,0.8);
         width: ${props => props.theme.maxEntityWidth};
         min-height: ${props => props.theme.minModalHeight};
         margin: auto;

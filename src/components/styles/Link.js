@@ -5,7 +5,9 @@ const Link = styled.span.attrs({tabIndex: 0})`
     padding: ${props => props.padding};
     margin: ${props => props.margin};
     &, * {
-        font-size: ${props => (props.secondary && props.theme.secondaryTextSize) || 'inherit'};
+        font-size: ${props => 
+            (props.fontSize && props.fontSize) ||
+            (props.secondary && props.theme.secondaryTextSize) || 'inherit'};
         color: ${props => 
         (props.secondary && props.theme.secondaryTextColor) || 
         props.theme.mainColor};
