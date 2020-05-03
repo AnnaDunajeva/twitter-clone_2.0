@@ -339,7 +339,7 @@ export function toggleTweetsLike (data) {
                 method: 'PUT',
                 // mode: 'cors',
                 headers: {
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1"),
                     'Content-Type': 'application/json',
                     // 'Authorization': `Bearer ${data.user.token}`
                 }
@@ -410,7 +410,7 @@ export function postTweet (data) {
                 method: 'PUT',
                 // mode: 'cors',
                 headers: {
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1")
                 },
                 body: formData
             })
@@ -581,7 +581,7 @@ export function deleteTweet (data) {
                 // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1")
                     // 'Authorization': `Bearer ${data.user.token}`
                 }
             })

@@ -1,31 +1,29 @@
 import styled from 'styled-components';
 
 const MainHeaderLogo = styled.div`
-    position: absolute;
-    left: 23%;
-    top: 20%;
+    position: fixed;
+    left: 26%;
+    top: 9%;
     padding: 20px 0 0 0;
     width: 320px;
-    font-size: 90px;
+    font-size: 55px;
     color: #FFD5FF;
     /* font-weight: 600; */
     letter-spacing: 6px;
-    text-shadow: 1px 0px 4px #FFD5FF, 2px 0px 4px #FFD5FF, 3px 0px 4px #FFD5FF, 2px 0px 3px #D42CCA, 2px 3px 15px #D42CCA, 2px 0px 15px, 5px 0px 125px, 20px 0vw 200px #D42CCA,40px 0vw 200px #D42CCA;
-
-    >div {
+    line-height: 4.5rem;
+    /* text-shadow: 0px 0px 4px #FFD5FF, 0px 0px 4px #FFD5FF, 0px 0px 4px #FFD5FF, 0px 0px 3px #D42CCA, 0px 3px 15px #D42CCA, 0px 0px 15px, 0px 0px 125px, 0px 0vw 200px #D42CCA,0px 0vw 200px #D42CCA; */
+    text-shadow:0 0 5px #fff, 0 0 8px #fff, 0 0 10px #fff, 0 0 15px #ff90a2, 0 0 20px #ff516e, 0 0 30px #ff4262, 0 0 40px #ff3175, 0 0 50px #ff1160, 0 0 70px #ff1160, 0 0 80px #FF1177, 0 0 100px #ff1158, 0 0 150px #ff1160;
+    /* >div {
         display: block;
         transform: rotate(-9deg);
-    }
-    /* >div:first-of-type {
-        span:nth-of-type(3) {
-            animation: flicker 3s linear infinite;
-        }
-        span:nth-of-type(5) {
-            animation: flicker .9s linear infinite;
-        }
     } */
+    >div:first-of-type {
+        span:nth-of-type(5) {
+            animation: flicker 10s linear infinite;
+        }
+    }
     >div:last-of-type {
-        padding-left: 180px;
+        padding-left: 20%;
         span:nth-of-type(2) {
             animation: flicker 0.05s linear infinite;
         }
@@ -40,8 +38,9 @@ const MainHeaderLogo = styled.div`
         /* font-family: 'Vibur', cursive; */
         /* font-family: 'Pacifico', cursive; */
         /* font-family: 'Grand Hotel', cursive; */
-        font-family: 'Warnes', cursive;
+        /* font-family: 'Warnes', cursive; */
         /* font-family: 'Comfortaa', cursive; */
+        font-family: 'Monoton', cursive;
 
     }
 

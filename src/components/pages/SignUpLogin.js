@@ -64,41 +64,43 @@ const SignUpLogin = () => {
                     <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
             </ThemeProvider>
             <div style={{height: '100vh'}}>
-                <img 
-                    // style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                    style={{width: '100%', height: '100%', objectFit: 'cover', transition: '0.2s filter', filter: `blur(${showLogin || showSignUp ? '10px' : '0px'})`}}
-                    src={`${URL}/background`}/>
-                {/* <Logo /> */}
-                <SignInFormsContainer onClick={(e)=>handleCloseForm(e)} ref={closeArea}>
-                    <SignInNav>
-                        <MainButton primary small onClick={handleShowSignUp} margin={'7px 15px'} padding={'7px 15px'}>Sign Up</MainButton>
-                        <MainButton small onClick={handleShowLogin} margin={'7px'} padding={'7px 15px'}>Login</MainButton>
-                    </SignInNav>
-                    <TransitionGroup component={null}>
-                    {(showSignUp || showLogin) &&
-                        <CSSTransition
-                            // in={(showSignUp || showLogin)}
-                            timeout={300}
-                            appear={true}
-                            // unmountOnExit
-                            classNames='item'>
-                                <EntityBackgroundContainer>
-                                    <IconButton 
-                                        onClick={(e)=>handleCloseBtn(e)}
-                                        pale circle hoverOnDark size={'36px'} float={'right'}>
-                                            <MdClose size={25}/>
-                                    </IconButton>
-                                    {showLogin && 
-                                        <Login showForgotPassword={setForgotPassword} setFormError={setFormError}/>}
-                                    {showSignUp && 
-                                        <SignUp setFormError={setFormError}/>}
-                                </EntityBackgroundContainer>
-                        </CSSTransition>
-                    }
-                    </TransitionGroup>
-                    <Footer>This is best twitter clone out there!</Footer>
-                </SignInFormsContainer>
+                <div style={{height: '100vh', minWidth: '1400px', minHeight: '700px', position: 'relative', transition: '0.2s filter', filter: `blur(${showLogin || showSignUp ? '20px' : '0px'})`}}>
+                    <img 
+                        // style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                        style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                        src={`${URL}/background`}/>
+                    <Logo />
+                </div>
+            <SignInFormsContainer onClick={(e)=>handleCloseForm(e)} ref={closeArea}>
+                <SignInNav>
+                    <MainButton primary small onClick={handleShowSignUp} margin={'7px 15px'} padding={'7px 15px'}>Sign Up</MainButton>
+                    <MainButton small onClick={handleShowLogin} margin={'7px'} padding={'7px 15px'}>Login</MainButton>
+                </SignInNav>
+                <TransitionGroup component={null}>
+                {(showSignUp || showLogin) &&
+                    <CSSTransition
+                        // in={(showSignUp || showLogin)}
+                        timeout={300}
+                        appear={true}
+                        // unmountOnExit
+                        classNames='item'>
+                            <EntityBackgroundContainer>
+                                <IconButton 
+                                    onClick={(e)=>handleCloseBtn(e)}
+                                    pale circle hoverOnDark size={'36px'} float={'right'}>
+                                        <MdClose size={25}/>
+                                </IconButton>
+                                {showLogin && 
+                                    <Login showForgotPassword={setForgotPassword} setFormError={setFormError}/>}
+                                {showSignUp && 
+                                    <SignUp setFormError={setFormError}/>}
+                            </EntityBackgroundContainer>
+                    </CSSTransition>
+                }
+                </TransitionGroup>
+            </SignInFormsContainer>
             </div>
+            <Footer>This is the best twitter clone out there!</Footer>
         </ThemeProvider>
     )
 }

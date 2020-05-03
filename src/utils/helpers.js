@@ -50,7 +50,7 @@ export const splitText = (text) => {
 //! # $ % & ‘ * + – / = ? ^ ` . { | } ~ characters are legal in the local part of an e-mail 
 //address but in this regular expression those characters are filtered out. 
 export const validateEmail = (email) => {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,4})+$/.test(email)) {
     return (true)
   }
   return (false)
@@ -74,7 +74,7 @@ export const validateEmail = (email) => {
 //   }
 // }
 
-export const getUserIdFromCookie = () => document.cookie.replace(/(?:(?:^|.*;\s*)id\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+export const getUserIdFromCookie = () => document.cookie.replace(/(?:(?:^|.*;\s*)id\s*=\s*([^;]*).*$)|^.*$/, "$1")
 
 export const isStateKeyInErrors = (stateKey, stringArray) => {
   return stringArray.filter(error => error.includes(stateKey)) ? true : false 

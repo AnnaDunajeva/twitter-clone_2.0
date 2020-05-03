@@ -12,5 +12,10 @@ const Footer = styled.footer`
     align-items: center;
     justify-content: center;
     color: #908b91;
+
+    @media only screen and (max-height: 750px) {
+        position: initial;
+        background-color: #201e25d2;
+    }
 `
 export default Footer

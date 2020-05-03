@@ -5,19 +5,19 @@ const MainHeader = () => (
     <Logo>
         <div>
             <span>T</span>
-            <span>w</span>
-            <span>i</span>
-            <span>t</span>
-            <span>t</span>
-            <span>e</span>
-            <span>r</span>
+            <span>W</span>
+            <span>I</span>
+            <span>T</span>
+            <span>T</span>
+            <span>E</span>
+            <span>R</span>
         </div>
         <div>
             <span>C</span>
-            <span>l</span>
-            <span>o</span>
-            <span>n</span>
-            <span>e</span>
+            <span>L</span>
+            <span>O</span>
+            <span>N</span>
+            <span>E</span>
         </div>
     </Logo>
 );

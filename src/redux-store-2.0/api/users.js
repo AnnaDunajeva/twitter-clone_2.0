@@ -88,7 +88,7 @@ export function toggleUserFollow (data) {
                 // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1"),
                 }
             })
             const users = await usersResponse.json()
@@ -232,7 +232,7 @@ export function updateProfile (data) {
                 method: 'PATCH',
                 // mode: 'cors',
                 headers: {
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1"),
                 },
                 body: formData
             })
@@ -275,7 +275,7 @@ export function deleteAvatar (data) {
                 method: 'DELETE',
                 // mode: 'cors',
                 headers: {
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1"),
                 }
             })
             const userData = await response.json()
@@ -316,7 +316,7 @@ export function deleteBackgroundImage (data) {
                 method: 'DELETE',
                 // mode: 'cors',
                 headers: {
-                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+                    'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1"),
                 }
             })
             const userData = await response.json()
