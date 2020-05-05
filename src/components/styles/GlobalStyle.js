@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: sans-serif;
+        font-family: 'Lato', sans-serif;
         color: ${props => props.theme.mainColor};
         scrollbar-color: ${props => props.theme.paleIcon} ${props => props.theme.profileNavBackground};
     }
@@ -62,6 +62,12 @@ const GlobalStyle = createGlobalStyle`
     h3 {
         text-align: center;
         font-size: ${constants.mediumLargeFont};
+    }
+    @media only screen and (max-width: 600px) {
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 10px;
+        }
     }
 `
 

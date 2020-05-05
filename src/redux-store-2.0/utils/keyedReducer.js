@@ -2,7 +2,8 @@ import { get, omit, mapValues  } from 'lodash';
 import {SESSION_END_SUCCESS, TWEET_DELETE, TWEET_DELETE_EXEPT_REPLIES, USER_TOGGLE_FOLLOW} from '../action-types'
 import { PENDING_UPDATE, LOADED } from '../constants';
 import {conversationKey, userFollowingsKey, userFollowersKey} from './compositeDataStateKeys'
-import {getUserIdFromCookie} from '../../utils/helpers'
+// import {getUserIdFromCookie} from '../../utils/helpers'
+import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 
 /**
  * Creates a super-reducer as a map of reducers over keyed objects
@@ -63,6 +64,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 
 	return ( state = {}, action ) => {
 		// don't allow coercion of key name: null => 0
+		console.log('inside keyedReducer, state: ', state)
 		const itemKey = get( action, keyPath, undefined );
 
 		//some action that need to be performed on multiple keys and where we dont want to create key if it wasnt in the store
@@ -92,7 +94,9 @@ export const keyedReducer = ( keyPath, reducer ) => {
 			})
 		}
 		if (action.type === USER_TOGGLE_FOLLOW) {
-			const authedUser = getUserIdFromCookie()
+			// const authedUser = getUserIdFromCookie()
+			// const authedUser = getAuthedUserId()(state)
+			const authedUser = action.authedUser
 			return mapValues(state, (value, key) => {
 				if (key === userFollowingsKey(authedUser)) {
 					const ids = value.entities.map(user => user.userId) //also contain sortindex

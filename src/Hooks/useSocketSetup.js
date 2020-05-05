@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import io from 'socket.io-client';
-import {URL, LOADED} from '../redux-store-2.0/constants'
+import {LOADED, URL_MAIN} from '../redux-store-2.0/constants'
 import {setSocket} from '../redux-store-2.0/socket/actions'
 import {tweetUpdate, tweetDeleteExeptReplies} from '../redux-store-2.0/entities/tweets/actions'
 import {userUpdate} from '../redux-store-2.0/entities/users/actions'
@@ -14,7 +14,7 @@ const useSocketSetup = () => {
     useEffect(()=>{
         if (authedUser) {//need this otherwise it wont rerun after user loagout and login again cause app didn unmount. 
                         //Also cant put into login component cause then socket wont be open on page refresh
-            const socket = io('http://localhost', {path: '/api/socket.io'})
+            const socket = io(URL_MAIN, {path: '/api/socket.io'})
             socket.on('connect', () => {
                 console.log('socket created and connected to server!')
                 dispatch(setSocket(socket))

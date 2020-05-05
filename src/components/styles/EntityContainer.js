@@ -30,6 +30,29 @@ const EntityContainer = styled.div`
         flex: 2;
     }
 
+    @media only screen and (max-width: 600px) {
+        min-width: 80vw;
+        max-width: 95vw;
+        padding: 3px;
+        margin: 8px auto;
+        
+        > div:nth-of-type(2) {
+            margin: 10px 3px 10px 0;
+        }
+
+        iframe {
+            width: 65vw;
+            height: calc(65vw / 1.64);
+        }
+        svg {
+            width: 20px;
+            height: 30px;
+        }
+        h3 {
+            font-size: 17px;
+        }
+    }
+
     &:hover,
     &:focus-within {
         background: ${props => props.theme.entityHoverBackground};

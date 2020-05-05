@@ -8,7 +8,8 @@ import {userTweetsKey, userTweetLikesKey, userRepliesKey} from '../../../redux-s
 import {getUserTweetIds, getUserTweetLikesIds, getUserRepliesIds} from '../../../redux-store-2.0/composite-data/selectors'
 import {getUserTweetsPaginated, getUserTweetLikesPaginated, getUserRepliesPaginated} from '../../../redux-store-2.0/api/tweets'
 import useSubscribeToUserUpdate from '../../../Hooks/useSubscribeToUserUpdate'
-import {getUserIdFromCookie} from '../../../utils/helpers'
+// import {getUserIdFromCookie} from '../../../utils/helpers'
+import {getAuthedUserId} from '../../../redux-store-2.0/session/selectors'
 import ProfileCard from './ProfileCard'
 import ProfileNav from './ProfileNav'
 import NotFound from '../NotFound'
@@ -18,7 +19,7 @@ import ImageList from '../../lists/ImagesList'
 import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 
 const Profile = (props) => {
-    const authedUserId = getUserIdFromCookie()
+    const authedUserId = useSelector(getAuthedUserId())
     const userId = props.match.params.userId
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))

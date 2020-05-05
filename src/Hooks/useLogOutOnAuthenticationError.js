@@ -3,12 +3,13 @@ import {useSelector, useDispatch} from 'react-redux'
 import {SESSION_END_SUCCESS} from '../redux-store-2.0/action-types'
 import {isAuthenticationError} from '../redux-store-2.0/errors/selectors'
 import {getSocket} from '../redux-store-2.0/socket/selectors'
-import {getUserIdFromCookie} from '../utils/helpers'
+// import {getUserIdFromCookie} from '../utils/helpers'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 
 const useLogOutOnAuthenticatonError = () => {
     const dispatch = useDispatch()
     const authenticationError = useSelector(isAuthenticationError())
-    const authedUser = getUserIdFromCookie()
+    const authedUser = useSelector(getAuthedUserId())
     const socket = useSelector(getSocket())
 
     useEffect(() => {

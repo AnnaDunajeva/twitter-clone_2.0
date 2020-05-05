@@ -18,6 +18,11 @@
 .env.test.local
 .env.production.local
 
+.dockerignore
+Dockerfile
+nginx.conf
+nginx.conf.dev
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

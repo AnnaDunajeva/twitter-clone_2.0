@@ -17,10 +17,11 @@ import {
     RESET_PASSWORD_LINK_SUCCESS,
     SET_SESSION_FETCHSTATUS
 } from '../action-types'
+import {getUserIdFromCookie} from '../../utils/helpers'
 
 const initialState = {
-    userId: localStorage.getItem('userId') || null,
-    fetchStatus: localStorage.getItem('userId') ? LOADED : null,
+    userId: getUserIdFromCookie() || null, 
+    fetchStatus: getUserIdFromCookie() ? LOADED : null,
     error: null
 }
 

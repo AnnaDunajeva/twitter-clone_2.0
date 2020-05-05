@@ -38,7 +38,8 @@ import {
     userTweetLikesKey,
     tweetLikesKey,
     userRepliesKey } from '../utils/compositeDataStateKeys'
-import {getUserIdFromCookie} from '../../utils/helpers'
+// import {getUserIdFromCookie} from '../../utils/helpers'
+import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 
 export function getFeedPaginated(data) {
     return async (dispatch) => {
@@ -329,7 +330,8 @@ export function getUserTweetImagesPaginated (data) {
 
 export function toggleTweetsLike (data) {
     return async (dispatch, getState) => {
-        const userId = getUserIdFromCookie()
+        const state = getState()
+        const userId = getAuthedUserId()(state)
         dispatch(showLoading())
         dispatch(tweetToggleLike(data.tweetId)) //provides instant UI feedback to user
         dispatch(globalErrorRemove(`${TWEET_TOGGLE_LIKE}/${data.tweetId}`))
@@ -391,7 +393,8 @@ export function toggleTweetsLike (data) {
 
 export function postTweet (data) {
     return async (dispatch, getState) => {
-        const userId = getUserIdFromCookie()
+        const state = getState()
+        const userId = getAuthedUserId()(state)
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_POST}`))
         console.log(data)

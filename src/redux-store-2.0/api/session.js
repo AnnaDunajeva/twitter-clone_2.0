@@ -115,6 +115,7 @@ export function verifyAccount (token) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'same-origin',
                 body: JSON.stringify({token})
             })
             const data = await response.json()

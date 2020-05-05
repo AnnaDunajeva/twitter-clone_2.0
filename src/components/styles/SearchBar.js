@@ -8,6 +8,7 @@ const SearchBar = styled.form.attrs({tabIndex: 0})`
     background-color: ${props => props.theme.invertedMainColor};
     border: 1px solid ${props => props.theme.mainColor};
     margin-right: 10px;
+    flex: 2;
 
     &:hover {
         /* box-shadow: 0 0 0 0.15rem ${props => props.theme.invertedMainColor}, 0 0 0 0.25rem ${props => props.theme.hoverLinkColor}; */

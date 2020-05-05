@@ -13,7 +13,8 @@ import {getUserById} from '../../redux-store-2.0/entities/users/selectors'
 import {toggleTweetsLike, deleteTweet} from '../../redux-store-2.0/api/tweets'
 import {MdClose} from "react-icons/md"
 import useSubscribeToTweetUpdate from '../../Hooks/useSubscribeToTweetUpdate'
-import {getUserIdFromCookie} from '../../utils/helpers'
+// import {getUserIdFromCookie} from '../../utils/helpers'
+import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 import {formatDate} from '../../utils/helpers'
 import UsersList from '../lists/UsersList'
 import ListPopUp from '../modals/ListPopUp'
@@ -45,7 +46,7 @@ const Tweet = ({
     const dispatch = useDispatch()
     const tweet = useSelector(getTweetById(id))
     const author = useSelector(getUserById(tweet?.user))
-    const authedUser = getUserIdFromCookie()
+    const authedUser = useSelector(getAuthedUserId())
 
     const [isDeleteTweet, setIsDeleteTweet] = useState(false)
     const [showLikes, setShowLikes] = useState(false)

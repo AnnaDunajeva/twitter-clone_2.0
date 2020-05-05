@@ -2,21 +2,16 @@ import styled from 'styled-components';
 
 const MainHeaderLogo = styled.div`
     position: fixed;
-    left: 26%;
+    left: 27%;
     top: 9%;
     padding: 20px 0 0 0;
     width: 320px;
-    font-size: 55px;
+    font-size: 3vw;
     color: #FFD5FF;
-    /* font-weight: 600; */
     letter-spacing: 6px;
-    line-height: 4.5rem;
-    /* text-shadow: 0px 0px 4px #FFD5FF, 0px 0px 4px #FFD5FF, 0px 0px 4px #FFD5FF, 0px 0px 3px #D42CCA, 0px 3px 15px #D42CCA, 0px 0px 15px, 0px 0px 125px, 0px 0vw 200px #D42CCA,0px 0vw 200px #D42CCA; */
+    line-height: 5vw;
     text-shadow:0 0 5px #fff, 0 0 8px #fff, 0 0 10px #fff, 0 0 15px #ff90a2, 0 0 20px #ff516e, 0 0 30px #ff4262, 0 0 40px #ff3175, 0 0 50px #ff1160, 0 0 70px #ff1160, 0 0 80px #FF1177, 0 0 100px #ff1158, 0 0 150px #ff1160;
-    /* >div {
-        display: block;
-        transform: rotate(-9deg);
-    } */
+
     >div:first-of-type {
         span:nth-of-type(5) {
             animation: flicker 10s linear infinite;
@@ -41,7 +36,25 @@ const MainHeaderLogo = styled.div`
         /* font-family: 'Warnes', cursive; */
         /* font-family: 'Comfortaa', cursive; */
         font-family: 'Monoton', cursive;
+    }
 
+    @media only screen and (max-width: 1000px) {
+        left: 5%;
+        top: 18%;
+        font-size: 5vw;
+        line-height: 4.5rem;
+            >div:last-of-type {
+                padding-left:20%;
+            }
+    }
+    @media only screen and (max-width: 600px) {
+        left: 5%;
+        top: 17%;
+        font-size: 6vw;
+        line-height: 3rem;
+            >div:last-of-type {
+                padding-left: 0;
+            }
     }
 
     @keyframes flicker {

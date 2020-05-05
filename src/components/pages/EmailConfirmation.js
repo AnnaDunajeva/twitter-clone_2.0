@@ -1,16 +1,17 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {verifyAccount} from '../../redux-store-2.0/api/session'
 import {getSessionStartError} from '../../redux-store-2.0/errors/selectors'
-import {getUserIdFromCookie} from '../../utils/helpers'
+// import {getUserIdFromCookie} from '../../utils/helpers'
+import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const EmailConfirmation = (props) => {    
     const token = props.match.params.token
     const dispatch = useDispatch()
     const loginError = useSelector(getSessionStartError())
-    const authedUserId = getUserIdFromCookie()
+    const authedUserId = useSelector(getAuthedUserId())
 
     useEffect(() => {
         if (!authedUserId) {
@@ -28,7 +29,7 @@ const EmailConfirmation = (props) => {
 
     return (
         <EntityBackgroundContainer margin={'50px auto'}>
-            {console.log('rendering email verification')}
+            {console.log('rendering email verification ', authedUserId)}
             <h3>
                 We are confirming your email account...
             </h3>

@@ -32,7 +32,27 @@ const Alert = styled(ModalContainer)`
             display: flex;
             justify-content: space-around;
         }
-    }
 
+        @media only screen and (max-width: 600px) {
+            width: 300px;
+            > p {
+                font-size: 16px;
+                line-height: 1.5rem;
+                margin: 10px 15px;
+            }
+            > p:nth-of-type(2) {
+                font-size: 13px;
+                color: ${props => props.theme.lightMainColor};
+            }
+            /* buttons container */
+            > div:last-of-type {
+                button {
+                    font-size: 15px;
+                    width: 100px;
+                    margin: 15px;
+                }
+            }
+        }
+    }
 `
 export default Alert

@@ -26,11 +26,13 @@ import {
     compositeDataEntitiesFetchSuccess,
     compositeDataEntitiesFetchError,
     compositeDataClear } from '../composite-data/actions'
-import {getUserIdFromCookie} from '../../utils/helpers'
+// import {getUserIdFromCookie} from '../../utils/helpers'
+import { getAuthedUserId } from '../session/selectors'
 
 export function getUser (data) {
-    return async (dispatch) => {
-        const userId = getUserIdFromCookie()
+    return async (dispatch, getState) => {
+        const state = getState()
+        const userId = getAuthedUserId()(state)
         console.log('inside getUser usersFetchstatus ', {[data.userId]: LOADING})
         dispatch(showLoading())
         dispatch(usersFetch([data.userId], {[data.userId]: LOADING}))
@@ -78,7 +80,7 @@ export function getUser (data) {
 export function toggleUserFollow (data) {
     return async (dispatch) => {
         dispatch(showLoading())
-        dispatch(userToggleFollow(data.userId)) //provides instant UI feedback to user
+        dispatch(userToggleFollow(data)) //provides instant UI feedback to user
         dispatch(globalErrorRemove(`${USER_TOGGLE_FOLLOW}/${data.userId}`))
 
         try {
@@ -94,7 +96,7 @@ export function toggleUserFollow (data) {
             const users = await usersResponse.json()
 
             if (users.error) {
-                dispatch(userToggleFollow(data.userId))
+                dispatch(userToggleFollow(data))
                 dispatch(globalErrorAdd(`${USER_TOGGLE_FOLLOW}/${data.userId}`, users.error))
             } else {
                 dispatch(compositeDataClear(homeKey()))
@@ -108,7 +110,7 @@ export function toggleUserFollow (data) {
         catch (err) { 
             console.log(err.message)
 
-            dispatch(userToggleFollow(data.userId))
+            dispatch(userToggleFollow(data))
             dispatch(globalErrorAdd(`${USER_TOGGLE_FOLLOW}/${data.userId}`, err.message))
 
             dispatch(hideLoading())
@@ -209,8 +211,9 @@ export function getAllUsersPaginated (data) {
 // }
 
 export function updateProfile (data) {
-    return async (dispatch) => {
-        const userId = getUserIdFromCookie()
+    return async (dispatch, getState) => {
+        const state = getState()
+        const userId = getAuthedUserId()(state)
         console.log(data)
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
@@ -262,9 +265,10 @@ export function updateProfile (data) {
 }
 
 export function deleteAvatar (data) {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
+        const state = getState()
         dispatch(showLoading())
-        const userId = getUserIdFromCookie()
+        const userId = getAuthedUserId()(state)
         dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
         dispatch(usersFetch([userId], {[userId]: UPDATING}))
         const userFetchStatusSuccess = {[userId]: UPDATED}
@@ -303,8 +307,9 @@ export function deleteAvatar (data) {
 }
 
 export function deleteBackgroundImage (data) {
-    return async (dispatch) => {
-        const userId = getUserIdFromCookie()
+    return async (dispatch, getState) => {
+        const state = getState()
+        const userId = getAuthedUserId()(state)
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${PROFILE_UPDATE}`))
         dispatch(usersFetch([userId], {[userId]: UPDATING}))

@@ -13,11 +13,52 @@ const MainNav = styled.nav`
     z-index: 1;
     padding: 5px 0px;
     box-shadow: ${props => props.theme.navShadow};
+    >div:nth-of-type(2) {
+        flex: 2;
+    }
 
     div {
         display: flex;
         align-items: center;
         font-size: ${constants.mediumFont};
+    }
+    @media only screen and (max-width: 600px) {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom:10px;
+        padding: 5px;
+
+        a {
+            padding: 5px 6px;
+            font-size: 14px;
+            margin: 0 5px 3px 0;
+            max-width: 70px;
+        }
+        a:first-of-type {
+            width: 60px;
+        }
+        >div:nth-of-type(3){
+            order: 2;
+        }
+        >div:nth-of-type(2){
+            order: 3;
+        }
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+        button {
+            padding: 5px;
+            margin: 0;
+            font-size: 14px;
+        }
+        button:first-of-type {
+            width: 30px;
+            height: 30px;
+            margin-right: 4px;
+        }
+
     }
 `
 

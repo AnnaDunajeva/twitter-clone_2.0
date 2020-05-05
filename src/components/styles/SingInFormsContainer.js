@@ -2,14 +2,37 @@ import styled from 'styled-components';
 import {URL} from '../../redux-store-2.0/constants'
 
 const SignInFormsContainer = styled.div`
-    min-width: 500px;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    /* background-color: #3d383d81; */
 
+    @media only screen and (max-width: 600px) {
+        >div {
+            width: 330px;
+            margin: 2.5%  auto;
+            border-radius: 20px;
+        }
+        && {
+            div {
+                >form {
+                    padding: 0 15px 15px 15px;
+                    input {
+                        min-width: 270px;
+                    }
+                } 
+            }
+        }
+    }
+    @media only screen and (min-width: 600px) {
+        min-width: 500px;
+
+        >div {
+            width: 450px;
+            margin: 0.6%  auto;
+        }
+    }
     && {
         div {
             >form {
@@ -22,16 +45,7 @@ const SignInFormsContainer = styled.div`
     }
     >div {
         background-color: #685c6da1;
-        width: 450px;
-        margin: 0.6%  auto;
         box-shadow: 0px 14px 66px 5px rgba(0,0,0,0.8);
-
-        /* position: absolute;
-        top:0; right: 0;
-        margin: 0;
-        height: 100%;
-        border-radius: 0; */
-
 
         &.item-enter, &.item-enter *,
         &.item-appear, &.item-appear * {

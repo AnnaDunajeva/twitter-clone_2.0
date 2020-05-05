@@ -6,7 +6,8 @@ import {updateProfile} from '../../../redux-store-2.0/api/users'
 import {deleteAvatar} from '../../../redux-store-2.0/api/users'
 import {deleteBackgroundImage} from '../../../redux-store-2.0/api/users'
 import {LOADED, UPDATED} from '../../../redux-store-2.0/constants'
-import {getUserIdFromCookie} from '../../../utils/helpers'
+// import {getUserIdFromCookie} from '../../../utils/helpers'
+import {getAuthedUserId} from '../../../redux-store-2.0/session/selectors'
 import ToBeImplemented from '../../utils/ToBeImplemented'
 import PrivateRoute from '../../utils/PrivateRoute'
 import NotFound from '../NotFound'
@@ -18,7 +19,7 @@ import Alert from '../../modals/Alert'
 import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 
 const ProfileUpdate = (props) => {
-    const userId = getUserIdFromCookie()
+    const userId = useSelector(getAuthedUserId())
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
     const dispatch = useDispatch()

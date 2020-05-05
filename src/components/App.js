@@ -7,7 +7,8 @@ import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
 import useSocketSetup from '../Hooks/useSocketSetup'
 import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
 import useLogoutOnAuthenticationError from '../Hooks/useLogOutOnAuthenticationError'
-import {getUserIdFromCookie} from '../utils/helpers'
+// import {getUserIdFromCookie} from '../utils/helpers'
+import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
 import PrivateRoute from './utils/PrivateRoute'
 import Home from './pages/Home'
 import NavBar from './pages/mainNav/NavBar'
@@ -29,7 +30,7 @@ import GlobalStyle from './styles/GlobalStyle'
 import AppContainer from './styles/AppContainer'
 
 const App = () => {
-    const authedUser = getUserIdFromCookie()
+    const authedUser = useSelector(getAuthedUserId())
     const dispatch = useDispatch()
     const userProfile = useSelector(getAuthedUserProfile())
     const [theme, setTheme] = useState(localStorage.getItem('theme'))

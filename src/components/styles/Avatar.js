@@ -20,6 +20,12 @@ export const AvatarSmall = styled.img.attrs({tabIndex: 0})`
         outline: none;
         box-shadow: 0 0 0 0.15rem ${props => props.theme.invertedMainColor}, 0 0 0 0.25rem ${props => props.theme.hoverLinkColor};
     }
+    
+    @media only screen and (max-width: 600px) {
+        height: 45px;
+        width: 45px;
+        margin: 10px;
+    }
 `
 export const AvatarBig = styled.div`
 `

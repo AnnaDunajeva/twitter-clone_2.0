@@ -57,7 +57,6 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
             </ListPopUp>
         }
         <div 
-            style={{position: 'relative'}} 
             onMouseEnter={onMouseOver} 
             onMouseLeave={onMouseOut}>
             <TweetImage 

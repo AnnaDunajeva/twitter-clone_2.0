@@ -25,6 +25,33 @@ const ListpopUpBox = styled(ModalContainer)`
             }
         }
     }
-
+    @media only screen and (max-width: 600px) {
+        >div {
+            width: 97vw;
+            >div {
+                height: 80vh;
+                padding: 10px 0 10px 10px;
+                >p {
+                    font-size: 15px;
+                }
+                /* usercard */
+                >div>div>div {
+                    width: 90vw;
+                    button {
+                        width: 20vw;
+                        font-size: 3.3vw;
+                        padding: 8px 10px;
+                    }
+                    h3 {
+                        font-size: 15px;
+                        text-align: start;
+                    }
+                    p {
+                        font-size: 3vw !important;
+                    }
+                }
+            }
+        }
+    }
 `
 export default ListpopUpBox

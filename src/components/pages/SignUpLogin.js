@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react'
 import {Redirect} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 import {ThemeProvider} from 'styled-components'
-import { getUserIdFromCookie} from '../../utils/helpers'
+// import { getUserIdFromCookie} from '../../utils/helpers'
+import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 import AnimatedGradient from '../styles/AnimatedGradient'
 import SignInFormsContainer from '../styles/SingInFormsContainer'
 import RequestResetPasswordLinkAlert from '../modals/RequestResetPasswordLinkAlert'
@@ -21,9 +23,10 @@ import {
     TransitionGroup,
 } from 'react-transition-group';
 import Footer from '../styles/Footer'
+import SignInPageContainer from '../styles/SignInPageContainer'
 
 const SignUpLogin = () => {
-    const authedUser = getUserIdFromCookie()
+    const authedUser = useSelector(getAuthedUserId())   
     const [showLogin, setShowLogin] = useState(false)
     const [showSignUp, setShowSignUp] = useState(true)
     const [forgotPassword, setForgotPassword] = useState(false)
@@ -57,49 +60,45 @@ const SignUpLogin = () => {
     
     return (
         <ThemeProvider theme={dark}>
+            {formError && 
+                <Alert message={formError} onClose={()=>setFormError(null)}/>}
             <ThemeProvider theme={light}>
-                {formError && 
-                    <Alert message={formError} onClose={()=>setFormError(null)}/>}
                 {forgotPassword && 
                     <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
             </ThemeProvider>
-            <div style={{height: '100vh'}}>
-                <div style={{height: '100vh', minWidth: '1400px', minHeight: '700px', position: 'relative', transition: '0.2s filter', filter: `blur(${showLogin || showSignUp ? '20px' : '0px'})`}}>
+            <SignInPageContainer>
+                <div style={{transition: '0.2s filter', filter: `blur(${showLogin || showSignUp ? '20px' : '0px'})`}}>
                     <img 
-                        // style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                        style={{width: '100%', height: '100%', objectFit: 'cover'}}
                         src={`${URL}/background`}/>
                     <Logo />
                 </div>
-            <SignInFormsContainer onClick={(e)=>handleCloseForm(e)} ref={closeArea}>
-                <SignInNav>
-                    <MainButton primary small onClick={handleShowSignUp} margin={'7px 15px'} padding={'7px 15px'}>Sign Up</MainButton>
-                    <MainButton small onClick={handleShowLogin} margin={'7px'} padding={'7px 15px'}>Login</MainButton>
-                </SignInNav>
-                <TransitionGroup component={null}>
-                {(showSignUp || showLogin) &&
-                    <CSSTransition
-                        // in={(showSignUp || showLogin)}
-                        timeout={300}
-                        appear={true}
-                        // unmountOnExit
-                        classNames='item'>
-                            <EntityBackgroundContainer>
-                                <IconButton 
-                                    onClick={(e)=>handleCloseBtn(e)}
-                                    pale circle hoverOnDark size={'36px'} float={'right'}>
-                                        <MdClose size={25}/>
-                                </IconButton>
-                                {showLogin && 
-                                    <Login showForgotPassword={setForgotPassword} setFormError={setFormError}/>}
-                                {showSignUp && 
-                                    <SignUp setFormError={setFormError}/>}
-                            </EntityBackgroundContainer>
-                    </CSSTransition>
-                }
-                </TransitionGroup>
-            </SignInFormsContainer>
-            </div>
+                <SignInFormsContainer onClick={(e)=>handleCloseForm(e)} ref={closeArea}>
+                    <SignInNav>
+                        <MainButton primary small onClick={handleShowSignUp} margin={'7px 15px'} padding={'7px 15px'}>Sign Up</MainButton>
+                        <MainButton small onClick={handleShowLogin} margin={'7px'} padding={'7px 15px'}>Login</MainButton>
+                    </SignInNav>
+                    <TransitionGroup component={null}>
+                    {(showSignUp || showLogin) &&
+                        <CSSTransition
+                            timeout={300}
+                            appear={true}
+                            classNames='item'>
+                                <EntityBackgroundContainer>
+                                    <IconButton 
+                                        onClick={(e)=>handleCloseBtn(e)}
+                                        pale circle hoverOnDark size={'36px'} float={'right'}>
+                                            <MdClose size={25}/>
+                                    </IconButton>
+                                    {showLogin && 
+                                        <Login showForgotPassword={setForgotPassword} setFormError={setFormError}/>}
+                                    {showSignUp && 
+                                        <SignUp setFormError={setFormError}/>}
+                                </EntityBackgroundContainer>
+                        </CSSTransition>
+                    }
+                    </TransitionGroup>
+                </SignInFormsContainer>
+            </SignInPageContainer>
             <Footer>This is the best twitter clone out there!</Footer>
         </ThemeProvider>
     )

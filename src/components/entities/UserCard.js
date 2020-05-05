@@ -4,16 +4,18 @@ import {useDispatch, useSelector} from 'react-redux'
 import {toggleUserFollow} from '../../redux-store-2.0/api/users'
 import {getUserById} from '../../redux-store-2.0/entities/users/selectors'
 import useSubscribeToUserUpdate from '../../Hooks/useSubscribeToUserUpdate'
-import {getUserIdFromCookie} from '../../utils/helpers'
+// import {getUserIdFromCookie} from '../../utils/helpers'
+import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 import MainButton from '../styles/MainButton'
 import CoverAllLink from '../styles/CoverAllLink'
 import EntityContainer from '../styles/EntityContainer'
 import Link from '../styles/Link'
 import {AvatarSmall} from '../styles/Avatar'
 import MetaText from '../styles/MetaText'
+import FollowButtonContainer from '../styles/FollowButtonContainer'
 
 const UserCard = ({userId, size, handleToProfile}) => {
-    const authedUser = getUserIdFromCookie()
+    const authedUser = useSelector(getAuthedUserId())
     const user = useSelector(getUserById(userId))
     const dispatch = useDispatch()
     const history = useHistory()
@@ -24,7 +26,8 @@ const UserCard = ({userId, size, handleToProfile}) => {
         console.log('about to handle following')
         const data = {
             userId: userId,
-            following: user.following
+            following: user.following,
+            authedUser
         }
         await dispatch(toggleUserFollow(data)) 
 
@@ -54,11 +57,11 @@ const UserCard = ({userId, size, handleToProfile}) => {
                 </MetaText>
             </div>
             {userId !== authedUser && 
-                <div style={{ width: '160px', alignSelf: 'center'}}>
+                <FollowButtonContainer>
                     {user.following
                         ?<MainButton onClick={handleFollowUnfollow} primary center small>Unfollow</MainButton>
                         :<MainButton onClick={handleFollowUnfollow} secondary center small>Follow</MainButton> }
-                </div>
+                </FollowButtonContainer>
             }
         </EntityContainer>
     )

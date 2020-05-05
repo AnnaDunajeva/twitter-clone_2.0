@@ -6,6 +6,11 @@ export const MetaText = styled.p`
         font-size: ${props => props.theme.secondaryTextSize};
         margin: 4px 0;
     }
+    @media only screen and (max-width: 600px) {
+        && {
+            font-size: 3vw;
+        }
+    }
 `
 export default MetaText
   

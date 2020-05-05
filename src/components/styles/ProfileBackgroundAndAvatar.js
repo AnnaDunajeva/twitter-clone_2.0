@@ -25,12 +25,9 @@ const ProfileBackgroundAndAvatar = styled.div`
         position: absolute;
         top: 119px;
         left: 20px;
-        min-height: 150px;
-        min-width: 150px;
-        max-height: 150px;
-        max-width: 150px;
+        height: 150px;
+        width: 150px;
         border-radius: 75px;
-        font-size: 75px;
         border: 7px solid ${props => props.theme.invertedMainColor};
         font-size: 11px;
         background: white;
@@ -40,12 +37,9 @@ const ProfileBackgroundAndAvatar = styled.div`
         position: absolute;
         top: 119px;
         left: 20px;
-        min-height: 150px;
-        min-width: 150px;
-        max-height: 150px;
-        max-width: 150px;
+        height: 150px;
+        width: 150px;
         border-radius: 75px;
-        font-size: 75px;
         border: 7px solid ${props => props.theme.invertedMainColor};
         font-size: 11px;
         box-shadow: ${props => props.theme.entityShadow}
@@ -60,6 +54,37 @@ const ProfileBackgroundAndAvatar = styled.div`
         font-weight: 600;
         color: white;
         text-shadow: 0px 0px 4px rgba(167, 163, 163, 0.555);
+    }
+
+    @media only screen and (max-width: 600px) {
+        height: 120px;
+        margin-bottom: 4px;
+
+        img:first-of-type {
+            height: 120px;
+        }
+        > div {
+            top: 70px;
+            height: 100px;
+            width: 100px;
+            border: 7px solid ${props => props.theme.invertedMainColor};
+            font-size: 5px;
+            background: white;
+        }
+        img:last-of-type {
+            top: 70px;
+            height: 100px;
+            width: 100px;
+            border: 4px solid ${props => props.theme.invertedMainColor};
+            font-size: 5px;
+        }
+        > h3 {
+            left: 130px;
+            font-size: 25px;
+        }
+        > button {
+            max-width: 100px;
+        }
     }
 `
 
