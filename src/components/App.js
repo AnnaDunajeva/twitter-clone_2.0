@@ -6,6 +6,7 @@ import {getUser} from '../redux-store-2.0/api/users'
 import {getAuthedUserProfile} from '../redux-store-2.0/entities/users/selectors'
 import useSocketSetup from '../Hooks/useSocketSetup'
 import useScrollToTopOnRouteChange from '../Hooks/useScrollToTopOnROuteChange'
+import useSubscribeToUserUpdate from '../Hooks/useSubscribeToUserUpdate'
 import useLogoutOnAuthenticationError from '../Hooks/useLogOutOnAuthenticationError'
 // import {getUserIdFromCookie} from '../utils/helpers'
 import {getAuthedUserId} from '../redux-store-2.0/session/selectors'
@@ -40,6 +41,8 @@ const App = () => {
     useScrollToTopOnRouteChange()
 
     useSocketSetup()
+
+    useSubscribeToUserUpdate(userProfile)
 
     useEffect(() => {
         if (authedUser) {

@@ -34,9 +34,18 @@ const SearchBar = styled.form.attrs({tabIndex: 0})`
         font-size: 15px;
         font-weight: 500;
         padding-left: 5px;
+        width: 100%;
+        min-width: 100px;
     }
     input:focus {
         outline: none;
+    }
+
+    @media only screen and (max-width: 500px) {
+        margin-right: 0;
+        input {
+            font-size: 4vw;
+        }
     }
     
 `

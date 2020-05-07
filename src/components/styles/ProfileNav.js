@@ -11,7 +11,7 @@ const ProfileNav = styled.nav`
     border-left: 1px solid ${props => props.theme.entityContainerBorder};
     border-right: 1px solid ${props => props.theme.entityContainerBorder};
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         a {
             margin: 8px;
             padding: 5px 10px;

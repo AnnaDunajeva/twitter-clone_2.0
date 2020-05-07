@@ -5,14 +5,27 @@ import {getUserTweetsWithImagesIds} from '../../redux-store-2.0/composite-data/s
 import {userTweetImagesKey} from '../../redux-store-2.0/utils/compositeDataStateKeys'
 import Image from '../entities/Image'
 import ImageGrid from '../styles/ImageGrid'
+import useCompositeDataUpdate from '../../Hooks/useCompositeDataUpdate'
 
 const ImagesList = ({ 
     userId, 
     dispatchData, 
     handleToTweetPage,
-    handleToProfile
+    handleToProfile,
+    interval
 }) => {    
-    const userImagesSelector = useCallback(getUserTweetsWithImagesIds(userId), []) //not sure if I need it
+    const userImagesSelector = useCallback(getUserTweetsWithImagesIds(userId), []) 
+
+    useCompositeDataUpdate({
+        take: 15, 
+        dispatchData: {
+            ...dispatchData,
+            update: true
+        }, 
+        getUpdateFunc: getUserTweetImagesPaginated, 
+        stateKey: userTweetImagesKey(userId),
+        interval})
+    
     return (
         <ScrollUtil getDataFetch={getUserTweetImagesPaginated} 
                     dispatchData={dispatchData} 

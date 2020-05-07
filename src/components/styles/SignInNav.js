@@ -6,8 +6,9 @@ const SignInNav = styled.nav`
     display: flex;
     justify-content: flex-end;
     
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         justify-content: center;
+        padding: 0;
 
     }
 `

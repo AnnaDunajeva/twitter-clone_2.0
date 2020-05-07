@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
 const FollowButtonContainer = styled.div`
-    width: 160px;
+    width: 140px;
     align-self: center;
 
-    @media only screen and (max-width: 600px) {
-        width: 100px;
+    @media only screen and (max-width: 500px) {
+        width: 22vw;
         
         button {
-            width: 22vw;
-            font-size: 3.5vw;
-            padding: 8px 10px;
+            width: 20vw;
+            font-size: 3.3vw;
+            padding: 8px;
         }
     }
 

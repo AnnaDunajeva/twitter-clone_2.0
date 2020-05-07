@@ -144,7 +144,7 @@ export function getAllUsersPaginated (data) {
             } else {
                 const users = allUsers.users
 
-                const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
+                const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => a.sortindex - b.sortindex)
                 console.log('compositeDataUsers ', compositeDataUsers) 
                
                 const usersFetchStatus = mapValues(users, () => LOADED)

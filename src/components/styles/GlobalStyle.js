@@ -63,7 +63,7 @@ const GlobalStyle = createGlobalStyle`
         text-align: center;
         font-size: ${constants.mediumLargeFont};
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         ::-webkit-scrollbar {
             width: 6px;
             height: 10px;

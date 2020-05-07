@@ -1,15 +1,10 @@
 import moment from 'moment'
-import {defaultBackgroundColor} from '../redux-store-2.0/constants'
-import * as linkify from 'linkifyjs'
+
 
 export function formatDate (timestamp) {
     const d = new Date(timestamp)
     const time = d.toLocaleTimeString('en-GB')
     return time.slice(0, 5) + ' | ' + d.toLocaleDateString('en-GB')
-
-    // const localeTime = moment(d).local().format('LT')
-    // const localeDate = moment(d).local().format('L')
-    // return `${localeTime} ${localeDate}`
 }
 
 export const formatJoinDate = (timestamp) => {
@@ -37,16 +32,6 @@ export function formatTweet (tweet, author, authedUser, parentTweet) {
   }
 }
 
-export const splitText = (text) => {
-  let formatedText = ''
-  const maxLineLength = 60
-  let currentLineLength = 0
-  let lineStartIndex = 0
-  let lineEndIndex = 0
-  for (let i = 0; i < text.length; i++) {
-    
-  }
-}
 //! # $ % & ‘ * + – / = ? ^ ` . { | } ~ characters are legal in the local part of an e-mail 
 //address but in this regular expression those characters are filtered out. 
 export const validateEmail = (email) => {
@@ -55,24 +40,6 @@ export const validateEmail = (email) => {
   }
   return (false)
 }
-
-// export const subscribeToTweetUpdate = (tweetIds, socket) => {
-//   tweetIds.forEach(tweetId => {
-//     console.log('about to subscribe to tweet update ', tweetId, )
-//     socket.emit('subscribe_to_tweet_update', tweetId) 
-//   })
-// }
-
-// export const formatUser = (user) => {
-//   return {
-//     ...user,
-//     backgroundColor: user.backgroundURL 
-//       ?linkify.test(user.backgroundURL) 
-//         ? defaultBackgroundColor 
-//         : user.backgroundURL
-//       :defaultBackgroundColor
-//   }
-// }
 
 export const getUserIdFromCookie = () => document.cookie.replace(/(?:(?:^|.*;\s*)id\s*=\s*([^;]*).*$)|^.*$/, "$1")
 
@@ -91,10 +58,13 @@ export const isValidUsername = (username) => {
 }
 
 export const isValidFisrtOrLastname = (name) => {
-  return /^[a-zA-Z-]+$/.test(name.trim())
+  return /^[a-zA-Z- ]+$/.test(name.trim())
 }
 
 export const isValidLocation = (location) => {
-  return /^[a-zA-Z-,\s]+$/.test(location.trim())
+  return /^[a-zA-Z- ,]+$/.test(location.trim())
 }
 
+export const truncateText = (text, lenght) => {
+  return text.slice(0, lenght) + '...'
+}

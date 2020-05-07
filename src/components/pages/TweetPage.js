@@ -6,7 +6,7 @@ import {getConversationPaginated} from '../../redux-store-2.0/api/tweets'
 import {getTweetStatusById, getTweetErrorById, getTweetById} from '../../redux-store-2.0/entities/tweets/selectors'
 import {LOADED, NOT_FOUND} from '../../redux-store-2.0/constants'
 import {getConversationUpdate} from '../../redux-store-2.0/api/tweets'
-import useCompositeDataUpdate from '../../Hooks/useCompositeDataUpdate'
+// import useCompositeDataUpdate from '../../Hooks/useCompositeDataUpdate'
 import NewTweet from '../entities/NewTweet'
 import Tweet from '../entities/Tweet'
 import NotFound from '../pages/NotFound'
@@ -29,12 +29,12 @@ const TweetPage = (props) => {
         getMainTweet: conversationMainTweetId ? false : true
     }
 
-    useCompositeDataUpdate({
-        take: 1, 
-        dispatchData, 
-        getUpdateFunc: getConversationUpdate, 
-        stateKey: conversationKey(tweetId)
-    })
+    // useCompositeDataUpdate({
+    //     take: 1, 
+    //     dispatchData, 
+    //     getUpdateFunc: getConversationUpdate, 
+    //     stateKey: conversationKey(tweetId)
+    // })
     
     if (mainTweetFetchError === NOT_FOUND) {
         return (
@@ -61,10 +61,12 @@ const TweetPage = (props) => {
 
             <TweetsList 
                 getDataFetch={getConversationPaginated} 
+                getUpdateFunc={getConversationUpdate}
                 dispatchData={dispatchData} 
                 stateSelector={repliesSelector}
                 stateKey={conversationKey(tweetId)}
                 take={take} 
+                interval={true}
                 headerText={'Replies'} 
                 noDataText={mainTweet?.deleted ? '' : 'No replies yet!'}  
             />

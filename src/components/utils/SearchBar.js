@@ -23,6 +23,7 @@ const SearchBar = () => {
                 <IoIosSearch />
                 <input
                     value={userTofind}
+                    maxLength={50}
                     onChange={(e) => setUserToFind(e.target.value)}
                     type='text'/>
             </div>

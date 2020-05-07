@@ -116,6 +116,7 @@ const Additional = (props) => {
                     <label htmlFor='location'>Location</label>
                     <input 
                         value={location}
+                        maxLength={60}
                         onChange={(e) => setLocation(e.target.value)}
                         type='text'/>
 

@@ -15,25 +15,31 @@ const EntityBackgroundContainer = styled.div`
     border-radius: ${props => (props.profile && '0') || '20px'};
     border: 1px solid ${props => props.theme.entityContainerBorder};
     box-shadow: ${props => (props.profile && 'none') || props.theme.entityContainerShadow};
-
+    ${props => props.profile && css`
+            >button:first-of-type {
+                margin-left: 7px;
+            }
+        `}
     > h3 {
         text-align: center;
         margin: 10px 0;
-        font-size: ${constants.mediumLargeFont};
+        font-size: 110%;
     }
     > p {
         text-align: center;
         margin: 10px 0;
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         width: ${props => props.width || (props.profile && 'inherit') || '100vw' };
         padding: ${props => (props.profile && '5px') || '10px'};
         border-radius: ${props => (props.profile && '0') || '5px'};
         ${props => props.profile && css`
             >button:first-of-type {
-                width: 22vw;
-                font-size: 3.5vw;
-                padding: 8px 10px;
+                min-width: 12vw;
+                max-width: 18vw;
+                font-size: 3vw;
+                padding: 6px 4px;
+                margin-left: 3px;
             }
         `}
     }

@@ -26,6 +26,7 @@ const Form = styled.form`
         justify-content: space-around;
     }
     > div:first-of-type {
+        will-change: box-shadow, border;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -74,6 +75,14 @@ const Form = styled.form`
             outline: none;
             ${props => !props.noInputBorder && `border: 1px solid ${props.theme.hoverLinkColor};`}
             box-shadow: 0 0 0 0.07rem ${props => props.theme.hoverLinkColor}, ${props => props.shadow && (constants[props.inputShadow] || props.theme.entityShadow)};
+        }
+    }
+    @media only screen and (max-width: 500px) {
+        > div:first-of-type {
+            > input, 
+            textarea {
+                min-width: 230px;
+            }
         }
     }
 

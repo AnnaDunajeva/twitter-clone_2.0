@@ -1,6 +1,7 @@
 import React, {useRef, useState, useCallback} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Linkify from 'linkifyjs/react';
 import * as linkify from 'linkifyjs'
 import videoUrlParser from "js-video-url-parser";
@@ -28,6 +29,8 @@ import {AvatarSmall} from '../styles/Avatar'
 import MetaText from '../styles/MetaText'
 import TweetText from '../styles/TweetText'
 import TweetImage from '../styles/TweetImage'
+import {truncateText} from '../../utils/helpers'
+import useWindowSize from '../../Hooks/useWindowSize'
 
 const linkifyOptions = {
     validate: {
@@ -40,10 +43,11 @@ const Tweet = ({
     id, 
     handleToTweetPage, 
     handleToProfile, 
-    history, 
     stateKey
 }) => {
     const dispatch = useDispatch()
+    const history = useHistory()
+    const {width} = useWindowSize()
     const tweet = useSelector(getTweetById(id))
     const author = useSelector(getUserById(tweet?.user))
     const authedUser = useSelector(getAuthedUserId())
@@ -129,13 +133,19 @@ const Tweet = ({
                         {authedUser === author.userId && 
                         <IconButton 
                             onClick={() => setIsDeleteTweet(true)} 
-                            circle pale size={'36px'} float={'right'}>
+                            circle pale size={'36px'} margin={'0 10px'}
+                            style={{position: 'absolute', right: '0'}}>
                                 <MdClose size={27}/>
                         </IconButton>}
 
                         <Link 
+                            as='div'
                             onClick={toProfile}>
-                                <h3>{`${author.firstName} ${author.lastName} `}</h3>
+                                <h3>{author.firstName.length + author.lastName.length + 1 > (width > 500 ? 38 : 28)
+                                    ?truncateText(`${author.firstName} ${author.lastName}`, (width > 500 ? 35 : 25))
+                                    :`${author.firstName} ${author.lastName}`
+                                    }
+                                </h3>
                                 <MetaText as='span'> @{author.userId}</MetaText>
                         </Link>
                         
@@ -178,8 +188,14 @@ const Tweet = ({
         </React.Fragment>
     )
 }
+Tweet.propTypes = {
+    id: PropTypes.number.isRequired, 
+    handleToTweetPage: PropTypes.func, 
+    handleToProfile: PropTypes.func, 
+    stateKey: PropTypes.string.isRequired
+}
 
-export default withRouter(Tweet)
+export default Tweet
 
 /* {urlsInTweet.current?.length > 0
     ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>

@@ -1,12 +1,16 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {getCompositeDataFirstEntityCreatedAt} from '../redux-store-2.0/composite-data/selectors'
+import usePageVisibility from './usePageVisibility'
+import PropTypes from 'prop-types'
 
-const useCompositeDataUpdate = ({take, dispatchData, getUpdateFunc, stateKey}) => {
+const useCompositeDataUpdate = ({take, dispatchData, getUpdateFunc, stateKey, interval}) => {
     const initialFetchTime = useSelector(getCompositeDataFirstEntityCreatedAt(stateKey)) 
     const [scrollY, setScrollY] = useState(window.scrollY);
     const dispatch = useDispatch()
     const [initialFetch, setInitialFetch] = useState(false)
+    const isPageVisible = usePageVisibility()
+    const updateInterval = useRef(null)
 
     const listener = e => {
         setScrollY(window.scrollY);
@@ -27,14 +31,14 @@ const useCompositeDataUpdate = ({take, dispatchData, getUpdateFunc, stateKey}) =
             dispatch(getUpdateFunc({
                 ...dispatchData,
                 take,
+                skip: 0,
                 time: initialFetchTime
             }))
         }
     }, [dispatchData, dispatch, take, initialFetchTime, getUpdateFunc, initialFetch, scrollY])
 
     useEffect(() => {
-        let updateInterval = null
-        if (initialFetchTime && scrollY < 450) {
+        if (interval && initialFetchTime && scrollY < 450 && isPageVisible && !updateInterval.current) {
             console.log('about to set interval to fetch update for ', stateKey)
             
             const getCompositeDataUpdate = () => {
@@ -43,19 +47,28 @@ const useCompositeDataUpdate = ({take, dispatchData, getUpdateFunc, stateKey}) =
                 
                 dispatch(getUpdateFunc({
                     ...dispatchData,
-                    take,
+                    take: 3,
+                    skip: 0,
                     time: initialFetchTime
                 }))
             }
             
-            updateInterval = setInterval(getCompositeDataUpdate, 30000)
+            updateInterval.current = setInterval(getCompositeDataUpdate, 30000)
         }
 
         return () => {
-            console.log('about to clear interval for fetch update for ', stateKey, ' because dependencies updated')
-            clearInterval(updateInterval)
+            if (updateInterval.current) {
+                console.log('about to clear interval for fetch update for ', stateKey, ' because dependencies updated')
+                clearInterval(updateInterval.current)
+                updateInterval.current = null
+            }
         }
-    }, [scrollY, initialFetchTime, dispatch, dispatchData, getUpdateFunc, stateKey, take])
+    }, [interval, scrollY, initialFetchTime, dispatch, dispatchData, getUpdateFunc, stateKey, take, isPageVisible])
+
+}
+
+useCompositeDataUpdate.defaultProps = {
+    interval: true
 }
 
 export default useCompositeDataUpdate

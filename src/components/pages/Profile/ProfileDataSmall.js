@@ -16,6 +16,8 @@ import MainButton from '../../styles/MainButton'
 import IconButton from '../../styles/IconButton'
 import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 import ProfileMetaData from '../../styles/ProfileMetaData'
+import {truncateText} from '../../../utils/helpers'
+import useWindowSize from '../../../Hooks/useWindowSize'
 
 const ProfileDataSmall = ({
     user, 
@@ -23,6 +25,7 @@ const ProfileDataSmall = ({
     setToUpdate, 
     handleToProfile
 }) => {   
+    const {width} = useWindowSize()
     const dispatch = useDispatch()
 
     const [showFollowers, setShowFollowers] = useState(false)
@@ -100,7 +103,12 @@ const ProfileDataSmall = ({
             </React.Fragment>}
 
             <ProfileMetaData> 
-                <div>{user.description}</div>
+                <div>
+                    {width < 501 && user.description?.length > 85
+                    ?truncateText(user.description, 82)
+                    :user.description
+                    }
+                </div>
                 <span> <FaUser size={22}/>@{user.userId}</span>
                 <span><IoMdCalendar size={22}/>Joined {formatJoinDate(user.createdAt)}</span>
                 {user.location &&

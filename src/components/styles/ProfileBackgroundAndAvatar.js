@@ -48,15 +48,19 @@ const ProfileBackgroundAndAvatar = styled.div`
 
     > h3 {
         position: absolute;
-        top: 70%;
-        left: 182px;
-        font-size: 35px;
+        top: 65%;
+        left: 193px;
+        font-size: 30px;
         font-weight: 600;
         color: white;
         text-shadow: 0px 0px 4px rgba(167, 163, 163, 0.555);
+        text-align: start;
+        word-spacing: 8px;
+        max-width: 70vw;
+        word-wrap: break-word;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         height: 120px;
         margin-bottom: 4px;
 
@@ -65,6 +69,7 @@ const ProfileBackgroundAndAvatar = styled.div`
         }
         > div {
             top: 70px;
+            left: 6px;
             height: 100px;
             width: 100px;
             border: 7px solid ${props => props.theme.invertedMainColor};
@@ -73,14 +78,17 @@ const ProfileBackgroundAndAvatar = styled.div`
         }
         img:last-of-type {
             top: 70px;
+            left: 6px;
             height: 100px;
             width: 100px;
             border: 4px solid ${props => props.theme.invertedMainColor};
             font-size: 5px;
         }
         > h3 {
-            left: 130px;
-            font-size: 25px;
+            left: 110px;
+            top: 75px;
+            font-size: 4.8vw;
+            max-width: 70vw;
         }
         > button {
             max-width: 100px;

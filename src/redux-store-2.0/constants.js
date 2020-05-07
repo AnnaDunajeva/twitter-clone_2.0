@@ -13,4 +13,5 @@ export const PASSWORD_RESET = 'password reset'
 export const URL = 'http://localhost/api'
 export const URL_MAIN = 'http://localhost'
 
+
 export const defaultBackgroundColor = '#97bad1'

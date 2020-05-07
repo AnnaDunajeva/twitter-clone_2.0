@@ -8,24 +8,34 @@ const SignInFormsContainer = styled.div`
     width: 100%;
     height: 100%;
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         >div {
-            width: 330px;
+            width: 87vw;
             margin: 2.5%  auto;
             border-radius: 20px;
         }
         && {
             div {
                 >form {
-                    padding: 0 15px 15px 15px;
+                    padding: 0 17px 15px 17px;
                     input {
-                        min-width: 270px;
+                        padding: 2.5vw 20px;
+                        font-size: 4.5vw;
+                        min-width: 60vw;
+                    }
+                    h3 {
+                        font-size: 6vw;
+                        margin-bottom: 0px;
+                    }
+                    label {
+                        margin-top: 10px;
+                        font-size: 3vw;
                     }
                 } 
             }
         }
     }
-    @media only screen and (min-width: 600px) {
+    @media only screen and (min-width: 500px) {
         min-width: 500px;
 
         >div {
@@ -39,6 +49,11 @@ const SignInFormsContainer = styled.div`
                 input {
                     border: 1px solid #827786a1;
                     background-color: #827786a1;
+                    font-size: 20px;
+                }
+                h3 {
+                    font-size: 30px;
+                    margin-bottom: 0px;
                 }
             } 
         }
@@ -46,6 +61,7 @@ const SignInFormsContainer = styled.div`
     >div {
         background-color: #685c6da1;
         box-shadow: 0px 14px 66px 5px rgba(0,0,0,0.8);
+        will-change: transform, opacity;
 
         &.item-enter, &.item-enter *,
         &.item-appear, &.item-appear * {

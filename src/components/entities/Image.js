@@ -1,5 +1,6 @@
 import React, {useState, useCallback} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import PropTypes from 'prop-types'
 import {useHistory} from 'react-router-dom'
 import {getTweetById} from '../../redux-store-2.0/entities/tweets/selectors'
 import useHover from '../../Hooks/useHover'
@@ -24,7 +25,7 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
         tweetId: id
     }
 
-    const tweetLikesSelector = useCallback(getTweetLikesIds(id), [])
+    const tweetLikesSelector = getTweetLikesIds(id)
 
     const handleLike = (e) => {
         e.preventDefault()
@@ -57,6 +58,7 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
             </ListPopUp>
         }
         <div 
+            className='image-container'
             onMouseEnter={onMouseOver} 
             onMouseLeave={onMouseOut}>
             <TweetImage 
@@ -75,6 +77,12 @@ const Image = ({id, handleToTweetPage, handleToProfile}) => {
         </div>
         </React.Fragment>
     )
+}
+
+Image.propTypes = {
+    id: PropTypes.number.isRequired ,
+    handleToTweetPage: PropTypes.func, 
+    handleToProfile: PropTypes.func
 }
 
 export default Image

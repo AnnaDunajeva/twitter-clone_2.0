@@ -5,6 +5,7 @@ import {
     CSSTransition,
     TransitionGroup,
 } from 'react-transition-group';
+import useCompositeDataUpdate from '../../Hooks/useCompositeDataUpdate'
 
 const TweetsList = ({
     stateSelector, 
@@ -14,13 +15,25 @@ const TweetsList = ({
     handleToTweetPage, 
     handleToProfile, 
     take, 
-    headerText
-}) => {    
+    headerText,
+    getUpdateFunc,
+    interval
+}) => {
+    useCompositeDataUpdate({
+        take, 
+        dispatchData: {
+            ...dispatchData,
+            update: true
+        }, 
+        getUpdateFunc, 
+        stateKey,
+        interval})
+    
     return (
         <ScrollUtil getDataFetch={getDataFetch} 
                     dispatchData={dispatchData} 
                     stateSelector={stateSelector}
-                    take={take || 15} 
+                    take={take} 
                     noDataText={'No tweets to show yet!'}
                     stateKey={stateKey}
                     headerText={headerText || null}
@@ -51,6 +64,9 @@ const TweetsList = ({
             )}
         </ScrollUtil>
     )
+}
+TweetsList.defaultProps = {
+    take: 15
 }
 
 export default TweetsList

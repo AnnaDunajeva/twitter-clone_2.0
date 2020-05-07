@@ -10,10 +10,11 @@ const ProfileMetaData = styled.div`
     > span,
     > div:first-of-type {
         margin: 7px 20px;
+        word-wrap: break-word;
     }
 
     > div:first-of-type {
-        height: 50px;
+        height: 55px;
         padding-left: 140px;
         margin-top: 0;
     }
@@ -31,7 +32,7 @@ const ProfileMetaData = styled.div`
         vertical-align: bottom;
         margin-right: 5px;
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         * {
             font-size: 3vw;
         }
@@ -41,10 +42,9 @@ const ProfileMetaData = styled.div`
         }
 
         > div:first-of-type {
-            height: 35px;
-            padding-left: 110px;
-            margin-top: 0;
-            font-size: 12px;
+            height: 40px;
+            padding-left: 90px;
+            margin-top: 0;            
         }
         >div:last-of-type {
             margin-top: 5px;

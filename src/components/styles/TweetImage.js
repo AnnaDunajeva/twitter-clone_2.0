@@ -5,9 +5,9 @@ const TweetImage = styled.img.attrs({alt: ''})`
     height: 400px;
     border-radius: 2px;
 
-    @media only screen and (max-width: 600px) {
-        width: 65vw;
-        height: 65vw;
+    @media only screen and (max-width: 500px) {
+        width: 70vw;
+        height: 70vw;
 
     }
 `

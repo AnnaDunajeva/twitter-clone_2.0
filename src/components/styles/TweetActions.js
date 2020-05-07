@@ -3,14 +3,14 @@ import styled from 'styled-components';
 export const TweetActionsContainer = styled.div`
     display: flex;
     align-items: center;
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         > button {
-            font-size: 11px;
+            font-size: 3.3vw;
         }
         
         svg {
-            height: 20px;
-            width: 20px;
+            height: 6vw;
+            width: 6vw;
         }
     }
 `

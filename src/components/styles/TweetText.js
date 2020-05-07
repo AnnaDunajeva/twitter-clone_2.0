@@ -3,17 +3,15 @@ import { constants } from './themes';
 
 export const TweetText = styled.p`
     && {
-        font-size: ${constants.mediumSmallFont};
+        font-size: 100%;
         margin: 10px 10px 10px 0;
         line-height: 1.3em;
         white-space: pre-line;
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         && {
-            font-size: 14px;
-            margin: 10px 10px 10px 0;
-            line-height: 1.3em;
-            white-space: pre-line;
+            font-size: 3.7vw;
+            line-height: 1.5em;
         }
     }
 `

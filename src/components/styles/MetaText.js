@@ -3,12 +3,12 @@ import styled from 'styled-components';
 export const MetaText = styled.p`
     && {
         color: ${props => props.theme.secondaryTextColor};
-        font-size: ${props => props.theme.secondaryTextSize};
+        font-size: 80%;
         margin: 4px 0;
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         && {
-            font-size: 3vw;
+            font-size: 3.2vw;
         }
     }
 `

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Emoji from '../utils/Emoji'
 import {MdSentimentSatisfied} from "react-icons/md"
 import {postTweet} from '../../redux-store-2.0/api/tweets'
@@ -37,14 +38,14 @@ const NewTweet = ({replyingTo, showHeader}) => {
 
     const currentLength = text.length
     const maxlength = 280
-    const isShowHeader = showHeader === false ? false : true //in case its is undefined
+    // const isShowHeader = showHeader === false ? false : true //in case its is undefined
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const data = {
             tweet: { 
                 text: text.trim(), 
-                replyingTo: !replyingTo ? null : replyingTo
+                replyingTo
                 }
         }
         if (file) {
@@ -96,7 +97,7 @@ const NewTweet = ({replyingTo, showHeader}) => {
     return (
         <React.Fragment>
             {toHome && <Redirect to='/' />}
-            {isShowHeader && 
+            {showHeader && 
                 <h1>
                     {replyingTo 
                         ? 'Leave your reply' 
@@ -154,6 +155,14 @@ const NewTweet = ({replyingTo, showHeader}) => {
             }
         </React.Fragment>
     )
+}
+NewTweet.propTypes = {
+    replyingTo: PropTypes.string, 
+    showHeader: PropTypes.bool
+}
+NewTweet.defaultProps = {
+    showHeader: true,
+    replyingTo: null
 }
 
 export default NewTweet

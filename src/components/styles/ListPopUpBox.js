@@ -25,25 +25,25 @@ const ListpopUpBox = styled(ModalContainer)`
             }
         }
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         >div {
-            width: 97vw;
+            width: 93vw;
             >div {
                 height: 80vh;
                 padding: 10px 0 10px 10px;
                 >p {
-                    font-size: 15px;
+                    font-size: 4.3vw;
                 }
                 /* usercard */
                 >div>div>div {
-                    width: 90vw;
+                    width: 88vw;
                     button {
-                        width: 20vw;
-                        font-size: 3.3vw;
-                        padding: 8px 10px;
+                        width: 18vw;
+                        font-size: 3vw;
+                        padding: 7px;
                     }
                     h3 {
-                        font-size: 15px;
+                        font-size: 4vw;
                         text-align: start;
                     }
                     p {

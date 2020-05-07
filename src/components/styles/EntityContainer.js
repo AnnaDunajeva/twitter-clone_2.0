@@ -5,6 +5,7 @@ import {constants} from './themes'
 // size in pixels, default min 400 max 600
 
 const EntityContainer = styled.div`
+    will-change: opacity, box-shadow;
     position: relative;
     display: flex;
     max-width: ${props => props.theme.maxEntityWidth};
@@ -20,17 +21,25 @@ const EntityContainer = styled.div`
 
 /* username */
     h3 {
-        font-size: ${constants.mediumLargeFont};
+        font-size: ${constants.mediumFont};
         font-weight: ${constants.boldFont};
         display: inline-block;
+        text-align: start;
+        /* max-width: 96%; */
     }
 /* tweet meta container, first div is CoverAllLink */
     > div:nth-of-type(2) {
-        margin: 15px 10px 15px 0;
+        max-width: 80%;
+        margin: 15px 15px 15px 0;
         flex: 2;
+        word-wrap: break-word;
+
+        div:first-of-type {
+            max-width: 95%;
+        }
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         min-width: 80vw;
         max-width: 95vw;
         padding: 3px;
@@ -38,18 +47,22 @@ const EntityContainer = styled.div`
         
         > div:nth-of-type(2) {
             margin: 10px 3px 10px 0;
+            
+            div:first-of-type {
+                max-width: 89%;
+            }
         }
 
         iframe {
-            width: 65vw;
-            height: calc(65vw / 1.64);
+            width: 70vw;
+            height: calc(70vw / 1.64);
         }
         svg {
             width: 20px;
             height: 30px;
         }
         h3 {
-            font-size: 17px;
+            font-size: 4.2vw;
         }
     }
 

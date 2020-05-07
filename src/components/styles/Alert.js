@@ -33,7 +33,7 @@ const Alert = styled(ModalContainer)`
             justify-content: space-around;
         }
 
-        @media only screen and (max-width: 600px) {
+        @media only screen and (max-width: 500px) {
             width: 300px;
             > p {
                 font-size: 16px;

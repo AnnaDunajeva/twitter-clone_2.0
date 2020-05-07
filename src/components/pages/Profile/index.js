@@ -101,7 +101,9 @@ const Profile = (props) => {
                                     stateSelector: userTweetsSelector, 
                                     getDataFetch: getUserTweetsPaginated, 
                                     stateKey: tweetsKey, 
-                                    dispatchData}}/>
+                                    dispatchData,
+                                    interval: false,
+                                    getUpdateFunc: getUserTweetsPaginated}}/>
                             <PrivateRoute 
                                 path={`${props.match.path}/replies`} 
                                 component={TweetsList} 
@@ -111,6 +113,8 @@ const Profile = (props) => {
                                     stateSelector: userRepliesSelector, 
                                     getDataFetch: getUserRepliesPaginated, 
                                     stateKey: repliesKey, 
+                                    interval: false,
+                                    getUpdateFunc: getUserRepliesPaginated,
                                     dispatchData}}/>
                             <PrivateRoute 
                                 path={`${props.match.path}/likes`} 
@@ -121,12 +125,15 @@ const Profile = (props) => {
                                     stateSelector: userTweetLikesSelector, 
                                     getDataFetch: getUserTweetLikesPaginated, 
                                     stateKey: tweetLikesKey, 
+                                    interval: false,
+                                    getUpdateFunc: getUserTweetLikesPaginated,
                                     dispatchData}}/>
                             <PrivateRoute 
                                 path={`${props.match.path}/photos`} 
                                 component={ImageList} 
                                 additionalProps={{
                                     userId: userId, 
+                                    interval: false,
                                     handleToTweetPage: setToTweetPageId, 
                                     handleToProfile: setToProfileId, 
                                     dispatchData}}/>

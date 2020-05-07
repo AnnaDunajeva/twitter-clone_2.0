@@ -22,18 +22,20 @@ const MainNav = styled.nav`
         align-items: center;
         font-size: ${constants.mediumFont};
     }
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         margin-bottom:10px;
         padding: 5px;
-
+        >div {
+            margin-bottom: 5px;
+        }
         a {
             padding: 5px 6px;
-            font-size: 14px;
-            margin: 0 5px 3px 0;
-            max-width: 70px;
+            font-size: 4vw;
+            margin-right: 5px;
+            max-width: 20vw;
         }
         a:first-of-type {
             width: 60px;
@@ -51,7 +53,7 @@ const MainNav = styled.nav`
         button {
             padding: 5px;
             margin: 0;
-            font-size: 14px;
+            font-size: 4vw;
         }
         button:first-of-type {
             width: 30px;

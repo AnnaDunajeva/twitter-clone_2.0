@@ -48,6 +48,43 @@ const ModalWithHeaderAndCard = styled(ModalContainer)`
             }
         }
     }
+    @media only screen and (max-width: 500px) {
+        > div:first-of-type {
+            width: 92vw;
+            min-height: 20vw;
+            > h3 {
+                font-size: 5.3vw;
+                padding: 5vw 0;
+                margin-bottom: 18px;
+                >svg {
+                    width: 8vw;
+                    height: 8vw;
+                }
+            }
+            > div:first-of-type {
+                padding: 7vw 5vw 7vw 5vw;
+                width: 82vw;
+                margin: 8% auto;
+
+                > p:first-of-type {
+                    font-size: 4vw;
+                    line-height: 1.5rem;
+                    margin-bottom: 6vw;
+                }
+                input {
+                    font-size: 4.5vw;
+                    padding: 10px 20px; 
+                }
+                button {
+                    font-size: 4.5vw;
+                    padding: 10px;
+                }
+                button:first-of-type {
+                    margin-right:10px;
+                }
+            }
+        }
+    }
 
 `
 export default ModalWithHeaderAndCard

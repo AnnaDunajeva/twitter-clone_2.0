@@ -53,48 +53,49 @@ const SignUpLogin = ({setFormError}) => {
     }
 
     return (
-        <ThemeProvider theme={dark}>
-                    {console.log('rendering signup')}
-
-                    <Form onSubmit={SignUpUser} shadow labelColor={'mediumLightGrey'} padding={'0 40px'}>
-                        <h3>Sign Up</h3>
-                        <div>
-                            <label htmlFor='username'>Username</label>
-                            <input 
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                type='text'/>
-                            <label htmlFor='password'>Password</label>
-                            <input 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                type='password'/>
-                            <label htmlFor='email'>e-mail</label>
-                            <input 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                type='text'/>
-                            <label htmlFor='firstName'>First Name</label>
-                            <input 
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                type='text'/>
-                            <label htmlFor='lastName'>Last Name</label>
-                            <input 
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                type='text'/>
-                        </div>
-                        <ThemeProvider theme={light}>
-                            <MainButton
-                                mediumSmall blue disabledMediumLight shadow uppercase margin={'10px auto'}
-                                type='submit'
-                                disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
-                                    Sign Up
-                            </MainButton>
-                        </ThemeProvider>
-                    </Form>
-        </ThemeProvider>
+        <Form onSubmit={SignUpUser} shadow labelColor={'mediumLightGrey'} padding={'0 40px'}>
+            <h3>Sign Up</h3>
+            <div>
+                <label htmlFor='username'>Username</label>
+                <input 
+                    value={username}
+                    maxLength={20}
+                    onChange={(e) => setUsername(e.target.value)}
+                    type='text'/>
+                <label htmlFor='password'>Password</label>
+                <input 
+                    value={password}
+                    maxLength={50}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type='password'/>
+                <label htmlFor='email'>e-mail</label>
+                <input 
+                    value={email}
+                    maxLength={300}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type='text'/>
+                <label htmlFor='firstName'>First Name</label>
+                <input 
+                    value={firstName}
+                    maxLength={100}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    type='text'/>
+                <label htmlFor='lastName'>Last Name</label>
+                <input 
+                    value={lastName}
+                    maxLength={100}
+                    onChange={(e) => setLastName(e.target.value)}
+                    type='text'/>
+            </div>
+            <ThemeProvider theme={light}>
+                <MainButton
+                    mediumSmall blue disabledMediumLight shadow uppercase margin={'10px auto'}
+                    type='submit'
+                    disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
+                        Sign Up
+                </MainButton>
+            </ThemeProvider>
+        </Form>
     )
 }
 

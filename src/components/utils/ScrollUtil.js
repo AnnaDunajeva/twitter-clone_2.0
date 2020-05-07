@@ -1,6 +1,7 @@
 
 import React, {useEffect, useState, useRef, useCallback} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import PropTypes from 'prop-types'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
     LOADED, 
@@ -34,6 +35,7 @@ const ScrollUtil = ({
     const lastFetchTime = useSelector(getCompositeDataLastFetchTime(stateKey))
     const done = useSelector(getCompositeDataDoneStatus(stateKey))
     
+    //savedIdsLength is lenght of ids before last fetch
     const [savedIdsLength, setSavedIdsLength] = useState( //we want to make at least one fetch each time compopnent mounts
         done 
             ? ids.length
@@ -66,9 +68,10 @@ const ScrollUtil = ({
             setSavedIdsLength(ids.length) //inside function ids isnt updated yet (despite state being updated)
         }
 
-        if (!done && ids.length < take && fetchStatus !== LOADING && fetchStatus !== LOADED && !error) { //fetchStatus !== LOADING && fetchStatus !== LOADED
+        if (!done && ids.length < 13 && fetchStatus !== LOADING && fetchStatus !== LOADED && !error) { //fetchStatus !== LOADING && fetchStatus !== LOADED
         //when tweet deleted from client, fetchstatus set to pending update so that we will automatically make fetch if there is
         //to few tweets to be able to make scroll
+        //ids.length < take is needed to make initial fetch again after delete - this way we fetch if there is too few tweets to make scroll
             console.log('making initial fetch for scroll')
             asyncDispatch();
         }
@@ -127,24 +130,40 @@ const ScrollUtil = ({
                     endMessage={
                         <p style={{margin: '20px', textAlign: 'center'}}>
                             {error
-                                ?<b>Oops, something went wrong, try refreshing page.</b>
+                                ?<b>{`Oops, something went wrong. ${error}. Try refreshing page.`}</b>
                                 :ids.length > 5
                                     ?<b>Yay! You have seen it all</b>
                                     :null
                             }
                         </p>}
                     >
-                    {children(ids)}
+                    {children(ids)} 
                 </InfiniteScroll>
             }
             {ids.length === 0 && (fetchStatus === LOADED || fetchStatus === ERROR )&& 
                 <p style={{marginBottom: '20px', textAlign: 'center'}}>
                     {error
                         ?<b>Oops, something went wrong, try refreshing page.</b>
-                        :<b>{noDataText || 'nothing to show yet'}</b>}
+                        :<b>{noDataText}</b>}
                 </p>}
         </React.Fragment>
     )
+}
+ScrollUtil.propTypes = {
+    getDataFetch: PropTypes.func.isRequired, 
+    stateSelector: PropTypes.func.isRequired, 
+    take: PropTypes.number.isRequired, 
+    dispatchData: PropTypes.object, 
+    headerText: PropTypes.string, 
+    noDataText: PropTypes.string, 
+    noDataHeader: PropTypes.string,
+    stateKey: PropTypes.string.isRequired, 
+    scrollableTarget: PropTypes.string, 
+    reset: PropTypes.bool,
+}
+ScrollUtil.defaultProps = {
+    dispatchData: {},
+    noDataText: 'nothing to show yet',
 }
 
 export default ScrollUtil

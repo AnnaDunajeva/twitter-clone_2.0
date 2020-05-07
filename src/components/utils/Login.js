@@ -32,36 +32,34 @@ const Login = ({showForgotPassword, setFormError}) => {
     }
 
     return (
-        <ThemeProvider theme={dark}>
-
-            {/* <Form onSubmit={LoginUser} noInputBorder shadow inputShadow={'mediumDarkShadow'} labelColor={'mediumLightGrey'}> */}
-            <Form onSubmit={LoginUser} shadow labelColor={'mediumLightGrey'}  padding={'0 40px 20px 40px'}>
-                <h3>Login </h3>
-                    <div>
-                    <label htmlFor='loginUsername'>Username</label>
-                    <input 
-                        value={loginUsername}
-                        onChange={(e) => setLoginUsername(e.target.value)}
-                        type='text'/>
-                    <label htmlFor='loginPassword'>Password</label>
-                    <input 
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                        type='password'/>
-                </div>
-                <ThemeProvider theme={light}>
-                    <MainButton
-                        mediumSmall blue disabledMediumLight shadow uppercase margin={'20px auto'}
-                        type='submit'
-                        disabled={loginUsername === '' || loginPassword === ''}>
-                            Login
-                    </MainButton>
-                </ThemeProvider>
-                <Link onClick={()=>showForgotPassword(true)}>
-                    Forgot password?
-                </Link>
-            </Form>
-        </ThemeProvider>
+        <Form onSubmit={LoginUser} shadow labelColor={'mediumLightGrey'}  padding={'0 40px 20px 40px'}>
+            <h3>Login </h3>
+                <div>
+                <label htmlFor='loginUsername'>Username</label>
+                <input 
+                    value={loginUsername}
+                    maxLength={30}
+                    onChange={(e) => setLoginUsername(e.target.value)}
+                    type='text'/>
+                <label htmlFor='loginPassword'>Password</label>
+                <input 
+                    value={loginPassword}
+                    maxLength={50}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    type='password'/>
+            </div>
+            <ThemeProvider theme={light}>
+                <MainButton
+                    mediumSmall blue disabledMediumLight shadow uppercase margin={'20px auto'}
+                    type='submit'
+                    disabled={loginUsername === '' || loginPassword === ''}>
+                        Login
+                </MainButton>
+            </ThemeProvider>
+            <Link onClick={()=>showForgotPassword(true)}>
+                Forgot password?
+            </Link>
+        </Form>
     )
 }
 

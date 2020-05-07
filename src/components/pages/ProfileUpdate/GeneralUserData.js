@@ -99,11 +99,13 @@ const General = (props) => {
                     <label htmlFor='firstName'>First Name</label>
                     <input 
                         value={firstName}
+                        maxLength={35}
                         onChange={(e) => setFirstName(e.target.value)}
                         type='text'/>
                     <label htmlFor='lastName'>Last Name</label>
                     <input 
                         value={lastName}
+                        maxLength={35}
                         onChange={(e) => setLastName(e.target.value)}
                         type='text'/>
                     <label>Profile image</label>
