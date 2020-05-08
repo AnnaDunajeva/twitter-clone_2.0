@@ -68,6 +68,9 @@ const GlobalStyle = createGlobalStyle`
             width: 6px;
             height: 10px;
         }
+        h3 {
+            font-size: 4.5vw;
+        }
     }
 `
 

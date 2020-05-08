@@ -24,11 +24,11 @@ const SignUpLogin = ({setFormError}) => {
             return
         }
         if (!isValidFisrtOrLastname(firstName)) {
-            setFormError('You can only use alphabetic characters and "-" in your name.')
+            setFormError('You can only use alphabetic characters, space and "-" in your name.')
             return
         }
         if (!isValidFisrtOrLastname(lastName)) {
-            setFormError('You can only use alphabetic characters and "-" in your name.')
+            setFormError('You can only use alphabetic characters, space and "-" in your name.')
             return
         }
 

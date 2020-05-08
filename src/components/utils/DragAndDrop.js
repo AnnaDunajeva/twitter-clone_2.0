@@ -13,12 +13,13 @@ function DragAndDrop({
     handleRemoveImage, 
     file, 
     setFile, 
-    config
+    config,
+    profile
 }) {
     const [preview, setPreview] = useState(null)
     const cropper = useRef();
 
-    const maxSize = 10000000 //10MB
+    const maxSize = 5000000 //5MB
     const {
         getRootProps,
         getInputProps,
@@ -42,28 +43,32 @@ function DragAndDrop({
         {!file && !cropResult &&
             <DragZoneContainer {...getRootProps()} active={isDragActive} accepted={isDragAccept} rejected={isDragReject}>
                 <input {...getInputProps()}/>
-                {isFileTooLarge && !isDragActive && <p>File is too large, maximum size is 10MB</p>}
+                {isFileTooLarge && !isDragActive && <p>File is too large, maximum size is 5MB</p>}
                 {isDragReject && <p>File type not accepted, sorry!</p>}
                 {!isDragActive && !file && !isFileTooLarge && <p>Drag and drop image here, or click to select a file</p>}
                 {isDragActive && !isDragReject && <p>Drop your image here</p>}
             </DragZoneContainer>
         }
         {preview && file && !cropResult &&
-            <CropperContainer>
+            <CropperContainer profile={!!profile} aspect={config.aspect}>
+                <Cropper
+                    ref={cropper}
+                    src={preview}
+                    style={{height: config.height, width: config.width}}
+                    // Cropper.js options
+                    dragMode='move'
+                    zoomable={false}
+                    aspectRatio={config.aspect}
+                    viewMode={2}
+                    responsive={true}
+                    guides={false} 
+                    preview='.img-preview'
+                />
                 <div>
-                    <Cropper
-                        ref={cropper}
-                        src={preview}
-                        style={{height: config.height, width: config.width}}
-                        // Cropper.js options
-                        dragMode='move'
-                        zoomable={false}
-                        aspectRatio={config.aspect}
-                        viewMode={2}
-                        responsive={true}
-                        guides={false} 
-                        preview='.img-preview'
-                    />
+                    <div 
+                        className="img-preview" 
+                        style={{ width: config.previewWidth, height: config.previewHeight}} >
+                    </div>
                     <div>
                         <IconButton 
                             onClick={() =>handleAcceptImage(cropper.current)} 
@@ -76,10 +81,6 @@ function DragAndDrop({
                                 <MdClose size={30}/>
                         </IconButton>
                     </div>
-                </div>
-                <div 
-                    className="img-preview" 
-                    style={{ width: config.previewWidth, height: config.previewHeight}} >
                 </div>
             </CropperContainer>
         }

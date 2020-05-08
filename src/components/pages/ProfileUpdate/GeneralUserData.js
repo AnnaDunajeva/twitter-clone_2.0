@@ -32,14 +32,14 @@ const General = (props) => {
         const data = {user: {}}
         if (firstName !== '' && firstName !== user.firstName) {
             if (!isValidFisrtOrLastname(firstName)) {
-                props.setFormError('You can only use alphabetic characters and "-" in your name.')
+                props.setFormError('You can only use alphabetic characters, space and "-" in your name.')
                 return
             }
             data.user.firstName = firstName
         }
         if (lastName !== '' && lastName !== user.lastName) {
             if (!isValidFisrtOrLastname(lastName)) {
-                props.setFormError('You can only use alphabetic characters and "-" in your name.')
+                props.setFormError('You can only use alphabetic characters, space and "-" in your name.')
                 return
             }
             data.user.lastName = lastName
@@ -123,6 +123,7 @@ const General = (props) => {
                         cropResult={cropResult}
                         handleAcceptImage={handleAcceptImage} 
                         handleRemoveImage={handleRemoveImage}
+                        profile={true}
                     />
                 </div>
 

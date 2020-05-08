@@ -77,6 +77,7 @@ const ProfileBackgroundAndAvatar = styled.div`
             background: white;
         }
         img:last-of-type {
+            z-index: 2;
             top: 70px;
             left: 6px;
             height: 100px;

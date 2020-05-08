@@ -14,11 +14,27 @@ export const ColorPickerContainer = styled.div`
         box-shadow: ${props => props.theme.inputShadow};
         min-width: 300px;
     }
+    @media only screen and (max-width: 500px) {
+        >div:first-of-type {
+            min-width: 200px;
+            padding: 10px 16px;
+        }
+        button {
+            width: 10vw;
+            height: 10vw;
+        }
+    }
 
 `
 export const ColorPickerTool = styled.div`
     position: absolute;
     top: -520%;
     left: 90%;
-    z-index: 1;
+    z-index: 3;
+
+    @media only screen and (max-width: 500px) {
+        width: 65vw !important;
+        top: -650%;
+        left: 5vw;
+    }
 `

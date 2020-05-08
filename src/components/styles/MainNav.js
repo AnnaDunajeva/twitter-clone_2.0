@@ -10,7 +10,7 @@ const MainNav = styled.nav`
     display: flex;
     justify-content: space-between;
     top: 0;
-    z-index: 1;
+    z-index: 5;
     padding: 5px 0px;
     box-shadow: ${props => props.theme.navShadow};
     >div:nth-of-type(2) {

@@ -11,11 +11,11 @@ import Form from '../../styles/Form'
 import {isValidLocation} from '../../../utils/helpers'
 
 const dragConfig = {
-    height: 400,
-    width: 400,
+    height: 275,
+    width: 275,
     aspect: 970/194,
-    previewHeight: 80,
-    previewWidth: 400
+    previewHeight: 30,
+    previewWidth: 150
 }
 
 const Additional = (props) => { 
@@ -37,7 +37,7 @@ const Additional = (props) => {
         const data = {user: {}}
         if (location !== '' && location !== user.location) {
             if (!isValidLocation(location)) {
-                props.setFormError('You can only use alphabetic characters, "-", "," or whitespace in your location.')
+                props.setFormError('You can only use alphabetic characters, "-", "," or space in your location.')
                 return
             }
             data.user.location = location
@@ -139,6 +139,7 @@ const Additional = (props) => {
                         cropResult={cropResult}
                         handleAcceptImage={handleAcceptImage} 
                         handleRemoveImage={handleRemoveImage}
+                        profile={true}
                     />
                 </div>
         

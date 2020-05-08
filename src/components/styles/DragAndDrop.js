@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const DragZoneContainer = styled.div`
     cursor: pointer;
@@ -21,22 +21,62 @@ export const DragZoneContainer = styled.div`
         margin: 20px;
         color: ${props => props.theme.secondaryTextColor}
     }
+    @media only screen and (max-width: 500px) {
+        height: 20vw;
+        p {
+            font-size: 3.5vw;
+            margin: auto;
+        }
+    }
 
 `
 export const CropperContainer = styled.div`
-    >div:first-of-type {
-        display: flex;
-
-        /* action buttons */
-        >div:last-of-type {
-            display: flex;
-            flex-direction: column;
-        }
-    }
-    /* img preview */
-    >div:last-of-type {
-        overflow: hidden;
         margin-top: 3px;
+        display: flex;
+        >div:nth-of-type(2) {
+            display: flex;
+            /* img preview */
+            >div:first-of-type {
+                overflow: hidden;
+                margin: 0 5px;
+            }
+            /* action buttons */
+            >div:last-of-type {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    @media only screen and (max-width: 500px) {
+        >div:first-of-type {
+            ${props =>props.profile 
+                    ?css`
+                        width: 200px !important;
+                        height: 200px !important;
+                    `
+                    :css`
+                        width: 65vw !important;
+                        height: 65vw !important;
+                    `
+                }
+        }
+        >div:nth-of-type(2) {
+            flex-direction: column;
+            >div:first-of-type {
+                width: ${props =>props.profile ? '13vw' : '20vw'} !important;
+                height: ${props =>props.profile ? `calc(13vw / ${props.aspect})` : `calc(20vw / ${props.aspect})`} !important;
+                /* ${props =>props.profile 
+
+                    ?css`
+                        width: 13vw !important;
+                        height: calc(13vw * ${props.aspect}) 13vw !important;
+                    `
+                    :css`
+                        width: 20vw !important;
+                        height: calc(20vw * props.aspect) !important;
+                    `
+                } */
+            }
+        }
     }
 ` 
 export const CropResult = styled.div`

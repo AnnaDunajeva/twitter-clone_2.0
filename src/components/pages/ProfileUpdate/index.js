@@ -17,6 +17,7 @@ import ProfileDataSideBar from './ProfileDataSideBar'
 import ProfileBackgroundWithAvatar from '../Profile/ProfileBackgroundWithAvatar'
 import Alert from '../../modals/Alert'
 import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
+import UpdateViewContainer from '../../styles/UpdateViewContainer'
 
 const ProfileUpdate = (props) => {
     const userId = useSelector(getAuthedUserId())
@@ -44,9 +45,9 @@ const ProfileUpdate = (props) => {
             {userFetchStatus === LOADED || userFetchStatus === UPDATED
                 ?<React.Fragment>
                     <ProfileBackgroundWithAvatar user={user}/>
-                    <div style={{display: 'flex'}}>
+                    <UpdateViewContainer>
                         <ProfileDataSideBar path={`${props.match.path}`}/>
-                        <EntityBackgroundContainer profile={'true'} padding={'5px 100px'}>
+                        <EntityBackgroundContainer profile={'true'} padding={'5px 70px'}>
                             <Switch>
                                 <PrivateRoute 
                                     path={`${props.match.path}/`} exact 
@@ -68,7 +69,7 @@ const ProfileUpdate = (props) => {
                                 <Route component={NotFound} />
                             </Switch>
                         </EntityBackgroundContainer>
-                    </div>
+                    </UpdateViewContainer>
                 </React.Fragment>
                 :null
             }

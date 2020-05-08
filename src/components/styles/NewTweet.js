@@ -32,13 +32,13 @@ const NewTweet = styled.form`
     textarea::placeholder {
         color: ${props => props.theme.secondaryTextColor};
     }
-    div:first-of-type {
+    >div:first-of-type {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-    p:first-of-type {
-        margin-right: 7px;
+        p:first-of-type {
+            margin-right: 7px;
+        }
     }
 
 `

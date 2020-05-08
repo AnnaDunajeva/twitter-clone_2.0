@@ -15,7 +15,7 @@ const ProfileNav = styled.nav`
         a {
             margin: 8px;
             padding: 5px 10px;
-            font-size: 16px;
+            font-size: 4vw;
         }
     }
 `
