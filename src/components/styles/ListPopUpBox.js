@@ -4,6 +4,7 @@ import {constants} from './themes'
 
 const ListpopUpBox = styled(ModalContainer)`
     > div {
+        z-index: 1000;
         margin: 0 auto;
         margin-top: 60px;
         border-radius: 10px;

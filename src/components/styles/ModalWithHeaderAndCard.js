@@ -13,6 +13,7 @@ const ModalWithHeaderAndCard = styled(ModalContainer)`
         min-height: ${props => props.theme.minModalHeight};
         margin: auto;
         margin-top: 4%;
+        z-index: 1000;
         /* width: 650px; */
         
         > h3 {

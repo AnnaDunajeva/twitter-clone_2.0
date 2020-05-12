@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import MainButton from '../styles/MainButton'
 import AlertStyled from '../styles/Alert'
+import PropTypes from 'prop-types'
 
 const DeleteAlert = ({message, smallMessage, onClose, onDelete}) => {
     const [isVisible, setIsVisible] = useState(true)
@@ -22,18 +23,20 @@ const DeleteAlert = ({message, smallMessage, onClose, onDelete}) => {
 
     return (
         isVisible 
-            ?<AlertStyled>
+            ?<AlertStyled data-test='component-alert'>
                 <div>
-                    <p>{message}</p>
-                    <p>{smallMessage}</p>
+                    <p data-test='message'>{message}</p>
+                    <p data-test='smallMessage'>{smallMessage}</p>
                     <div>
                         <MainButton 
                             small margin={'20px'} 
+                            data-test="button-delete"
                             onClick={(e)=>handleDelete(e)}>
                                 Delete
                         </MainButton>
                         <MainButton 
                             small primary margin={'20px'} 
+                            data-test="button-close"
                             onClick={(e)=>handleClose(e)}>
                                 Cancel
                         </MainButton>
@@ -42,6 +45,13 @@ const DeleteAlert = ({message, smallMessage, onClose, onDelete}) => {
             </AlertStyled>
             : null
     )
+}
+
+DeleteAlert.propTypes = {
+    message: PropTypes.string,
+    onDelete: PropTypes.func,
+    onClose: PropTypes.func,
+    smallMessage: PropTypes.string
 }
 
 export default DeleteAlert

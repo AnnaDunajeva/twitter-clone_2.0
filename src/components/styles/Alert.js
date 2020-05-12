@@ -4,6 +4,7 @@ import ModalContainer from './ModalContainer'
 
 const Alert = styled(ModalContainer)`
     > div:first-of-type {
+        z-index: 1000;
         margin: 15% auto;
         padding: 20px;
         border-radius: 10px;

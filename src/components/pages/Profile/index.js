@@ -1,15 +1,13 @@
-import React, {useEffect, useCallback, useMemo, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {getUserById, getUserStatusById, getUserErrorById} from '../../../redux-store-2.0/entities/users/selectors'
-import {getUser} from '../../../redux-store-2.0/api/users'
 import {NOT_FOUND, LOADED, UPDATED, ERROR} from '../../../redux-store-2.0/constants'
 import {userTweetsKey, userTweetLikesKey, userRepliesKey} from '../../../redux-store-2.0/utils/compositeDataStateKeys'
 import {getUserTweetIds, getUserTweetLikesIds, getUserRepliesIds} from '../../../redux-store-2.0/composite-data/selectors'
 import {getUserTweetsPaginated, getUserTweetLikesPaginated, getUserRepliesPaginated} from '../../../redux-store-2.0/api/tweets'
 import useSubscribeToUserUpdate from '../../../Hooks/useSubscribeToUserUpdate'
-// import {getUserIdFromCookie} from '../../../utils/helpers'
-import {getAuthedUserId} from '../../../redux-store-2.0/session/selectors'
+import useFetchUserProfile from '../../../Hooks/useFetchUserProfile'
 import ProfileCard from './ProfileCard'
 import ProfileNav from './ProfileNav'
 import NotFound from '../NotFound'
@@ -19,7 +17,6 @@ import ImageList from '../../lists/ImagesList'
 import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'
 
 const Profile = (props) => {
-    const authedUserId = useSelector(getAuthedUserId())
     const userId = props.match.params.userId
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
@@ -28,30 +25,29 @@ const Profile = (props) => {
     const [toTweetPageId, setToTweetPageId] = useState(null)
     const [toProfileId, setToProfileId] = useState(null)
 
-    const userTweetsSelector = useCallback(getUserTweetIds(userId), []) //not sure if I need it
-    const userTweetLikesSelector = useCallback(getUserTweetLikesIds(userId), [])
-    const userRepliesSelector = useCallback(getUserRepliesIds(userId), [])
+    const userTweetsSelector = getUserTweetIds(userId) //not sure if I need it
+    const userTweetLikesSelector = getUserTweetLikesIds(userId)
+    const userRepliesSelector = getUserRepliesIds(userId)
 
     const tweetsKey = userTweetsKey(userId)
     const tweetLikesKey =  userTweetLikesKey(userId)
     const repliesKey = userRepliesKey(userId)
 
-    const dispatch = useDispatch()
-
-    const dispatchData = useMemo(()=>({userId}), [userId])
+    const dispatchData = {userId}
 
     useSubscribeToUserUpdate(user)
 
-    useEffect(() => {
-        //in future needs to be redone using Suspense, which is not implemented in react yet
-        const asyncDispatch = async () => {
-            await dispatch(getUser({userId}))
-        }
-        if (!userFetchStatus && userId !== authedUserId) {
-            console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
-            asyncDispatch();
-        }
-    }, [dispatch, userId, userFetchStatus, authedUserId])
+    useFetchUserProfile({userId})
+    // useEffect(() => {
+    //     //in future needs to be redone using Suspense, which is not implemented in react yet
+    //     const asyncDispatch = async () => {
+    //         await dispatch(getUser({userId}))
+    //     }
+    //     if (!userFetchStatus && userId !== authedUserId) {
+    //         console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
+    //         asyncDispatch();
+    //     }
+    // }, [dispatch, userId, userFetchStatus, authedUserId])
 
     //maybe make hook for it?
     useEffect(() => {
@@ -81,9 +77,7 @@ const Profile = (props) => {
             {console.log('props.match.url ', props.match.url)}
             {userFetchStatus === ERROR && 
                 <EntityBackgroundContainer>
-                    <h3>
-                        Oops, could not load profile data. Please try again.
-                    </h3>
+                    <h3>Oops, could not load profile data. Please try again.</h3>
                 </EntityBackgroundContainer>
             }
             {userFetchStatus === LOADED || userFetchStatus === UPDATED ?

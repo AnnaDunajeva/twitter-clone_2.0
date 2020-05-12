@@ -120,70 +120,68 @@ const Tweet = ({
             ? <EntityContainer style={{justifyContent: 'center'}}>
                 <p style={{padding: '20px'}}>[Deleted]</p>
             </EntityContainer>
-            : <React.Fragment>
-                <EntityContainer>
-                    <CoverAllLink onClick={()=>toTweet(id)}/>
+            : <EntityContainer>
+                <CoverAllLink onClick={()=>toTweet(id)}/>
 
-                    <AvatarSmall 
-                        src={author.avatar} 
-                        alt={`Avatar for ${author.firstName} ${author.lastName}`} 
-                        onClick={toProfile} />
+                <AvatarSmall 
+                    src={author.avatar} 
+                    alt={`Avatar for ${author.firstName} ${author.lastName}`} 
+                    onClick={toProfile} />
 
-                    <div>
-                        {authedUser === author.userId && 
-                        <IconButton 
-                            onClick={() => setIsDeleteTweet(true)} 
-                            circle pale size={'36px'} margin={'0 10px'}
-                            style={{position: 'absolute', right: '0'}}>
-                                <MdClose size={27}/>
-                        </IconButton>}
+                <div>
+                    {authedUser === author.userId && 
+                    <IconButton 
+                        onClick={() => setIsDeleteTweet(true)} 
+                        circle pale size={'36px'} margin={'0 10px'}
+                        style={{position: 'absolute', right: '0'}}>
+                            <MdClose size={27}/>
+                    </IconButton>}
 
-                        <Link 
-                            as='div'
-                            onClick={toProfile}>
-                                <h3>{author.firstName.length + author.lastName.length + 1 > (width > 500 ? 38 : 28)
-                                    ?truncateText(`${author.firstName} ${author.lastName}`, (width > 500 ? 35 : 25))
-                                    :`${author.firstName} ${author.lastName}`
-                                    }
-                                </h3>
-                                <MetaText as='span'> @{author.userId}</MetaText>
-                        </Link>
-                        
-                        <MetaText>{formatDate(tweet.createdAt)}</MetaText>
+                    <Link 
+                        as='div'
+                        onClick={toProfile}>
+                            <h3>{author.firstName.length + author.lastName.length + 1 > (width > 500 ? 38 : 28)
+                                ?truncateText(`${author.firstName} ${author.lastName}`, (width > 500 ? 35 : 25))
+                                :`${author.firstName} ${author.lastName}`
+                                }
+                            </h3>
+                            <MetaText as='span'> @{author.userId}</MetaText>
+                    </Link>
+                    
+                    <MetaText>{formatDate(tweet.createdAt)}</MetaText>
 
-                        {tweet.replyingToTweetId !== null && 
-                        <Link 
-                            as={MetaText}
-                            onClick={()=>toTweet(tweet.replyingToTweetId)}>
-                                {tweet.replyingToUserId 
-                                ? `Replying to @${tweet.replyingToUserId}` 
-                                : 'Replying to [deleted]'}
-                        </Link>}
+                    {tweet.replyingToTweetId !== null && 
+                    <Link 
+                        as={MetaText}
+                        onClick={()=>toTweet(tweet.replyingToTweetId)}>
+                            {tweet.replyingToUserId 
+                            ? `Replying to @${tweet.replyingToUserId}` 
+                            : 'Replying to [deleted]'}
+                    </Link>}
 
-                        <TweetText as={Linkify} tagName="p" options={linkifyOptions}>
-                            {tweet.text}
-                        </TweetText>
-                        
-                        {tweet.media &&
-                        <TweetImage 
-                            src={tweet.media} />}
+                    <TweetText as={Linkify} tagName="p" options={linkifyOptions}>
+                        {tweet.text}
+                    </TweetText>
+                    
+                    {tweet.media &&
+                    <TweetImage 
+                        src={tweet.media} />}
 
-                        {youtubeUrls.current?.length > 0 &&
-                        <div style={{position: 'relative'}}>
-                            <YouTube
-                                videoId={youtubeUrls.current[0].id}
-                                opts={{height: '262', width: '430'}}/>
-                        </div>}
+                    {youtubeUrls.current?.length > 0 &&
+                    <div style={{position: 'relative'}}>
+                        <YouTube
+                            videoId={youtubeUrls.current[0].id}
+                            opts={{height: '262', width: '430'}}/>
+                    </div>}
 
-                        <TweetActions 
-                            tweet={tweet}
-                            toTweet={()=>toTweet(id)}
-                            handleLike={handleLike}
-                            showLikes={()=>setShowLikes(true)}/>
+                    <TweetActions 
+                        tweet={tweet}
+                        toTweet={()=>toTweet(id)}
+                        handleLike={handleLike}
+                        showLikes={()=>setShowLikes(true)}/>
 
-                    </div>
-                </EntityContainer>
-            </React.Fragment>
+                </div>
+            </EntityContainer>
             }
         </React.Fragment>
     )
