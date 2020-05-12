@@ -12,7 +12,7 @@ const NotFound = () => {
     }
     return (
         <React.Fragment>
-            <h3>Sorry, that page doesn’t exist!</h3>
+            <h3 data-test='component-notfound'>Sorry, that page doesn’t exist!</h3>
         </React.Fragment>
     )
 }

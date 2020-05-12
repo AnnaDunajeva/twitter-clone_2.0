@@ -17,7 +17,7 @@ const Home = () => {
             <EntityBackgroundContainer>
                 <NewTweet showHeader={false}/>
             </EntityBackgroundContainer>
-            <EntityBackgroundContainer>
+            <EntityBackgroundContainer data-test='component-home'>
                 <TweetsList 
                     stateSelector={feedIds}
                     take={15} 

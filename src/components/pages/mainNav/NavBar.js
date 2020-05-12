@@ -16,7 +16,7 @@ const NavBar = ({toggleTheme, theme}) => {
     const logOutUser = useLogOut()
 
     return (
-        <MainNav>
+        <MainNav data-test="component-navbar-main">
             <div>
                 <ClearButton as={NavLink} to='/' exact size={'90px'} fontSize={'mediumFont'} margin={'0 10px 0 0'}>
                     Home

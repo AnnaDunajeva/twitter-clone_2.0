@@ -11,7 +11,7 @@ const DiscoverUsers = () => {
     const usersSelector = useCallback(getDiscoverUsersIds(), [])
 
     return (
-        <EntityBackgroundContainer>
+        <EntityBackgroundContainer data-test='component-users'>
             <ScrollUtil 
                 getDataFetch={getAllUsersPaginated} 
                 dispatchData={{}} 

@@ -64,7 +64,7 @@ const SignUpLogin = () => {
                 <Alert message={formError} onClose={()=>setFormError(null)}/>}
             {forgotPassword && 
                 <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
-            <SignInPageContainer>
+            <SignInPageContainer data-test="component-signin">
                 <BlurFilter blur={showLogin || showSignUp}>
                     <img 
                         src={`${URL}/background`}/>
