@@ -12,14 +12,9 @@ import { storeFactory } from '../utils/testHelpers'
 // const spy = jest.spyOn(redux, 'useSelector')
 // spy.mockReturnValue({ username:'test' })
 
-
-/**
- * Factory function to create ShallowWrapper for the App component.
- * @functio setup
- * @param {any} state - Inital state of the component required for setup
- * @returns {ShallowWrapper}
-*/
-
+//mocking hooks and components that are in App component, but we dont want to test their implementation here
+//we need unit test main App stuff here, like router
+//NB these mock are not cleared, they are just to remove from tests code that we do not intend to test here
 jest.mock('react-textarea-autosize')
 jest.mock('../Hooks/useSocketSetup')
 jest.mock('../Hooks/useScrollToTopOnROuteChange')
@@ -35,6 +30,13 @@ jest.mock('./utils/GlobalErrors', () => () => null)
 jest.mock('./utils/GlobalAlerts', () => () => null)
 jest.mock('./utils/ToTopButton', () => () => null)
 
+
+/**
+ * function to render a component
+ * @functio setup
+ * @param {any} state - Inital state of the component required for setup
+ * @returns {History} - browser history
+*/
 const setup = (state={}) => {
     const store = storeFactory(state)
     const history = createMemoryHistory()
@@ -76,6 +78,9 @@ test('should render App without errors', () => {
     const appContainer = container.querySelector("[data-test='component-app']")
     expect(appContainer).toBeTruthy()
 })
+
+//test that useFetchUserProfile is called with right arguments
+
 describe('user is not logged in', () => {
     test('should NOT render main navbar', () => {
         setup()

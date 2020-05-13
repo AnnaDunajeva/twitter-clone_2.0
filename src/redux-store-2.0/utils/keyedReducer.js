@@ -64,7 +64,6 @@ export const keyedReducer = ( keyPath, reducer ) => {
 
 	return ( state = {}, action ) => {
 		// don't allow coercion of key name: null => 0
-		console.log('inside keyedReducer, state: ', state)
 		const itemKey = get( action, keyPath, undefined );
 
 		//some action that need to be performed on multiple keys and where we dont want to create key if it wasnt in the store

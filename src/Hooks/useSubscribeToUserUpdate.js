@@ -10,6 +10,8 @@ const useSubscribeToUserUpdate = (user) => {
             console.log('about to subscribe to user update ', user.userId)
             socket.emit('subscribe_to_user_update', user.userId) 
             // return () => socket.emit('unsubscribe_to_user_update', user.userId) 
+            //we actually dont want to unsubscribe from updae when component unmount cause then 
+            //when it will mount back we will miss some updates and data might be inconsistent
         }
     },[socket, user])
 }

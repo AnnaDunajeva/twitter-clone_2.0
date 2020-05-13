@@ -9,12 +9,12 @@ import TweetsList from '../lists/TweetsList'
 import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
 
 const Home = () => {
-    const feedIds = useCallback(getFeedIds(), [])
+    const feedIds = getFeedIds()
     const dispatchData = {}
 
     return (
         <React.Fragment>
-            <EntityBackgroundContainer>
+            <EntityBackgroundContainer data-test='newtweet-home'>
                 <NewTweet showHeader={false}/>
             </EntityBackgroundContainer>
             <EntityBackgroundContainer data-test='component-home'>

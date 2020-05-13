@@ -1,6 +1,7 @@
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
 import reducer from '../redux-store-2.0/reducer'
-import middleware from '../redux-store-2.0/middleware'
+// import middleware from '../redux-store-2.0/middleware'
+import thunk from 'redux-thunk'
 
 /**
  * Return ShallowWrapper containing node(s) with the given data-test attribute value
@@ -19,6 +20,7 @@ export const findTestAttrInWrapper = (wrapper, value) => {
  * @param {object} initialState - object, representing initial state of store
  * @return {Store} - Redux store
 */
+
 export const storeFactory = (initialState) => {
-    return createStore(reducer, initialState, middleware)
+    return createStore(reducer, initialState, applyMiddleware(thunk))
 }
