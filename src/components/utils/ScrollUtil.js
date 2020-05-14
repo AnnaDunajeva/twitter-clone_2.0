@@ -75,7 +75,7 @@ const ScrollUtil = ({
             console.log('making initial fetch for scroll')
             asyncDispatch();
         }
-    }, [dispatch, memorizedFetch, ids.length, take, done, fetchStatus, error]) //fetchStatus
+    }, [dispatch, memorizedFetch, ids.length, take, done, fetchStatus, error]) 
     
 
     useEffect(() => {
@@ -83,7 +83,6 @@ const ScrollUtil = ({
         console.log('savedIdsLength ', savedIdsLength, 'ids.length ', ids.length)
 
         if (!done && fetchStatus === LOADED && ids.length - savedIdsLength < take) {
-            // setHasMore(false)
             dispatch(compositeDataSetDone(stateKey, true))
         }
     }, [fetchStatus, ids, savedIdsLength, take, done, stateKey, dispatch])
@@ -98,11 +97,6 @@ const ScrollUtil = ({
             }
         }
     }, [reset, dispatch, stateKey])
-
-    // useEffect(()=>{
-    //     return ()=>dispatch(compositeDataSetFetchStatus(stateKey, PENDING_UPDATE)) //dont need it for now really
-    // }, [dispatch, stateKey])
-
 
     const fetchScroll = async () => {
         await memorizedFetch('from scroll fetch')

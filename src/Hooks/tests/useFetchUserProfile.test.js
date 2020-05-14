@@ -14,16 +14,18 @@ jest.mock('../../redux-store-2.0/api/users', () => (
     }
 ))
 
+const fetchMock = jest.spyOn(global, "fetch")
+
 /**
  * function to render a component
  * @functio setup
  * @param {object} state - Inital state of the component required for setup
  * @param {function} hook - React hook to be used inside component
- * @returns {void}
+ * @returns {object} - object, containing redux store
 */
 const setup = async (state={}, hook) => {
     const store = storeFactory(state)
-    act(() => {
+    await act(async() => {
         render(
             <Provider store={store}> 
                 <TestHook hook={hook} />
@@ -31,12 +33,14 @@ const setup = async (state={}, hook) => {
             container
         )
     })
+    return {store}
 }
 
 let container = null;
 beforeEach(() => {
     //clear data on mock collected from preveous test 
-    getUser.mockClear()
+    jest.clearAllMocks()
+    jest.resetModules();
 
     // setup a DOM element as a render target
     container = document.createElement("div");
@@ -50,19 +54,20 @@ afterEach(() => {
     container = null;
 });
 
-test('should not fetch user profile if user is not logged in', () => {  
+//kinda depend on implementation
+test('should not fetch user profile if user is not logged in', async () => {  
     //store.session.userId is undefined
-    setup({}, () => useFetchUserProfile({userId: 'test'}))
+    await setup({}, () => useFetchUserProfile({userId: 'test'}))
     expect(getUser.mock.calls.length).toBe(0)
 })
-
+//kinda depend on implementation
 describe('user is logged in', () => {
-    test('should fetch profile when it wasnt fetch before', () => {
-        setup({session: {userId: 'test'}}, () => useFetchUserProfile({userId: 'test'}))
+    test('should fetch profile when it wasnt fetch before', async () => {
+        await setup({session: {userId: 'test'}}, () => useFetchUserProfile({userId: 'test'}))
         expect(getUser.mock.calls.length).toBe(1)
     })
 
-    test('should NOT fetch profile when it was fetch before', () => {
+    test('should NOT fetch profile when it was fetch before', async () => {
         const userId = 'test'
         const initialState = {
             session: {
@@ -82,7 +87,85 @@ describe('user is logged in', () => {
             }
         }
 
-        setup(initialState, () => useFetchUserProfile({userId}))
+        await setup(initialState, () => useFetchUserProfile({userId}))
         expect(getUser.mock.calls.length).toBe(0)
     })
 })
+
+//more of an integration type of a test
+describe('getUser is not mocked', () => {
+    const originalUserModule = jest.requireActual('../../redux-store-2.0/api/users');
+
+    beforeEach(() => {
+        getUser.mockImplementation((args) => originalUserModule.getUser(args))
+    })
+
+    test('should not fetch user profile if user is not logged in', async () => {  
+        //store.session.userId is undefined
+        const userId = 'test'
+        const {store} = await setup({}, () => useFetchUserProfile({userId: 'test'}))
+        expect(store.getState().entities.users.entities[userId]).toBeFalsy()
+    })
+
+    describe('user is logged in', () => {
+        test('should fetch profile when it wasnt fetched before', async () => {
+            const userId = 'test'
+            const newUserId = 'notTheCorrectId'
+            fetchMock.mockImplementation(() =>
+                Promise.resolve({
+                    json: () => Promise.resolve({
+                        status: 'ok', 
+                        user: {
+                            [userId]: {
+                                userId: newUserId
+                            }
+                        }
+                    })
+                })
+            );
+            const {store} = await setup({session: {userId}}, () => useFetchUserProfile({userId}))
+            expect(store.getState().entities?.users.entities[userId].userId).toBe(newUserId)
+        })
+    
+        test('should NOT fetch profile when it was fetch before', async () => {
+            const userId = 'test'
+            const initialState = {
+                session: {
+                    userId
+                },
+                entities: {
+                    users: {
+                        entities: {
+                            [userId]: {
+                                userId
+                            }
+                        },
+                        fetchStatus: {
+                            [userId]: LOADED
+                        },
+                    }
+                }
+            }
+            fetchMock.mockImplementation(() =>
+                Promise.resolve({
+                    json: () => Promise.resolve({
+                        status: 'ok', 
+                        user: {
+                            [userId]: {
+                                userId: 'notTheCorrectId'
+                            }
+                        }
+                    })
+                })
+            );
+    
+            const {store} = await setup(initialState, () => useFetchUserProfile({userId}))
+            expect(store.getState().entities.users.entities[userId].userId).toBe(userId)
+        })
+    })
+})
+        // fetchMock.mockImplementation(() =>
+        //     Promise.resolve({
+        //         json: () => Promise.resolve({status: 'ok', message: 'success'})
+        //     })
+        // );

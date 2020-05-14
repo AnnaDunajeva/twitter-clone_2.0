@@ -35,7 +35,7 @@ jest.mock('./utils/ToTopButton', () => () => null)
  * function to render a component
  * @functio setup
  * @param {any} state - Inital state of the component required for setup
- * @returns {History} - browser history
+ * @returns {object} - object, cantaining browser history
 */
 const setup = (state={}) => {
     const store = storeFactory(state)
@@ -61,16 +61,16 @@ const setup = (state={}) => {
 
 let container = null;
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+    // setup a DOM element as a render target
+    container = document.createElement("div");
+    document.body.appendChild(container);
 });
 
 afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
+    // cleanup on exiting
+    unmountComponentAtNode(container);
+    container.remove();
+    container = null;
 });
 
 test('should render App without errors', () => {
