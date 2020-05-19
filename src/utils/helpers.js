@@ -68,3 +68,9 @@ export const isValidLocation = (location) => {
 export const truncateText = (text, lenght) => {
   return text.slice(0, lenght) + '...'
 }
+
+export const getOauthUserData = () => {
+  const cookieData = document.cookie.replace(/(?:(?:^|.*;\s*)oauth_user_data\s*=\s*([^;]*).*$)|^.*$/, "$1") 
+  const outhData = cookieData !== '' ? JSON.parse(cookieData) : null
+  return outhData
+}

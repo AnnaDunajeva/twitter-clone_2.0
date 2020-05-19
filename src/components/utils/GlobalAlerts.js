@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {
     SIGN_UP, 
     PASSWORD_RESET_LINK_SENT, 
+    ACCOUNT_VERIFICATION_LINK_SENT,
     LOADED, 
     PASSWORD_RESET, 
     UPDATING, 
@@ -26,7 +27,7 @@ const GlobalAlerts = () => {
     }
     return (
         <React.Fragment>
-            {sessionStatus === SIGN_UP && 
+            {(sessionStatus === SIGN_UP || sessionStatus === ACCOUNT_VERIFICATION_LINK_SENT) && 
                 <Alert message={'Thank you! Please confirm your email adress to continue.'} 
                         smallMessage={'NB! confirmation link is valid for 15 min. If you do not confirm your account during 24 hours, it will be deleted. You can request new confirmation link if needed.'}/>}
             {sessionStatus === PASSWORD_RESET_LINK_SENT && 

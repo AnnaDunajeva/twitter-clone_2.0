@@ -9,6 +9,7 @@ import {
     TWEET_POST,
     USER_TOGGLE_FOLLOW,
     TWEET_DELETE,
+    ACCOUNT_VERIFICATION_LINK_ERROR,
     COMPOSITE_DATA_ENTITIES_FETCH_ERROR
 } from '../action-types'
 import {AUTHENTICATION_FAILED} from '../constants'
@@ -30,6 +31,8 @@ export const isAuthenticationError = () => (state) => Object.values(state.errors
 export const getResetPasswordError = () => (state) => state.errors[RESET_PASSWORD_ERROR] || null
 
 export const getResetPasswordLinkError = () => (state) => state.errors[RESET_PASSWORD_LINK_ERROR] || null
+
+export const getAccountVerificationLinkError = () => (state) => state.errors[ACCOUNT_VERIFICATION_LINK_ERROR] || null
 
 export const getToggleTweetLikeErrors = () => (state) => Object.keys(state.errors)
                                                         .filter(stateKey => stateKey.includes(TWEET_TOGGLE_LIKE))

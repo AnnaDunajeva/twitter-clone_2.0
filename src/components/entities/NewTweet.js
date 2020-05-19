@@ -98,11 +98,11 @@ const NewTweet = ({replyingTo, showHeader}) => {
         <React.Fragment>
             {toHome && <Redirect to='/' />}
             {showHeader && 
-                <h1>
+                <h3>
                     {replyingTo 
                         ? 'Leave your reply' 
                         : 'Compose new tweet'}
-                </h1>}
+                </h3>}
             <NewTweetForm onSubmit={handleSubmit}>
                 <TextareaAutosize 
                     maxLength={maxlength}

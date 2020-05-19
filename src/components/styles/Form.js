@@ -31,7 +31,7 @@ const Form = styled.form`
         flex-direction: column;
         align-items: center;
         margin: 0 auto 20px auto;
-        width: ${props => props.inputWidth || 'inherit'};
+        width: ${props => props.inputWidth || '100%'};
         align-items: stretch;
 
         > p {
@@ -76,12 +76,16 @@ const Form = styled.form`
             ${props => !props.noInputBorder && `border: 1px solid ${props.theme.hoverLinkColor};`}
             box-shadow: 0 0 0 0.07rem ${props => props.theme.hoverLinkColor}, ${props => props.shadow && (constants[props.inputShadow] || props.theme.entityShadow)};
         }
+        textarea::placeholder {
+            color: ${props => props.theme.secondaryTextColor};
+        }
     }
     @media only screen and (max-width: 500px) {
         > div:first-of-type {
             > input, 
             textarea {
                 min-width: 230px;
+                padding: 2.5vw 20px;
             }
         }
     }

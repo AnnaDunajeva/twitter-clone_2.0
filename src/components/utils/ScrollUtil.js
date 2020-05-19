@@ -36,7 +36,7 @@ const ScrollUtil = ({
     const done = useSelector(getCompositeDataDoneStatus(stateKey))
     
     //savedIdsLength is lenght of ids before last fetch
-    const [savedIdsLength, setSavedIdsLength] = useState( //we want to make at least one fetch each time compopnent mounts
+    const [savedIdsLength, setSavedIdsLength] = useState( 
         done 
             ? ids.length
             : ids.length >= take
@@ -60,15 +60,13 @@ const ScrollUtil = ({
 
     useEffect(() => {
         console.log('initiating scroll inside effect')
-        //in future needs to be redone using Suspense, which is not implemented in react yet
         const asyncDispatch = async () => {
             skip.current = ids.length 
-            // initialFetchTime.current = Date.now()
             await memorizedFetch('from initial mount')
             setSavedIdsLength(ids.length) //inside function ids isnt updated yet (despite state being updated)
         }
 
-        if (!done && ids.length < 13 && fetchStatus !== LOADING && fetchStatus !== LOADED && !error) { //fetchStatus !== LOADING && fetchStatus !== LOADED
+        if (!done && ids.length < 13 && fetchStatus !== LOADING && fetchStatus !== LOADED && !error) { 
         //when tweet deleted from client, fetchstatus set to pending update so that we will automatically make fetch if there is
         //to few tweets to be able to make scroll
         //ids.length < take is needed to make initial fetch again after delete - this way we fetch if there is too few tweets to make scroll
@@ -80,7 +78,6 @@ const ScrollUtil = ({
 
     useEffect(() => {
         console.log('is there more data to fetch? ', !(fetchStatus === LOADED && ids.length - savedIdsLength < take))
-        console.log('savedIdsLength ', savedIdsLength, 'ids.length ', ids.length)
 
         if (!done && fetchStatus === LOADED && ids.length - savedIdsLength < take) {
             dispatch(compositeDataSetDone(stateKey, true))
@@ -89,7 +86,7 @@ const ScrollUtil = ({
 
 
     useEffect(()=>{
-        //id reset true, then set all to null
+        //if reset true, then set all to null
         return ()=> {
             if (reset) {
                 console.log('scrollUtil: about to cleat all data cause reset is true')
@@ -100,7 +97,7 @@ const ScrollUtil = ({
 
     const fetchScroll = async () => {
         await memorizedFetch('from scroll fetch')
-        setSavedIdsLength(ids.length) //inside function ids isnt updated yet (despite state being updated)
+        setSavedIdsLength(ids.length) //inside this function ids isnt updated yet (despite state being updated)
         console.log('savedIdsLength ', ids.length)
     }
 

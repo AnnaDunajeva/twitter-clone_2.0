@@ -12,6 +12,7 @@ import Tweet from '../entities/Tweet'
 import NotFound from '../pages/NotFound'
 import TweetsList from '../lists/TweetsList'
 import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
+import {ReplyContainer} from '../styles/NewTweet'
     
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
@@ -52,9 +53,9 @@ const TweetPage = (props) => {
                 <React.Fragment>
                     <Tweet id={tweetId} stateKey={conversationKey(tweetId)}/>
                     {!mainTweet?.deleted && 
-                        <div style={{marginBottom: '15px'}}>
+                        <ReplyContainer>
                             <NewTweet replyingTo={tweetId}/>
-                        </div>
+                        </ReplyContainer>
                     }
                 </React.Fragment>
             }

@@ -11,17 +11,15 @@ import {
     getPostTweetError,
     getDeleteTweetError,
     getSessionEndError,
+    getAccountVerificationLinkError,
     getUserToggleFollowErrors,
     getResetPasswordError} from '../../redux-store-2.0/errors/selectors'
 import {
 
 } from '../../redux-store-2.0/errors/actions'
 import Alert from '../modals/Alert'
-// import {RESET_PASSWORD_LINK_ERROR} from '../redux-store-2.0/action-types'
-// import {globalErrorRemove} from '../redux-store-2.0/errors/actions'
 
 const GlobalErrors = () => {
-    // const dispatch = useDispatch()
     const history = useHistory()
     const loginError = useSelector(getSessionStartError())
     const signUpError = useSelector(getSignUpError())
@@ -34,10 +32,7 @@ const GlobalErrors = () => {
     const deleteTweetError = useSelector(getDeleteTweetError())
     const logoutError = useSelector(getSessionEndError())
     const followUserErrors = useSelector(getUserToggleFollowErrors())
-
-    // const handleCloseResetPsswordLinkErrorAlert = () => {
-    //     dispatch(globalErrorRemove(RESET_PASSWORD_LINK_ERROR))
-    // }
+    const accountVerificationLinkError = useSelector(getAccountVerificationLinkError())
 
     return (
         <React.Fragment>
@@ -46,7 +41,9 @@ const GlobalErrors = () => {
             {signUpError && 
                 <Alert message={signUpError}/>}
             {resetPasswordLinkError && 
-                <Alert message={resetPasswordLinkError}/>}      
+                <Alert message={resetPasswordLinkError}/>}    
+            {accountVerificationLinkError && 
+                <Alert message={'Oops!'} smallMessage={accountVerificationLinkError}/>}  
             {resetPasswordError && 
                 <Alert message={resetPasswordError} onClose={() => history.push('/')}/> }
             {profileUpdateError && 
@@ -64,7 +61,7 @@ const GlobalErrors = () => {
             {logoutError &&
                 <Alert message={logoutError} />}
             {
-                //cookieError-403 forbidden
+                //403 forbidden
             }
             {
                 //5xx status code - server error

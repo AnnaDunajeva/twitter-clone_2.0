@@ -36,6 +36,7 @@ const SearchBar = styled.form.attrs({tabIndex: 0})`
         padding-left: 5px;
         width: 100%;
         min-width: 100px;
+        color: ${props => props.theme.mainColor}
     }
     input:focus {
         outline: none;

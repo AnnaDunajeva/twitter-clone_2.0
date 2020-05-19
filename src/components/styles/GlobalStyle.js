@@ -7,8 +7,10 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
         font-family: 'Lato', sans-serif;
-        color: ${props => props.theme.mainColor};
         scrollbar-color: ${props => props.theme.paleIcon} ${props => props.theme.profileNavBackground};
+    }
+    body {
+        color: ${props => props.theme.mainColor};
     }
     ::-webkit-scrollbar {
         width: 14px;

@@ -28,6 +28,7 @@ const NewTweet = styled.form`
         background-color: ${props => props.theme.invertedMainColor};
         border: none;
         margin: 2px;
+        color: ${props => props.theme.mainColor}
     }
     textarea::placeholder {
         color: ${props => props.theme.secondaryTextColor};
@@ -41,6 +42,21 @@ const NewTweet = styled.form`
         }
     }
 
+`
+export const ReplyContainer = styled.div`
+    margin: 15px 0;
+    >h3 {
+        margin: 10px 0;
+        font-size: 140%;
+    }
+    >form {
+        margin: 25px auto;
+    }
+    @media only screen and (max-width: 500px) {
+        >form {
+            margin: 8px auto;
+        }
+    }
 `
 
 export default NewTweet

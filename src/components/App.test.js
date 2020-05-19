@@ -7,13 +7,8 @@ import { Router } from "react-router";
 import App from './App'
 import { storeFactory } from '../utils/testHelpers'
 
-// import * as redux from 'react-redux'
-
-// const spy = jest.spyOn(redux, 'useSelector')
-// spy.mockReturnValue({ username:'test' })
-
 //mocking hooks and components that are in App component, but we dont want to test their implementation here
-//we need unit test main App stuff here, like router
+//we need test main App stuff here, like router
 //NB these mock are not cleared, they are just to remove from tests code that we do not intend to test here
 jest.mock('react-textarea-autosize')
 jest.mock('../Hooks/useSocketSetup')
@@ -52,12 +47,6 @@ const setup = (state={}) => {
     })
     return {history}
 }
-// beforeAll(() => {
-//     window.scrollTo = jest.fn()
-// })
-// afterAll(() => {
-//     window.scrollTo.mockClear()
-// })
 
 let container = null;
 beforeEach(() => {

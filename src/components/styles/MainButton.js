@@ -118,6 +118,10 @@ const MainButton = styled.button`
         color: ${props => props.theme.disabledButtonColor};
         cursor: default;
     }
+
+    @media only screen and (max-width: 500px) {
+        font-size: 4.5vw;
+    }
 `
 
 MainButton.defaultProps = {

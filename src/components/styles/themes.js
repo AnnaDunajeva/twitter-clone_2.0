@@ -120,7 +120,7 @@ export const dark = {
     modalHeaderBackground: constants.black,
     // inputShadow: constants.lightShadow,
     // inputBackground: '#ffffff2a',
-    inputBackground: '#c5c5c569',
+    inputBackground: '#c5c5c544',
     formaLabelColor: constants.darkGrey,
     paleIcon: '#837f7f',
     profileNavBackground: '#525050',

@@ -4,6 +4,7 @@ import {
     ERROR, 
     SIGN_UP,
     PASSWORD_RESET,
+    ACCOUNT_VERIFICATION_LINK_SENT,
     PASSWORD_RESET_LINK_SENT} from "../constants"
 import { 
     SESSION_START_SUCCESS, 
@@ -15,6 +16,7 @@ import {
     SIGN_UP_SUCCESS,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_LINK_SUCCESS,
+    ACCOUNT_VERIFICATION_LINK_SUCCESS,
     SET_SESSION_FETCHSTATUS
 } from '../action-types'
 import {getUserIdFromCookie} from '../../utils/helpers'
@@ -65,6 +67,12 @@ export default function (state = initialState, action) {
                 ...state,
                 error: null,
                 fetchStatus: SIGN_UP
+            }
+        case ACCOUNT_VERIFICATION_LINK_SUCCESS:
+            return {
+                ...state,
+                error: null,
+                fetchStatus: ACCOUNT_VERIFICATION_LINK_SENT
             }
         case RESET_PASSWORD_SUCCESS:
             return {
