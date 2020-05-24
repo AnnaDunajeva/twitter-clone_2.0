@@ -79,7 +79,7 @@ describe('user is not logged in', () => {
     
     test('should  redirect to "/login" and render SignUpLogin component when on route "/"', () => {
         const {history} = setup()
-        const SignUpLogin = container.querySelector("[data-test='component-signin']")
+        const SignUpLogin = container.querySelector("[data-test='component-signuplogin']")
         expect(history.location.pathname).toBe('/login')
         expect(SignUpLogin).toBeTruthy()
     })
@@ -88,7 +88,7 @@ describe('user is not logged in', () => {
         const {history} = setup()
         history.push('/thisroutedoesnotexist')
         const NotFound = container.querySelector("[data-test='component-notfound']")
-        const SignUpLogin = container.querySelector("[data-test='component-signin']")
+        const SignUpLogin = container.querySelector("[data-test='component-signuplogin']")
         expect(history.location.pathname).toBe('/login')
         expect(NotFound).toBeFalsy()
         expect(SignUpLogin).toBeTruthy()
@@ -98,7 +98,7 @@ describe('user is not logged in', () => {
         const {history} = setup()
         history.push('/users')
         const Users = container.querySelector("[data-test='component-users']")
-        const SignUpLogin = container.querySelector("[data-test='component-signin']")
+        const SignUpLogin = container.querySelector("[data-test='component-signuplogin']")
         expect(history.location.pathname).toBe('/login')
         expect(Users).toBeFalsy()
         expect(SignUpLogin).toBeTruthy()

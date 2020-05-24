@@ -1,4 +1,8 @@
 import React, {useState, useEffect} from 'react'
+import {
+    CSSTransition,
+    TransitionGroup,
+} from 'react-transition-group';
 import NavLink from '../../utils/NavLink'
 import UpdateProfileSidebar from '../../styles/UpdateProfileSidebar'
 import {MdDehaze} from 'react-icons/md'
@@ -31,29 +35,36 @@ const ProfileDataSideBar = ({path}) => {
             </IconButton>
         </UpdateProfileSidebar>
         }
+        <TransitionGroup component={null}>
         {showMenu &&
-            <UpdateProfileSidebar onClick={toggleMenu}>
-                <NavLink to={`${path}/`} exact>
-                    General Informatiom
-                </NavLink>
+            <CSSTransition
+                timeout={200}
+                appear={true}
+                classNames='item'>
+                <UpdateProfileSidebar onClick={toggleMenu}>
+                    <NavLink to={`${path}/`} exact>
+                        General Informatiom
+                    </NavLink>
 
-                <NavLink to={`${path}/additional`}>
-                    Additional Informatiom
-                </NavLink>
+                    <NavLink to={`${path}/additional`}>
+                        Additional Informatiom
+                    </NavLink>
 
-                <NavLink to={`${path}/security`}>
-                    Security
-                </NavLink>
+                    <NavLink to={`${path}/security`}>
+                        Security
+                    </NavLink>
 
-                <NavLink to={`${path}/timeline`}>
-                    Timeline
-                </NavLink>
+                    <NavLink to={`${path}/timeline`}>
+                        Timeline
+                    </NavLink>
 
-                <NavLink to={`${path}/theme`}>
-                    Theme and Styles
-                </NavLink>
-            </UpdateProfileSidebar>
+                    <NavLink to={`${path}/theme`}>
+                        Theme and Styles
+                    </NavLink>
+                </UpdateProfileSidebar>
+            </CSSTransition>
         } 
+        </TransitionGroup>
         </React.Fragment>
     )
 }

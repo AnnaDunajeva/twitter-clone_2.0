@@ -70,7 +70,7 @@ const CompleteAccountCreationAfterOauthSignin = ({setFormError}) => {
             <ThemeProvider theme={light}>
                 <MainButton
                     data-test='button-complete-oauth'
-                    lasrge blue disabledMediumLight shadow margin={'20px auto 30px auto'}
+                    lasrge blue disabledMediumLight shadow margin={'20px auto 35px auto'}
                     type='submit'
                     disabled={username === '' || firstName === '' || lastName === ''}>
                         Create account

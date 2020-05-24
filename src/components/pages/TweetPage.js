@@ -16,7 +16,7 @@ import {ReplyContainer} from '../styles/NewTweet'
     
 const TweetPage = (props) => {
     const tweetId = props.match.params.id
-    const take = 2
+    const take = 15
     
     const mainTweet = useSelector(getTweetById(tweetId)) 
     const mainTweetFetchStatus = useSelector(getTweetStatusById(tweetId))

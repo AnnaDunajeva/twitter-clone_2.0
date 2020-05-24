@@ -41,6 +41,11 @@ const NewTweet = styled.form`
             margin-right: 7px;
         }
     }
+    @media only screen and (max-width: 500px) {
+        textarea::placeholder {
+            font-size: 4vw;
+        }
+    }
 
 `
 export const ReplyContainer = styled.div`

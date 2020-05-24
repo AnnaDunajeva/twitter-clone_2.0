@@ -21,7 +21,7 @@ const useLogOutOnAuthenticatonError = () => {
             }
             dispatch({type: SESSION_END_SUCCESS})
         }
-    }, [authenticationError, dispatch, authedUser])
+    }, [authenticationError, dispatch, authedUser, socket])
 
 }
 

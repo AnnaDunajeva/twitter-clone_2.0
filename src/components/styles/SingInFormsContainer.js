@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {URL} from '../../redux-store-2.0/constants'
+import {constants} from './themes'
 
 const SignInFormsContainer = styled.div`
     color: ${props => props.theme.mainColor};
@@ -11,27 +11,35 @@ const SignInFormsContainer = styled.div`
 
     >div {
         width: 450px;
-        margin: 0.6%  auto;
+        margin: 0 auto;
     }
     && {
         div {
             >form {
                 input {
+                    margin: 12px 0;
                     border: 1px solid #827786a1;
                     background-color: #827786a1;
                     font-size: 20px;
-                    padding: 8px 20px;
+                    padding: 12px 20px;
+                    box-shadow: 0px 5px 10px -1px rgba(20, 20, 20, 0.34);
+                }
+                input::placeholder {
+                    color: #d3d3d4;
+                    font-size: 16px;
                 }
                 label {
-                    margin-top: 10px;
+                    margin-bottom: 0px;
+                    margin-top: 5px;
                 }
                 h3 {
-                    margin-bottom: 0px;
+                    font-size: 28px;
+                    margin-bottom: 10px;
                     margin-top: 10px;
                 }
                 a {
                     svg {
-                        margin-right: 10px;
+                        margin-right: 20px;
                     }
                 }
                 button {
@@ -41,17 +49,7 @@ const SignInFormsContainer = styled.div`
             } 
         }
     }
-    @media only screen and (max-width: 500px) {
-        && {
-            div {
-                >form {
-                    input {
-                        padding: 8px 20px;
-                    }
-                } 
-            }
-        }
-    }
+
     @media only screen and (max-width: 500px) {
         >div {
             width: 87vw;
@@ -65,13 +63,23 @@ const SignInFormsContainer = styled.div`
                     input {
                         font-size: 4.5vw;
                         min-width: 60vw;
+                        padding: 2.5vw 20px;
+                        margin: 3vw 0;
+                    }
+                    input::placeholder {
+                        font-size: 3vw;
                     }
                     h3 {
-                        font-size: 5vw;
+                        font-size: 6vw;
                     }
                     label {
-                        margin-top: 10px;
                         font-size: 3vw;
+                    }
+                    button {
+                        padding: 2.5vw 20px;
+                    }
+                    a {
+                        padding: 2.5vw 20px;
                     }
                 } 
             }

@@ -1,22 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {IoIosArrowUp} from "react-icons/io"
-import IconButton from '../styles/IconButton'
+import ToTopButtonStyle from '../styles/ToTopButton'
+import useScrollY from '../../Hooks/useScrollY'
 
 const ToTopButton = () => {
     const [showButton, setShowButton] = useState(false)
     const windowHeight = useRef(window.innerHeight)
-    const [scrollY, setScrollY] = useState(window.scrollY);
-
-    const listener = e => {
-        setScrollY(window.scrollY);
-    };
-    
-    useEffect(() => {
-        window.addEventListener("scroll", listener);
-        return () => {
-            window.removeEventListener("scroll", listener);
-        };
-    }, []);
+    const scrollY = useScrollY()
 
     useEffect(() => {
         if (scrollY > windowHeight.current && !showButton) {
@@ -30,17 +20,15 @@ const ToTopButton = () => {
     const handleToTop = () => {
         window.scrollTo(0, 0);
         setShowButton(false)
-        setScrollY(window.scrollY);
     } 
 
     return (
         showButton && 
-            <IconButton 
+            <ToTopButtonStyle 
                 onClick={handleToTop}
-                circle size={'45px'}
-                style={{position: 'fixed', bottom: '8%', right: '8%'}}>
+                circle size={'45px'}>
                     <IoIosArrowUp size={40}/>
-            </IconButton>
+            </ToTopButtonStyle>
     );
 };
 

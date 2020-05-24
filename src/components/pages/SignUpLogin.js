@@ -1,32 +1,30 @@
 import React, { useState, useRef } from 'react'
-import {Redirect} from 'react-router-dom'
-import {useSelector} from 'react-redux'
-import {ThemeProvider} from 'styled-components'
-import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
-// import AnimatedGradient from '../styles/AnimatedGradient'
-import SignInFormsContainer from '../styles/SingInFormsContainer'
-import RequestResetPasswordLinkAlert from '../modals/RequestResetPasswordLinkAlert'
-import RequestAccountVerificationLink from '../modals/RequestAccountVerificationLink'
-// import Logo from '../utils/MainHeaderLogo'
-import SignUp from '../utils/SignUp'
-import Login from '../utils/Login'
-import CompleteAccountCreationAfterOauthSignup from '../utils/CompleteAccountCreationAfterOauthSignup'
-import Alert from '../modals/Alert'
-import {URL} from '../../redux-store-2.0/constants'
-import {dark} from '../styles/themes'
-import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
-import MainButton from '../styles/MainButton'
-import {MdClose} from "react-icons/md"
-import IconButton from '../styles/IconButton'
-import SignInNav from '../styles/SignInNav'
+import { Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ThemeProvider } from 'styled-components'
 import {
     CSSTransition,
     TransitionGroup,
-} from 'react-transition-group';
+} from 'react-transition-group'
+import { MdClose } from "react-icons/md"
+import { getAuthedUserId } from '../../redux-store-2.0/session/selectors'
+import SignInFormsContainer from '../styles/SingInFormsContainer'
+import RequestResetPasswordLinkAlert from '../modals/RequestResetPasswordLinkAlert'
+import RequestAccountVerificationLink from '../modals/RequestAccountVerificationLink'
+import SignUp from '../utils/SignUp'
+import Login from '../utils/Login'
+import CompleteAccountCreationAfterOauthSignup from '../utils/CompleteAccountCreationAfterOauthSignup'
+import { getOauthUserData } from '../../utils/helpers'
+import Alert from '../modals/Alert'
+import { URL } from '../../redux-store-2.0/constants'
+import { dark } from '../styles/themes'
+import EntityBackgroundContainer from '../styles/EntityBackgroundContainer'
+import MainButton from '../styles/MainButton'
+import IconButton from '../styles/IconButton'
+import SignInNav from '../styles/SignInNav'
 import Footer from '../styles/Footer'
 import SignInPageContainer from '../styles/SignInPageContainer'
 import BlurFilter from '../styles/BlurFilter'
-import {getOauthUserData} from '../../utils/helpers'
 
 const SignUpLogin = () => {
     const oauthUserData = getOauthUserData()
@@ -68,27 +66,43 @@ const SignUpLogin = () => {
     if (authedUser) {
         return <Redirect to='/' />
     }
-    //in case if email confirmation error will be redirected here with login error
     
     return (
         <ThemeProvider theme={dark}>
             {formError && 
-                <Alert message={formError} onClose={()=>setFormError(null)}/>}
+                <Alert 
+                    message={formError} 
+                    onClose={()=>setFormError(null)}/>}
             {forgotPassword && 
-                <RequestResetPasswordLinkAlert onClose={() => setForgotPassword(false)}/>}
+                <RequestResetPasswordLinkAlert 
+                    onClose={() => setForgotPassword(false)}/>}
             {requestAccountVerificationLink && 
-                <RequestAccountVerificationLink onClose={() => setRequestAccountVerificationLink(false)}/>}
-            <SignInPageContainer data-test="component-signin">
+                <RequestAccountVerificationLink 
+                    onClose={() => setRequestAccountVerificationLink(false)}/>}
+            
+            <SignInPageContainer 
+                data-test="component-signuplogin">
                 <BlurFilter blur={showLogin || showSignUp || (showOauthCompleteAccount && !!getOauthUserData())}>
-                    <img 
-                        src={`${URL}/background`}/>
+                    <img src={`${URL}/background`}/>
                     {/* <Logo /> */}
                     <Footer>This is the best twitter clone out there!</Footer>
                 </BlurFilter>
-                <SignInFormsContainer onClick={(e)=>handleCloseForm(e)} ref={closeArea}>
+                <SignInFormsContainer 
+                    onClick={(e)=>handleCloseForm(e)} 
+                    ref={closeArea}>
                     <SignInNav>
-                        <MainButton primary small onClick={handleShowSignUp} margin={'7px 15px'} padding={'7px 15px'}>Sign Up</MainButton>
-                        <MainButton small onClick={handleShowLogin} margin={'7px'} padding={'7px 15px'}>Login</MainButton>
+                        <MainButton 
+                            data-test='button-signup'
+                            primary small margin={'7px 15px'} padding={'7px 15px'}
+                            onClick={handleShowSignUp}>
+                                Sign Up
+                        </MainButton>
+                        <MainButton 
+                            data-test='button-login'
+                            small margin={'7px'} padding={'7px 15px'}
+                            onClick={handleShowLogin}>
+                                Login
+                        </MainButton>
                     </SignInNav>
                     <TransitionGroup component={null}>
                     {(showSignUp || showLogin || (showOauthCompleteAccount && !!getOauthUserData())) &&
@@ -103,11 +117,16 @@ const SignUpLogin = () => {
                                             <MdClose size={25}/>
                                     </IconButton>
                                     {(showOauthCompleteAccount && !!getOauthUserData()) && 
-                                        <CompleteAccountCreationAfterOauthSignup setFormError={setFormError}/>}
+                                        <CompleteAccountCreationAfterOauthSignup 
+                                            setFormError={setFormError}/>}
                                     {showLogin && 
-                                        <Login showForgotPassword={setForgotPassword} setFormError={setFormError}/>}
+                                        <Login 
+                                            showForgotPassword={setForgotPassword} 
+                                            setFormError={setFormError}/>}
                                     {showSignUp && 
-                                        <SignUp showRequestAccountVerificationLink={setRequestAccountVerificationLink} setFormError={setFormError}/>}
+                                        <SignUp 
+                                            showRequestAccountVerificationLink={setRequestAccountVerificationLink} 
+                                            setFormError={setFormError}/>}
                                 </EntityBackgroundContainer>
                         </CSSTransition>
                     }
@@ -117,6 +136,6 @@ const SignUpLogin = () => {
         </ThemeProvider>
     )
 }
-SignUpLogin.whyDidYouRender = true
+
 export default SignUpLogin
 

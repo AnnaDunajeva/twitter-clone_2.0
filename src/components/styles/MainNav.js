@@ -13,8 +13,24 @@ const MainNav = styled.nav`
     z-index: 5;
     padding: 5px 0px;
     box-shadow: ${props => props.theme.navShadow};
-    >div:nth-of-type(2) {
+    
+    & .search-bar-container {
         flex: 2;
+        
+        &.item-enter {
+            opacity: 0;
+        }
+        &.item-enter-active {
+            opacity: 1;
+            transition: opacity 200ms;
+        }
+        &.item-exit {
+            opacity: 1;
+        }
+        &.item-exit-active {
+            opacity: 0;
+            transition: opacity 200ms;
+        }
     }
 
     div {

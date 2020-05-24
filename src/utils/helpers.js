@@ -72,5 +72,11 @@ export const truncateText = (text, lenght) => {
 export const getOauthUserData = () => {
   const cookieData = document.cookie.replace(/(?:(?:^|.*;\s*)oauth_user_data\s*=\s*([^;]*).*$)|^.*$/, "$1") 
   const outhData = cookieData !== '' ? JSON.parse(cookieData) : null
-  return outhData
+  const decodedOauthData = outhData !== null 
+    ?{  
+      firstName: decodeURI(outhData.firstName),
+      lastName: decodeURI(outhData.lastName)
+    }
+    : null
+  return decodedOauthData
 }

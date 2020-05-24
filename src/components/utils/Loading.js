@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const styles = {
     content: {
-      fontSize: '25px',
+      fontSize: '18px',
       marginTop: '20px',
       marginBottom: '20px',
       textAlign: 'center',

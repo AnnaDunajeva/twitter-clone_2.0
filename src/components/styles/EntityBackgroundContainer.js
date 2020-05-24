@@ -42,7 +42,14 @@ const EntityBackgroundContainer = styled.div`
                 margin-left: 3px;
             }
         `}
+        > h3 {
+            font-size: 5vw;
+        }
+        >p {
+            font-size: 4vw;
+        }
     }
+
 `
 
 export default EntityBackgroundContainer

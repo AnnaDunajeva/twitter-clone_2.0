@@ -27,7 +27,8 @@ const UpdateprofileSidebar = styled.span.attrs({tabIndex: 0})`
             background: ${props => props.theme.profileSidebarBackgroundActive};
         }
         @media only screen and (max-width: 500px) {
-            min-width: ${props => props.mobile && '15vw' || '60vw'};
+            min-width: 0;
+            width: ${props => props.mobile && '15vw' || '60vw'};
             min-height: 65vh;
             padding-top: 15vw;
             a {
@@ -40,6 +41,32 @@ const UpdateprofileSidebar = styled.span.attrs({tabIndex: 0})`
                 z-index: 1;
                 min-height: 100%;
             `}
+
+            &.item-enter,
+            &.item-appear {
+                width: 0;
+                a {
+                    font-size: 0;
+                    opacity: 0;
+                }
+            }
+            &.item-enter-active,
+            &.item-appear-active {
+                width: ${props => props.mobile && '15vw' || '60vw'};
+                transition: all 200ms;            
+            }
+            &.item-exit {
+                width: ${props => props.mobile && '15vw' || '60vw'};
+            }
+            &.item-exit-active {
+                a {
+                    font-size: 0;
+                    opacity: 0;
+                    height: 13vw;
+                }
+                width: 0;
+                transition: all 200ms ease-in;
+            }
 
         }
 

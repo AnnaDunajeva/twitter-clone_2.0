@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {useHistory } from 'react-router-dom'
 import { IoIosSearch } from "react-icons/io";
 // import {FaSearch} from 'react-icons/fa'
@@ -15,7 +15,6 @@ const SearchBar = () => {
         setUserToFind('')
         history.push(`/find/${userId}`)
     }
-
 
     return (
         <SearchBarForm onSubmit={(e)=>handleSearch(e)}>

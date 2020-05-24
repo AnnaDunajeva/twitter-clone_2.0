@@ -1,15 +1,13 @@
 import React, {useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {ThemeProvider} from 'styled-components'
+import GoogleSigninButton from './GoogleSigninButton'
 import {signUp} from '../../redux-store-2.0/api/session'
 import {validateEmail, isValidFisrtOrLastname, isValidUsername} from '../../utils/helpers'
 import MainButton from '../styles/MainButton'
-import ButtonWithIconNonTransparent from '../styles/ButtonWithIconNonTransparent'
 import Form from '../styles/Form'
 import {light} from '../styles/themes'
 import Link from '../styles/Link'
-import {URL} from '../../redux-store-2.0/constants'
-import {FaGoogle} from 'react-icons/fa'
 
 const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
     const dispatch = useDispatch()
@@ -56,40 +54,48 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
     }
 
     return (
-        <Form onSubmit={SignUpUser} shadow labelColor={'mediumLightGrey'} padding={'0 40px'} data-test='component-signup'>
+        <Form 
+            onSubmit={SignUpUser} 
+            shadow labelColor={'mediumLightGrey'} padding={'0 40px'} 
+            data-test='component-signup'>
             <h3>Sign Up</h3>
             <div>
-                <label htmlFor='username'>Username</label>
+                {/* <label htmlFor='username'>Username</label> */}
                 <input 
                     data-test='input-username'
+                    placeholder='username'
                     value={username}
                     maxLength={20}
                     onChange={(e) => setUsername(e.target.value)}
                     type='text'/>
-                <label htmlFor='password'>Password</label>
+                {/* <label htmlFor='password'>Password</label> */}
                 <input 
                     data-test='input-password'
+                    placeholder='password'
                     value={password}
                     maxLength={50}
                     onChange={(e) => setPassword(e.target.value)}
                     type='password'/>
-                <label htmlFor='email'>e-mail</label>
+                {/* <label htmlFor='email'>e-mail</label> */}
                 <input 
                     data-test='input-email'
+                    placeholder='email'
                     value={email}
                     maxLength={300}
                     onChange={(e) => setEmail(e.target.value)}
                     type='text'/>
-                <label htmlFor='firstName'>First Name</label>
+                {/* <label htmlFor='firstName'>First Name</label> */}
                 <input 
                     data-test='input-firstName'
+                    placeholder='first name'
                     value={firstName}
                     maxLength={100}
                     onChange={(e) => setFirstName(e.target.value)}
                     type='text'/>
-                <label htmlFor='lastName'>Last Name</label>
+                {/* <label htmlFor='lastName'>Last Name</label> */}
                 <input 
                     data-test='input-lastName'
+                    placeholder='last name'
                     value={lastName}
                     maxLength={100}
                     onChange={(e) => setLastName(e.target.value)}
@@ -98,19 +104,14 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
             <ThemeProvider theme={light}>
                 <MainButton
                     data-test='button-signup'
-                    blue disabledMediumLight shadow margin={'10px auto'} padding={'8px 15px'}
+                    blue disabledMediumLight shadow margin={'10px auto'} padding={'12px 15px'}
                     type='submit'
                     disabled={username === '' || firstName === '' || lastName === '' || password === '' || email === ''}>
                         Sign Up
                 </MainButton>
             </ThemeProvider>
             <p>OR</p>
-            <ButtonWithIconNonTransparent 
-                as='a' href={`${URL}/user/login/google`}
-                blue margin={'10px auto'} padding={'8px 15px'}>
-                <FaGoogle />
-                    Sign in with Google
-            </ButtonWithIconNonTransparent>
+            <GoogleSigninButton />
             <Link 
                 onClick={()=>showRequestAccountVerificationLink(true)}>
                 Need new account verification link?

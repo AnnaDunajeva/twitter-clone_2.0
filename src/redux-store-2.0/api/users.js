@@ -130,10 +130,8 @@ export function getAllUsersPaginated (data) {
         try {
             const allUsersResponse = await fetch(`${URL}/users?take=${data.take}&skip=${data.skip}&time=${data.time}`, {
                 method: 'GET',
-                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const allUsers = await allUsersResponse.json()

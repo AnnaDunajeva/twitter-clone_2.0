@@ -51,10 +51,12 @@ const ProfileDataSmall = ({
         <EntityBackgroundContainer profile={'true'} padding={'20px 20px 5px 20px'}>
             {showFollowers && user.followersCount !== 0 &&
             <ListPopUp 
+                isVisible={(showFollowers && user.followersCount !== 0)}
                 header={'Followed by'}
                 id={userFollowersKey(user.userId)}
                 key={userFollowersKey(user.userId)}
-                onClose={()=>setShowFollowers(false)}>
+                onClose={()=>setShowFollowers(false)}
+                >
                 <UsersList 
                     key={userFollowersKey(user.userId)}
                     handleToProfile={handleToProfile}
