@@ -19,10 +19,6 @@
 .env.production.local
 wdyr.js
 
-.dockerignore
-Dockerfile
-nginx.conf
-nginx.conf.dev
 
 npm-debug.log*
 yarn-debug.log*
