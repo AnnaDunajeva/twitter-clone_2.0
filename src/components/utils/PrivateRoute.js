@@ -25,7 +25,6 @@ const PrivateRoute = ({
 
   if (path === '/user/:userId') {
     return <Route computedMatch={computedMatch} {...rest} render={(props) => {
-      console.log(props, computedMatch.params.userId)
       return authedUser
         ? <Component key={computedMatch.params.userId} {...props} {...additionalProps || null}/> //key change will allow component to remount when we change from one user page to other
         : <Redirect to={{
