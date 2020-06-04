@@ -14,7 +14,7 @@ export const ColorPickerContainer = styled.div`
         box-shadow: ${props => props.theme.inputShadow};
         min-width: 300px;
     }
-    @media only screen and (max-width: 500px) {
+    @media only screen and (max-width: 501px) {
         >div:first-of-type {
             min-width: 200px;
             padding: 10px 16px;

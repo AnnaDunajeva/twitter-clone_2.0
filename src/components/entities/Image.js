@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import PropTypes from 'prop-types'
 import {useHistory} from 'react-router-dom'

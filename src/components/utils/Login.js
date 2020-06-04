@@ -37,7 +37,6 @@ const Login = ({showForgotPassword, setFormError}) => {
             shadow labelColor={'mediumLightGrey'}  padding={'0 40px 20px 40px'}>
             <h3>Login </h3>
                 <div>
-                {/* <label htmlFor='loginUsername'>Username</label> */}
                 <input 
                     data-test="input-username"
                     placeholder='username'
@@ -45,7 +44,6 @@ const Login = ({showForgotPassword, setFormError}) => {
                     maxLength={30}
                     onChange={(e) => setLoginUsername(e.target.value)}
                     type='text'/>
-                {/* <label htmlFor='loginPassword'>Password</label> */}
                 <input 
                     data-test="input-password"
                     placeholder='password'
@@ -64,7 +62,9 @@ const Login = ({showForgotPassword, setFormError}) => {
                 </MainButton>
             </ThemeProvider>
             <p>OR</p>
-            <GoogleSigninButton/>
+            <ThemeProvider theme={light}>
+                <GoogleSigninButton/>
+            </ThemeProvider>
             <Link 
                 data-test='link-forgot-password'
                 onClick={()=>showForgotPassword(true)}>

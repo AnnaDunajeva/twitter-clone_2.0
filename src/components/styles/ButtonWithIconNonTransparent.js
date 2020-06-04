@@ -6,10 +6,13 @@ const ButtonWithIconNonTransparent = styled(MainButton)`
     display: flex;
     justify-content: center;
     align-items: center;
-    color: ${props => props.theme.mainColor};
 
     svg {
-        fill: ${props => props.theme.mainColor};
+        fill: ${props => 
+        (props.primary && props.theme.invertedMainColor) || 
+        (props.secondary && props.theme.mainColor) || 
+        (props.blue && 'white') ||
+        props.theme.mainColor};
     }
 
 `

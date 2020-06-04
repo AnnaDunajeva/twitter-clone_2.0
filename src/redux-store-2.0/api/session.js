@@ -33,7 +33,6 @@ export function signUp (userData) {
             })
             const data = await response.json()
 
-            console.log(userData)
 
             if (data.error) { //maybe check for status?
                 console.log(`Error! ${data.error}`)
@@ -68,8 +67,6 @@ export function verifyAccount (token) {
                 body: JSON.stringify({token})
             })
             const data = await response.json()
-
-            console.log(data)
 
             if (data.error) { //maybe check for status?
                 console.log(`Error! ${data.error}`)
@@ -107,7 +104,6 @@ export function login(userData) {
                 body: JSON.stringify(userData)
             })
             const data = await response.json()
-            console.log(data)
 
             if (data.error) {
                 console.log(`Error! ${data.error}`)
@@ -143,7 +139,6 @@ export function logOut() {
                 }
             })
             const data = await response.json()
-            console.log(data)
             if (data.error) {
                 console.log(`Error! ${data.error}`)
                 dispatch({type: SESSION_END_ERROR, error: data.error})
@@ -214,8 +209,6 @@ export function resetPassword (data) {
             })
             const responseData = await response.json()
 
-            console.log(responseData)
-
             if (responseData.error) { //maybe check for status?
                 console.log(`Error! ${responseData.error}`)
                 dispatch(globalErrorAdd(RESET_PASSWORD_ERROR, responseData.error)) //seems like should not duplicate info like that, I have to 
@@ -270,7 +263,7 @@ export const completeGoogleAuthAccount = (data) => {
     return async (dispatch, getState) => {
         dispatch(showLoading())
         // dispatch(globalErrorRemove(SOCIAL_AUTH_ACCOUNT_VERIFICATION_ERROR))
-        dispatch(globalErrorAdd(SESSION_START_ERROR))        
+        dispatch(globalErrorRemove(SESSION_START_ERROR)) //possible that user tried to log in and got error
         const state = getState()
         try {
             const responseData = await fetch(`${URL}/identity/googleAuth/completeAccount`, {
@@ -281,13 +274,12 @@ export const completeGoogleAuthAccount = (data) => {
                 body: JSON.stringify(data)
             })
             const response = await responseData.json()
-
             if (response.error) { 
                 // dispatch(globalErrorAdd(SOCIAL_AUTH_ACCOUNT_VERIFICATION_ERROR, data.error))
                 dispatch({type: SESSION_START_ERROR, error: response.error})
                 dispatch(globalErrorAdd(SESSION_START_ERROR, response.error))
             }
-            else if (data.user) {
+            else if (response.user) {
                 const userId = getAuthedUserId()(state)
                 dispatch({type: SESSION_START_SUCCESS, users: response.user, userId, fetchStatus: LOADED+''+SIGN_UP})
             }
@@ -301,43 +293,3 @@ export const completeGoogleAuthAccount = (data) => {
         }
     }
 }
-
-// export const googleSignIn = () => {
-//     return async (dispatch, getState) => {
-//         dispatch(showLoading())
-//         dispatch({type: SESSION_START})
-//         dispatch(globalErrorRemove(SESSION_START_ERROR))
-//         const state = getState()
-
-//         try {
-//             const response = await fetch(`${URL}/user/login/google`, {
-//                 method: 'GET',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 }
-//             })
-//             const data = await response.json()
-//             console.log(data)
-
-//             if (data.error) {
-//                 console.log(`Error! ${data.error}`)
-//                 dispatch({type: SESSION_START_ERROR, error: data.error})
-//                 dispatch(globalErrorAdd(SESSION_START_ERROR, data.error))
-//             }
-//             else if (data.verificationToken) {
-//                 localStorage.setItem('token', data.verificationToken)
-//             }
-//             else if (data.user && !data.verificationToken) {
-//                 const userId = getAuthedUserId()(state)
-//                 dispatch({type: SESSION_START_SUCCESS, users: data.user, userId, fetchStatus: LOADED})
-//             }
-//             dispatch(hideLoading())
-//         }
-//         catch (err) {
-//             console.log(err.message)
-//             dispatch({type: SESSION_START_ERROR, error: err.message})
-//             dispatch(globalErrorAdd(SESSION_START_ERROR, err.message))
-//             dispatch(hideLoading())
-//         }
-//     }
-// }

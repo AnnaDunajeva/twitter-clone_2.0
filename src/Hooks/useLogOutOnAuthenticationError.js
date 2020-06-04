@@ -13,7 +13,6 @@ const useLogOutOnAuthenticatonError = () => {
 
     useEffect(() => {
         if (authenticationError && authedUser) {
-            console.log('authenticationError')
             document.cookie = 'id=;'
             //cant close socket from sockeetSetup cause by that time socket will be removed from store
             if (socket) {

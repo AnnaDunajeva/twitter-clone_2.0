@@ -48,7 +48,6 @@ const App = () => {
     return (
         <ThemeProvider theme={theme === 'dark' ? dark : light}>
             <GlobalStyle />
-            {console.log('rendering app', !!authedUser, ' userProfile: ', userProfile)}
             <LoadingBar/>
             <GlobalErrors />
             <GlobalAlerts />

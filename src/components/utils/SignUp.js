@@ -60,7 +60,6 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
             data-test='component-signup'>
             <h3>Sign Up</h3>
             <div>
-                {/* <label htmlFor='username'>Username</label> */}
                 <input 
                     data-test='input-username'
                     placeholder='username'
@@ -68,7 +67,6 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
                     maxLength={20}
                     onChange={(e) => setUsername(e.target.value)}
                     type='text'/>
-                {/* <label htmlFor='password'>Password</label> */}
                 <input 
                     data-test='input-password'
                     placeholder='password'
@@ -76,7 +74,6 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
                     maxLength={50}
                     onChange={(e) => setPassword(e.target.value)}
                     type='password'/>
-                {/* <label htmlFor='email'>e-mail</label> */}
                 <input 
                     data-test='input-email'
                     placeholder='email'
@@ -84,7 +81,6 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
                     maxLength={300}
                     onChange={(e) => setEmail(e.target.value)}
                     type='text'/>
-                {/* <label htmlFor='firstName'>First Name</label> */}
                 <input 
                     data-test='input-firstName'
                     placeholder='first name'
@@ -92,7 +88,6 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
                     maxLength={100}
                     onChange={(e) => setFirstName(e.target.value)}
                     type='text'/>
-                {/* <label htmlFor='lastName'>Last Name</label> */}
                 <input 
                     data-test='input-lastName'
                     placeholder='last name'
@@ -111,8 +106,11 @@ const SignUp = ({setFormError, showRequestAccountVerificationLink}) => {
                 </MainButton>
             </ThemeProvider>
             <p>OR</p>
-            <GoogleSigninButton />
+            <ThemeProvider theme={light}>
+                <GoogleSigninButton/>
+            </ThemeProvider>
             <Link 
+                data-test='link-account-verification'
                 onClick={()=>showRequestAccountVerificationLink(true)}>
                 Need new account verification link?
             </Link>

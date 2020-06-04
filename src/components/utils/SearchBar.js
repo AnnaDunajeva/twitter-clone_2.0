@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import {useHistory } from 'react-router-dom'
 import { IoIosSearch } from "react-icons/io";
-// import {FaSearch} from 'react-icons/fa'
 import {removeBlacklistChars} from '../../utils/helpers'
 import SearchBarForm from '../styles/SearchBar'
 

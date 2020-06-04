@@ -24,3 +24,7 @@ export const findTestAttrInWrapper = (wrapper, value) => {
 export const storeFactory = (initialState) => {
     return createStore(reducer, initialState, applyMiddleware(thunk))
 }
+
+export const findAttrWithQueryselector = (container, value) => {
+    return container.querySelector(`[data-test="${value}"]`) 
+}

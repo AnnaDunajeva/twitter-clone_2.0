@@ -17,7 +17,7 @@ const SignInFormsContainer = styled.div`
         div {
             >form {
                 input {
-                    margin: 12px 0;
+                    margin: 0 0 24px 0;
                     border: 1px solid #827786a1;
                     background-color: #827786a1;
                     font-size: 20px;
@@ -29,12 +29,12 @@ const SignInFormsContainer = styled.div`
                     font-size: 16px;
                 }
                 label {
-                    margin-bottom: 0px;
-                    margin-top: 5px;
+                    margin-bottom: 5px;
+                    margin-top: 0;
                 }
                 h3 {
                     font-size: 28px;
-                    margin-bottom: 10px;
+                    margin-bottom: 20px;
                     margin-top: 10px;
                 }
                 a {
@@ -64,7 +64,7 @@ const SignInFormsContainer = styled.div`
                         font-size: 4.5vw;
                         min-width: 60vw;
                         padding: 2.5vw 20px;
-                        margin: 3vw 0;
+                        margin: 0 0 6vw 0;
                     }
                     input::placeholder {
                         font-size: 3vw;

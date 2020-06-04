@@ -5,7 +5,6 @@ import {
     TransitionGroup,
 } from 'react-transition-group';
 import useLogOut from '../../../Hooks/useLogOut'
-// import {getUserIdFromCookie} from '../../../utils/helpers'
 import {getAuthedUserId} from '../../../redux-store-2.0/session/selectors'
 import SearchBar from '../../utils/SearchBar'
 import ClearButton from '../../styles/ClearButton'

@@ -15,5 +15,3 @@ const useScrollIntoView = () => {
         return;
     };
 export default useScrollIntoView;
-
-// export default withRouter(ScrollIntoView);

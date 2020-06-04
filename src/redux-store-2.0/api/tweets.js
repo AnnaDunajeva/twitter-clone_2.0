@@ -10,7 +10,6 @@ import { tweetsFetchSuccess, tweetsFetchError, tweetDelete } from '../entities/t
 import { tweetToggleLike } from '../entities/tweets/entities/actions'
 import { usersFetchSuccess } from '../entities/users/actions'
 import { globalErrorAdd, globalErrorRemove } from '../errors/actions'
-// import { getTweetById } from '../entities/tweets/entities/selectors'
 import { 
         COMPOSITE_DATA_ENTITIES_FETCH_ERROR,
         COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR,
@@ -28,8 +27,7 @@ import {
     newTweetAddToUserTweets,
     newTweetAddToUserImages, 
     newLikeAddToUserLikes,
-    newLikeRemoveFromUserLikes,
-    compositeDataClear} from '../composite-data/actions'
+    newLikeRemoveFromUserLikes } from '../composite-data/actions'
 import { 
     conversationKey,
     homeKey,
@@ -38,7 +36,6 @@ import {
     userTweetLikesKey,
     tweetLikesKey,
     userRepliesKey } from '../utils/compositeDataStateKeys'
-// import {getUserIdFromCookie} from '../../utils/helpers'
 import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 
 export function getFeedPaginated(data) {
@@ -52,7 +49,6 @@ export function getFeedPaginated(data) {
         }
 
         try{
-            console.log('inside action getFeedPaginated')
             const feedResponse = await fetch(`${URL}/user/feed?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getParents=false&update=${data.update ? true : false}`, {
                 method: 'GET',
                 headers: {
@@ -61,7 +57,6 @@ export function getFeedPaginated(data) {
             })
             
             const feedData = await feedResponse.json()
-            console.log('feedData ', feedData)
 
             if (feedData.error) {
                 if (data.update) {
@@ -72,7 +67,6 @@ export function getFeedPaginated(data) {
                 }
             } else {
                 const feed = Object.keys(feedData.tweets).map(tweetId => pick(feedData.tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-                console.log('feed ', feed) 
                
                 const tweetsFetchStatus = mapValues(feedData.tweets, () => LOADED)
                 const usersFetchStatus = mapValues(feedData.users, () => LOADED)
@@ -102,52 +96,6 @@ export function getFeedPaginated(data) {
     }
 }
 
-// export function getFeedUpdate(data) {
-//     return async (dispatch) => {
-//         // dispatch(showLoading())
-//         dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${homeKey()}`))
-//         try{
-//             console.log('inside action getFeedPaginated')
-//             const feedResponse = await fetch(`${URL}/user/feed/update?take=${data.take}&time=${data.time}&getUsers=true&getParents=false`, {
-//                 method: 'GET',
-//                 // mode: 'cors',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     // 'Authorization': `Bearer ${data.user.token}`
-//                 }
-//             })
-            
-//             const feedData = await feedResponse.json()
-//             console.log('feedData ', feedData)
-
-//             if (feedData.error) {
-//                 dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${homeKey()}`, feedData.error))
-//             } else {
-//                 const feedUpdate = Object.keys(feedData.tweets).map(tweetId => pick(feedData.tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-//                 console.log('feedUpdate ', feedUpdate) 
-//                 if (feedUpdate.length > 0) {
-//                     const tweetsFetchStatus = mapValues(feedData.tweets, () => LOADED)
-//                     const usersFetchStatus = mapValues(feedData.users, () => LOADED)
-        
-//                     dispatch(tweetsFetchSuccess(feedData.tweets, tweetsFetchStatus))
-//                     dispatch(usersFetchSuccess(feedData.users, usersFetchStatus))
-//                     dispatch(compositeDataEntitiesUpdateFetchSuccess(homeKey(), feedUpdate)) //it is important that composite data goes last
-//                     //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
-//                     //with stuff being undefined    
-//                     //new tweets wont be loaded to other composite datas
-//                 }
-//             }
-//             // dispatch(hideLoading())
-//         }
-//         catch(err) {
-//             console.log(err.message)
-
-//             dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${homeKey()}`, err.message))
-//             // dispatch(hideLoading())
-//         }
-//     }
-// }
-
 export function getConversationPaginated (data) {
     return async (dispatch) => {
         dispatch(showLoading())
@@ -159,14 +107,11 @@ export function getConversationPaginated (data) {
             console.log('inside action getRepliesPaginated ', data)
             const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&getMainTweet=${data.getMainTweet}`, { 
                 method: 'GET',
-                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{tweets: {someId: {...}}}
-            console.log('responseData ', responseData)
 
             if (responseData.error) {
                 dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_FETCH_ERROR}/${stateKey}`, responseData.error))
@@ -183,7 +128,6 @@ export function getConversationPaginated (data) {
                     dispatch(compositeDataEntitiesFetchError(stateKey, NOT_FOUND, data.time))
                 } else {
                     const conversation = Object.keys(tweets).filter(tweetId => data.skip !== 0 ? data.tweetId !== tweetId : true).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex', 'type'])).sort((a,b) => b.sortindex - a.sortindex)
-                    console.log('conversation ', conversation) 
         
                     dispatch(usersFetchSuccess(users, usersFetchStatus))
                     dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
@@ -209,17 +153,13 @@ export function getConversationUpdate (data) {
         dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`))
 
         try {
-            console.log('inside action getConversationUpdate ', data)
             const response = await fetch(`${URL}/user/tweets/${data.tweetId}/conversation/update?take=${data.take}&time=${data.time}&getUsers=true`, { 
                 method: 'GET',
-                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{tweets: {someId: {...}}}
-            console.log('responseData ', responseData)
 
             if (responseData.error) {
                 dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`, responseData.error))
@@ -233,7 +173,6 @@ export function getConversationUpdate (data) {
                 const conversationUpdate = Object.keys(tweets).filter(tweetId => data.skip !== 0 ? data.tweetId !== tweetId : true).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex', 'type'])).sort((a,b) => b.sortindex - a.sortindex)
 
                 if (conversationUpdate.length > 0) {
-                    console.log('conversationUpdate ', conversationUpdate) 
         
                     dispatch(usersFetchSuccess(users, usersFetchStatus))
                     dispatch(tweetsFetchSuccess(tweets, tweetsFetchStatus))
@@ -263,8 +202,6 @@ export function getUserTweetsPaginated (data) {
         }
 
         try {
-            console.log('inside action handleGetUserTweetsPaginated')
-            console.log(data)
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false&getParents=false&update=${data.update ? true : false}`, {
                 method: 'GET',
                 headers: {
@@ -281,10 +218,8 @@ export function getUserTweetsPaginated (data) {
                 }
             } else {
                 const tweets = tweetsData.tweets
-                console.log('tweetsData ', tweetsData)
     
                 const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-                console.log('userTweets ', userTweets) 
                
                 const tweetsFetchStatus = mapValues(tweets, () => LOADED)
     
@@ -311,45 +246,6 @@ export function getUserTweetsPaginated (data) {
     }
 }
 
-// export function getUserTweetsPaginatedUpdate(data) {
-//     return async (dispatch) => {
-//         const stateKey = userTweetsKey(data.userId)
-//         dispatch(globalErrorRemove(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`))
-//         try{
-//             const userTweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/update?take=${data.take}&time=${data.time}&getUsers=true`, {
-//                 method: 'GET',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 }
-//             })
-            
-//             const userTweets = await userTweetsResponse.json()
-//             console.log('userTweets ', userTweets)
-
-//             if (userTweets.error) {
-//                 dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`, userTweets.error))
-//             } else {
-//                 const userTweetsUpdate = Object.keys(userTweets.tweets).map(tweetId => pick(userTweets.tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-//                 console.log('userTweetsUpdate ', userTweetsUpdate) 
-//                 if (userTweetsUpdate.length > 0) {
-//                     const tweetsFetchStatus = mapValues(userTweets.tweets, () => LOADED)
-//                     const usersFetchStatus = mapValues(userTweets.users, () => LOADED)
-        
-//                     dispatch(tweetsFetchSuccess(userTweets.tweets, tweetsFetchStatus))
-//                     dispatch(usersFetchSuccess(userTweets.users, usersFetchStatus))
-//                     dispatch(compositeDataEntitiesUpdateFetchSuccess(stateKey, userTweetsUpdate)) //it is important that composite data goes last
-//                     //because on its status depends rendering so if it goes first but tweets are not jet loaded, then there will be problems 
-//                     //with stuff being undefined    
-//                 }
-//             }
-//         }
-//         catch(err) {
-//             console.log(err.message)
-//             dispatch(globalErrorAdd(`${COMPOSITE_DATA_ENTITIES_UPDATE_FETCH_ERROR}/${stateKey}`, err.message))
-//         }
-//     }
-//}
-
 export function getUserTweetImagesPaginated (data) {
     return async (dispatch) => {
         const stateKey = userTweetImagesKey(data.userId)
@@ -362,7 +258,6 @@ export function getUserTweetImagesPaginated (data) {
         }
 
         try {
-            console.log('inside action getUserTweetImagesPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/media?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false&getParents=false&update=${data.update ? true : false}`, {
                 method: 'GET',
                 headers: {
@@ -379,10 +274,8 @@ export function getUserTweetImagesPaginated (data) {
                 }
             } else {
                 const tweets = tweetsData.tweets
-                console.log('tweetsData ', tweetsData)
     
                 const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-                console.log('userTweets ', userTweets) 
                
                 const tweetsFetchStatus = mapValues(tweets, () => LOADED)
     
@@ -419,7 +312,6 @@ export function getUserTweetLikesPaginated (data) {
         }
 
         try {
-            console.log('inside action getUserTweetLikesPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/likes?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=true&update=${data.update ? true : false}`, {
                 method: 'GET',
                 headers: {
@@ -427,8 +319,6 @@ export function getUserTweetLikesPaginated (data) {
                 }
             })
             const tweetsData = await tweetsResponse.json()
-
-            console.log(tweetsData)
 
             if (tweetsData.error) {
                 if (data.update) {
@@ -440,10 +330,8 @@ export function getUserTweetLikesPaginated (data) {
             } else {
                 const tweets = tweetsData.tweets
                 const users = tweetsData.users
-                console.log('tweetsData ', tweetsData)
     
                 const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-                console.log('userTweets ', userTweets) 
                
                 const tweetsFetchStatus = mapValues(tweets, () => LOADED)
                 const usersFetchStatus = mapValues(users, () => LOADED)
@@ -483,7 +371,6 @@ export function getUserRepliesPaginated (data) {
         }
 
         try {
-            console.log('inside action getUserRepliesPaginated')
             const tweetsResponse = await fetch(`${URL}/users/${data.userId}/tweets/replies?take=${data.take}&skip=${data.skip}&time=${data.time}&getUsers=false&update=${data.update ? true : false}`, {
                 method: 'GET',
                 headers: {
@@ -500,10 +387,8 @@ export function getUserRepliesPaginated (data) {
                 }
             } else {
                 const tweets = tweetsData.tweets
-                console.log('tweetsData ', tweetsData)
     
                 const userTweets = Object.keys(tweets).map(tweetId => pick(tweets[tweetId], ['id', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-                console.log('userTweets ', userTweets) 
                
                 const tweetsFetchStatus = mapValues(tweets, () => LOADED)
     
@@ -540,11 +425,9 @@ export function toggleTweetsLike (data) {
         try {
             const response = await fetch(`${URL}/user/tweets/like/${data.tweetId}`, {
                 method: 'PUT',
-                // mode: 'cors',
                 headers: {
                     'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1"),
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{message: 'success', tweet: {...}, parents:{...}} or {error: {...}}
@@ -563,29 +446,16 @@ export function toggleTweetsLike (data) {
                     if (tweet[tweetId].liked) {
                         dispatch(newLikeAddToUserLikes(tweetShort, userId))
                     } else {
-                        
                         dispatch(newLikeRemoveFromUserLikes(data.tweetId, userId))
-                        // dispatch(compositeDataClear(userTweetLikesKey(userId)))
                     }
                 }
             }
-
-            //maybe be I dont need to update tweet like this, because what if while request was being send somebody else
-            //liked tweet so when you receive tweet back in UI insted of like being plus 1 it will be plus 2 or more,
-            //this might be confusing to user
-
-            // const tweet = responseData.tweets
-            // const tweetFetchStatus = {[data.tweetId]: LOADED}
-            // dispatch(tweetsFetchSuccess(tweet, tweetFetchStatus))
             dispatch(hideLoading())
         }
         catch (err) { 
             console.log(err.message)
-            // const tweetFetchStatus = {[data.tweetId]: ERROR}
-            // const tweetError = {[data.tweetId]: err.message}
 
-            dispatch(tweetToggleLike(data.tweetId))
-            // dispatch(tweetsFetchError(tweetError, tweetFetchStatus))
+            dispatch(tweetToggleLike(data.tweetId)) //undo user insta feedback
             dispatch(globalErrorAdd(`${TWEET_TOGGLE_LIKE}/${data.tweetId}`, err.message))
             dispatch(hideLoading())
         }
@@ -598,29 +468,21 @@ export function postTweet (data) {
         const userId = getAuthedUserId()(state)
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_POST}`))
-        console.log(data)
         try {
             const formData = new FormData()
             if (data.file) {
                 formData.append('file', data.file)
             }
-            formData.append('tweet', JSON.stringify(data.tweet))
-            
-            for (var key of formData.entries()) {
-                console.log(key[0] + ', ' + key[1]);
-            } 
+            formData.append('tweet', JSON.stringify(data.tweet)) 
 
             const tweetResponse = await fetch(`${URL}/user/tweet`, {
                 method: 'PUT',
-                // mode: 'cors',
                 headers: {
                     'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1")
                 },
                 body: formData
             })
             const tweetData = await tweetResponse.json()
-            console.log(tweetData)
-
 
             if (tweetData.error) {
                 dispatch(globalErrorAdd(`${TWEET_POST}`, tweetData.error))
@@ -632,20 +494,6 @@ export function postTweet (data) {
                 const tweetShort = pick(tweet[tweetId], ['id', 'sortindex']) //does not have sortindex
 
                 dispatch(tweetsFetchSuccess(tweet, tweetFetchStatus))
-
-                // if (tweet[tweetId].replyingToTweetId) {
-                //     dispatch(compositeDataClear(conversationKey(tweet[tweetId].replyingToTweetId)))
-                //     dispatch(compositeDataClear(userRepliesKey(tweet[tweetId].user)))
-                // } else {
-                //     dispatch(compositeDataClear(userTweetsKey(tweet[tweetId].user)))
-                // }
-
-                // dispatch(compositeDataClear(homeKey()))
-
-                // if (tweet.media) {
-                //     dispatch(newTweetAddToUserImages(tweetShort, tweet[tweetId].user))
-                // }
-                //=====================================================================
                 
                 const compositeData = getState().compositeData
 
@@ -679,8 +527,6 @@ export function postTweet (data) {
 
 
 export function deleteTweet (data) {
-    //data.stateKey - place from where tweet was deleted
-    console.log(data)
     return async (dispatch) => {
         dispatch(showLoading())
         dispatch(globalErrorRemove(`${TWEET_DELETE}/${data.tweetId}`))
@@ -688,18 +534,15 @@ export function deleteTweet (data) {
         try {
             const response = await fetch(`${URL}/user/tweet/${data.tweetId}`, {
                 method: 'DELETE',
-                // mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                     'CSRF-Token': document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, "$1")
-                    // 'Authorization': `Bearer ${data.user.token}`
                 }
             })
             const responseData = await response.json() //{message: 'success', status: 'ok' or {error: {...}}
             if (responseData.error) {
                 dispatch(globalErrorAdd(`${TWEET_DELETE}/${data.tweetId}`, responseData.error))
             } else {
-                // dispatch(compositeDataClear(data.stateKey))
                 dispatch(tweetDelete(data.tweetId)) 
             }
 
@@ -715,7 +558,6 @@ export function deleteTweet (data) {
 
 export const getTweetLikesPaginated = (data) => {
     return async (dispatch) => {
-        console.log('inside getTweetLikesPaginated')
         dispatch(showLoading())
     
         const tweetLikesName = tweetLikesKey(data.tweetId)
@@ -739,7 +581,6 @@ export const getTweetLikesPaginated = (data) => {
                 const users = usersResponse.users
     
                 const compositeDataUsers = Object.keys(users).map(userId => pick(users[userId], ['userId', 'sortindex'])).sort((a,b) => b.sortindex - a.sortindex)
-                console.log('compositeDataUserFollowers ', compositeDataUsers) 
                 
                 const usersFetchStatus = mapValues(users, () => LOADED)
     

@@ -17,7 +17,6 @@ const SearchResults = ({match}) => {
 
     return (
         <EntityBackgroundContainer>
-            {console.log('rendering SearchResults for: ', userToFind)}
             <ScrollUtil 
                 getDataFetch={findUserPaginated} 
                 dispatchData={dispatchData} 

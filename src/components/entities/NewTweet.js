@@ -38,7 +38,6 @@ const NewTweet = ({replyingTo, showHeader}) => {
 
     const currentLength = text.length
     const maxlength = 280
-    // const isShowHeader = showHeader === false ? false : true //in case its is undefined
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -62,7 +61,6 @@ const NewTweet = ({replyingTo, showHeader}) => {
         setIsImageVisible(false)
         setIsEmojiVisible(false)
         setToHome(replyingTo ? false : true)
-        // replyingTo && window.location.reload()
     }
     const addEmoji = (emoji) => {
         setText(state => state + emoji)

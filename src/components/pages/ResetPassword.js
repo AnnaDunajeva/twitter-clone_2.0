@@ -26,13 +26,12 @@ const ResetPassword = (props) => {
         return <Redirect to='/'/>
     }
 
-    if (sessionStatus === PASSWORD_RESET) { //login should display reset password success message
+    if (sessionStatus === PASSWORD_RESET) { //login will display reset password success message
         return <Redirect to='/login'/>
     }
 
     return (
         <React.Fragment>
-            {console.log('rendering reset password, autheduser: ', !!authedUserId, ' sessionstatus: ', sessionStatus)}
             <EntityBackgroundContainer padding={'1% 7%'} margin={'4% auto 0 auto'}>
                 <Form onSubmit={handleResetPassword} inputBorder shadow padding={'0 30px'}>
                     <h3>Enter your new password </h3>

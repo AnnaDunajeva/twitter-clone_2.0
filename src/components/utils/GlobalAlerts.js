@@ -12,7 +12,6 @@ import {setSessionFetchStatus} from '../../redux-store-2.0/session/actions'
 import {usersFetchStatusSet} from '../../redux-store-2.0/entities/users/actions'
 import {getUserStatusById} from '../../redux-store-2.0/entities/users/selectors'
 import {getSessionFetchStatus} from '../../redux-store-2.0/session/selectors'
-// import {getUserIdFromCookie} from '../../utils/helpers'
 import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 import Alert from '../modals/Alert'
 

@@ -1,12 +1,8 @@
 import React, {useState} from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {getUserById, getUserStatusById} from '../../../redux-store-2.0/entities/users/selectors'
-import {updateProfile} from '../../../redux-store-2.0/api/users'
-import {deleteAvatar} from '../../../redux-store-2.0/api/users'
-import {deleteBackgroundImage} from '../../../redux-store-2.0/api/users'
 import {LOADED, UPDATED} from '../../../redux-store-2.0/constants'
-// import {getUserIdFromCookie} from '../../../utils/helpers'
 import {getAuthedUserId} from '../../../redux-store-2.0/session/selectors'
 import ToBeImplemented from '../../utils/ToBeImplemented'
 import PrivateRoute from '../../utils/PrivateRoute'
@@ -23,23 +19,10 @@ const ProfileUpdate = (props) => {
     const userId = useSelector(getAuthedUserId())
     const user = useSelector(getUserById(userId))
     const userFetchStatus = useSelector(getUserStatusById(userId))
-    const dispatch = useDispatch()
     const [formError, setFormError] = useState(null)
-
-    const updateProfileData = (userDataAndFile) => {
-        const data = {
-            userData: userDataAndFile.user
-        }
-        if (userDataAndFile.file) {
-            data.file = userDataAndFile.file
-        }
-        dispatch(updateProfile(data))
-    }
 
     return (
         <Router>
-            {console.log('rendedring profile update')}
-
             {formError && <Alert message={formError} onClose={() => setFormError(null)}/>}
 
             {userFetchStatus === LOADED || userFetchStatus === UPDATED
@@ -52,11 +35,11 @@ const ProfileUpdate = (props) => {
                                 <PrivateRoute 
                                     path={`${props.match.path}/`} exact 
                                     component={General} 
-                                    additionalProps={{updateProfileData, handleDelete: deleteAvatar, setFormError: setFormError}}/>
+                                    additionalProps={{setFormError: setFormError}}/>
                                 <PrivateRoute 
                                     path={`${props.match.path}/additional`} 
                                     component={Additional} 
-                                    additionalProps={{updateProfileData, handleDelete: deleteBackgroundImage, setFormError: setFormError}}/>
+                                    additionalProps={{setFormError: setFormError}}/>
                                 <PrivateRoute 
                                     path={`${props.match.path}/security`} 
                                     component={ToBeImplemented}/>

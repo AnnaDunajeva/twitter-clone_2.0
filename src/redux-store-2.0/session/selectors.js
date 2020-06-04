@@ -1,7 +1,6 @@
-// export const getAuthedUserId = () => {
-//     return (state) => state.session.userId || localStorage.getItem('userId')
-// }
-export const getAuthedUserId = () => (state) => state.session.userId || document.cookie.replace(/(?:(?:^|.*;\s*)id\s*=\s*([^;]*).*$)|^.*$/, "$1")
+import {getUserIdFromCookie} from '../../utils/helpers'
+
+export const getAuthedUserId = () => (state) => state.session.userId || getUserIdFromCookie()
 
 export const getSessionFetchStatus = () => (state) => state.session.fetchStatus || null
 

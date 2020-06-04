@@ -11,7 +11,6 @@ import {getUserFollowersIds, getUserFollowingsIds} from '../../../redux-store-2.
 import {userFollowersKey, userFollowingsKey} from '../../../redux-store-2.0/utils/compositeDataStateKeys'
 import {getUserFollowersPaginated, getUserFollowingsPaginated} from '../../../redux-store-2.0/api/users'
 import {toggleUserFollow} from '../../../redux-store-2.0/api/users'
-import ClearButton from '../../styles/ClearButton'
 import MainButton from '../../styles/MainButton'
 import IconButton from '../../styles/IconButton'
 import EntityBackgroundContainer from '../../styles/EntityBackgroundContainer'

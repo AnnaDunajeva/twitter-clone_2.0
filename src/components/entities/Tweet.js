@@ -14,7 +14,6 @@ import {getUserById} from '../../redux-store-2.0/entities/users/selectors'
 import {toggleTweetsLike, deleteTweet} from '../../redux-store-2.0/api/tweets'
 import {MdClose} from "react-icons/md"
 import useSubscribeToTweetUpdate from '../../Hooks/useSubscribeToTweetUpdate'
-// import {getUserIdFromCookie} from '../../utils/helpers'
 import {getAuthedUserId} from '../../redux-store-2.0/session/selectors'
 import {formatDate} from '../../utils/helpers'
 import UsersList from '../lists/UsersList'
@@ -59,7 +58,7 @@ const Tweet = ({
 
     const urlsInTweet = useRef(tweet?.text 
                                 ? linkify.find(tweet.text).filter(urlObj => urlObj.type === 'url')
-                                : null) //maybe useMemo instead?
+                                : null) 
     const youtubeUrls = useRef(tweet?.text 
                                 ? urlsInTweet.current
                                     .map(urlObj => videoUrlParser.parse(urlObj.href))
@@ -117,10 +116,10 @@ const Tweet = ({
             </ListPopUp>}
 
             {tweet?.deleted 
-            ? <EntityContainer style={{justifyContent: 'center'}}>
+            ?<EntityContainer style={{justifyContent: 'center'}}>
                 <p style={{padding: '20px'}}>[Deleted]</p>
             </EntityContainer>
-            : <EntityContainer>
+            :<EntityContainer>
                 <CoverAllLink onClick={()=>toTweet(id)}/>
 
                 <AvatarSmall 
@@ -194,21 +193,3 @@ Tweet.propTypes = {
 }
 
 export default Tweet
-
-/* {urlsInTweet.current?.length > 0
-    ?<div style={{margin: ' 0 0 15px 0', width: '430px'}}>
-        {
-            urlsInTweet.current.map(urlObj => 
-                <ReactTinyLink
-                    cardSize="small"
-                    showGraphic={true}
-                    maxLine={2}
-                    minLine={1}
-                    url={urlObj.href}
-                    key = {urlObj.href}
-                />
-            )
-        }
-    </div>
-    :null
-} */

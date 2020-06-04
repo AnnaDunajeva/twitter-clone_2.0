@@ -31,7 +31,8 @@ const RequestResetPasswordLink = ({onClose}) => {
 
     return (
         <ThemeProvider theme={light} >
-        <ModalWithHeaderAndCard>
+        <ModalWithHeaderAndCard
+            data-test='component-forgot-password-form'>
             <div >
                 <h3>
                     <IoMdLock size={50} style={{margin: '10px'}}/>

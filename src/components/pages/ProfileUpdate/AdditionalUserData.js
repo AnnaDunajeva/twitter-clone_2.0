@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import TextareaAutosize from 'react-textarea-autosize';
+import {updateProfile} from '../../../redux-store-2.0/api/users'
 import {defaultBackgroundColor} from '../../../redux-store-2.0/constants'
+import {deleteBackgroundImage} from '../../../redux-store-2.0/api/users'
 import {getAuthedUserProfile} from '../../../redux-store-2.0/entities/users/selectors'
 import DeleteAlert from '../../modals/DeleteAlert'
 import DragAndDrop from '../../utils/DragAndDrop'
@@ -18,7 +20,7 @@ const dragConfig = {
     previewWidth: 150
 }
 
-const Additional = (props) => { 
+const Additional = ({setFormError}) => { 
     const maxlength = 100   
     const dispatch = useDispatch()
 
@@ -34,29 +36,29 @@ const Additional = (props) => {
 
     const handleUpdate = (e) => {
         e.preventDefault()
-        const data = {user: {}}
+        const data = {userData: {}}
         if (location !== '' && location !== user.location) {
             if (!isValidLocation(location)) {
-                props.setFormError('You can only use alphabetic characters, "-", "," or space in your location.')
+                setFormError('You can only use alphabetic characters, "-", "," or space in your location.')
                 return
             }
-            data.user.location = location
+            data.userData.location = location
         }
         if (description !== '' && description !== user.description) {
-            data.user.description = description
+            data.userData.description = description
         }
         if (color !== defaultBackgroundColor && color !== user.backgroundColor) {
-            data.user.backgroundColor = color
+            data.userData.backgroundColor = color
         }
         if (file !== null) {
             data.file = file  
-            data.user.backgroundImage = true    
-            data.user.crop = crop  
+            data.userData.backgroundImage = true    
+            data.userData.crop = crop  
         }
 
         console.log(data)
-        if (Object.keys(data.user).length > 0) {
-            props.updateProfileData(data)
+        if (Object.keys(data.userData).length > 0) {
+            dispatch(updateProfile(data))
             setFile(null)
             setCrop(null)
             setCropResult(null)
@@ -65,9 +67,8 @@ const Additional = (props) => {
     const handleChangeComplete = (color) => {
         setColor(color.hex)
     }
-    const handleDeleteBackground = (e) => {
-        e.preventDefault() 
-        dispatch(props.handleDelete({}))
+    const handleDeleteBackground = () => {
+        dispatch(deleteBackgroundImage({}))
     }
     const handleRemoveImage = (e) => {
         e.preventDefault() 
@@ -97,7 +98,10 @@ const Additional = (props) => {
                     onDelete={handleDeleteBackground} 
                     onClose={()=>setDeleteBackground(false)} 
                     message={'Are you sure you want to delete your current background image permanently?'}/>}
-            <Form onSubmit={handleUpdate} shadow padding={'0 0 20px 0'}>
+            <Form 
+                data-test='component-additional-user-data'
+                onSubmit={handleUpdate} 
+                shadow padding={'0 0 20px 0'}>
                 {/* prevent for submission on enter */}
                 <button type="submit" disabled style={{display: "none"}}></button> 
 
@@ -106,6 +110,7 @@ const Additional = (props) => {
                 <div>
                     <label>Description</label>
                     <TextareaAutosize 
+                        data-test='textarea-description'
                         maxLength={maxlength}
                         placeholder={'Tell something about yourself...'}
                         value={description}
@@ -115,6 +120,7 @@ const Additional = (props) => {
 
                     <label htmlFor='location'>Location</label>
                     <input 
+                        data-test='input-location'
                         value={location}
                         maxLength={60}
                         onChange={(e) => setLocation(e.target.value)}
@@ -127,6 +133,7 @@ const Additional = (props) => {
 
                     <MainButton 
                         primary shadow
+                        data-test='button-delete-background'
                         onClick={(e)=>{e.preventDefault(); setDeleteBackground(true)}}>
                             Delete current background
                     </MainButton>
@@ -144,6 +151,7 @@ const Additional = (props) => {
                 </div>
         
                 <MainButton
+                    data-test='button-submit'
                     blue mediumSmall center disabledLight uppercase shadow
                     disabled={isDisabled()}
                     type='submit'>

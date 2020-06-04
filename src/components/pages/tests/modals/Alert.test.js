@@ -1,18 +1,18 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import DeleteAlert from './DeleteAlert'
-import { findTestAttrInWrapper } from '../../utils/testHelpers'
+import Alert from '../../../modals/Alert'
+import { findTestAttrInWrapper } from '../../../../utils/testHelpers'
 
 
 /**
- * Factory function to create ShallowWrapper for the DeleteAlert component.
+ * Factory function to create ShallowWrapper for the Alert component.
  * @functio setup
  * @param {object} props - Component props specific to setup
  * @returns {ShallowWrapper}
 */
 
 const setup = (props={}) => {
-    return shallow(<DeleteAlert {...props}/>)
+    return shallow(<Alert {...props}/>)
 }
 
 
@@ -39,18 +39,28 @@ test('should render smallMessage from props', () => {
     expect(smallMessageNode.text()).toContain(smallMessage)
 })
 
-test('should render close button ', () => {
+test('should render close button by default', () => {
     const wrapper = setup()
 
     const button = findTestAttrInWrapper(wrapper, "button-close")
     expect(button.length).toBe(1)
 })
 
-test('should render delete button ', () => {
-    const wrapper = setup()
+test('should NOT rende close button if this is specified through props', () => {
+    const wrapper = setup({closable: false})
 
-    const button = findTestAttrInWrapper(wrapper, "button-delete")
-    expect(button.length).toBe(1)
+    const button = findTestAttrInWrapper(wrapper, "button-close")
+    expect(button.length).toBe(0)
+})
+
+test('should render null when modal is closed by clicking on background', () => {
+    const wrapper = setup()
+    
+    const alertComponent = findTestAttrInWrapper(wrapper, "component-alert")
+    alertComponent.simulate('click', {preventDefault: jest.fn()})
+
+    const alertComponentAfterClose = findTestAttrInWrapper(wrapper, "component-alert")
+    expect(alertComponentAfterClose.length).toBe(0)
 })
 
 test('should render null when modal is closed by clicking on close button', () => {
@@ -64,4 +74,3 @@ test('should render null when modal is closed by clicking on close button', () =
 })
 
 //test if onClose is run
-//test if onDelete is run

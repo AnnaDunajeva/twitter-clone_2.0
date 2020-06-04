@@ -11,7 +11,7 @@ const ModalContainer = styled.div`
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: ${props =>props.background || props.theme.backgroundBehindModal}; /* Black w/ opacity */
 
-    &.item-appear {
+    /* &.item-appear {
         opacity: 0;
     }
     &.item-appear-active {
@@ -31,6 +31,6 @@ const ModalContainer = styled.div`
     &.item-exit-active {
         opacity: 0;
         transition: opacity 100ms;
-    }
+    } */
 `
 export default ModalContainer

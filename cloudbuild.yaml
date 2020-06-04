@@ -1,22 +1,22 @@
 steps:
 - id: install-for-test
-    name: node
-    entrypoint: npm
-    args: ['install']
+  name: node
+  entrypoint: npm
+  args: ['install']
 - id: test  
-    name: node
-    entrypoint: npm
-    args: ['test']
+  name: node
+  entrypoint: npm
+  args: ['run', 'test:nowatch']
 - id: build
-    name: 'gcr.io/cloud-builders/docker'
-    args:
-    - build
-    - '-t'
-    - 'gcr.io/augmented-world-276110/twitter-clone-frontend:$COMMIT_SHA'
-    - .
+  name: 'gcr.io/cloud-builders/docker'
+  args:
+  - build
+  - '-t'
+  - 'gcr.io/augmented-world-276110/twitter-clone-frontend'
+  - .
 - id: push
-    name: 'gcr.io/cloud-builders/docker'
-    args:
-    - push
-    - 'gcr.io/augmented-world-276110/twitter-clone-frontend:$COMMIT_SHA'
+  name: 'gcr.io/cloud-builders/docker'
+  args:
+  - push
+  - 'gcr.io/augmented-world-276110/twitter-clone-frontend'
 timeout: 1200s

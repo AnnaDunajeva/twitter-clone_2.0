@@ -10,7 +10,6 @@ const ToTopButton = () => {
 
     useEffect(() => {
         if (scrollY > windowHeight.current && !showButton) {
-            console.log('setting showbutton to true ', scrollY, windowHeight.current)
             setShowButton(true)
         } else if (scrollY < windowHeight.current && showButton) {
             setShowButton(false)

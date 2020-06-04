@@ -21,30 +21,20 @@ const useSocketSetup = () => {
                         //Also cant put into login component cause then socket wont be open on page refresh
             const socket = io(URL_MAIN, {path: '/api/socket.io'})
             socket.on('connect', () => {
-                console.log('socket created and connected to server!')
                 dispatch(setSocket(socket))
             })
             socket.on('tweet_update', ({tweetId, tweet}) => {
-                console.log('got tweet update through socket ', tweet)
                 dispatch(tweetUpdate(tweetId, tweet, LOADED))
                 if (tweet[tweetId].deleted) {
                     //only visible tweet will be updated, which is a problem cause you will miss updates for tweets that are currently not in view
                     dispatch(tweetDeleteExeptReplies(tweetId)) 
-                    // dispatch(tweetDelete(tweetId))
                 }
             })
             socket.on('user_update', ({userId, user}) => {
-                console.log('got user update through socket ', user)
                 dispatch(userUpdate(userId, user, LOADED))
             })
-            // socket.on('connect_error', (err) => {
-                //problem: when serves running again, new socket will be created and i will have to resubscribe everything
-            //     console.log('connection error in socket: ', err)
-            //     socket.close()
-            // })
         } 
         else if (socket && !ispageVisible) {
-            console.log('about to close socket because page is hidden.')
             socket.close()
         }
     },[dispatch, authedUser, ispageVisible, socket])

@@ -48,7 +48,7 @@ const ScrollUtil = ({
     const skip = useRef(ids.length)
 
     const memorizedFetch = useCallback(async(from)=> { 
-        console.log('memorized fetch fetching ', from)
+        // console.log('memorized fetch fetching ', from)
         await dispatch(getDataFetch({
             ...dispatchData,
             take,
@@ -59,7 +59,7 @@ const ScrollUtil = ({
     }, [dispatch, dispatchData, getDataFetch, take])
 
     useEffect(() => {
-        console.log('initiating scroll inside effect')
+        // console.log('initiating scroll inside effect')
         const asyncDispatch = async () => {
             skip.current = ids.length 
             await memorizedFetch('from initial mount')
@@ -70,14 +70,14 @@ const ScrollUtil = ({
         //when tweet deleted from client, fetchstatus set to pending update so that we will automatically make fetch if there is
         //to few tweets to be able to make scroll
         //ids.length < take is needed to make initial fetch again after delete - this way we fetch if there is too few tweets to make scroll
-            console.log('making initial fetch for scroll')
+            // console.log('making initial fetch for scroll')
             asyncDispatch();
         }
     }, [dispatch, memorizedFetch, ids.length, take, done, fetchStatus, error]) 
     
 
     useEffect(() => {
-        console.log('is there more data to fetch? ', !(fetchStatus === LOADED && ids.length - savedIdsLength < take))
+        // console.log('is there more data to fetch? ', !(fetchStatus === LOADED && ids.length - savedIdsLength < take))
 
         if (!done && fetchStatus === LOADED && ids.length - savedIdsLength < take) {
             dispatch(compositeDataSetDone(stateKey, true))
@@ -89,7 +89,7 @@ const ScrollUtil = ({
         //if reset true, then set all to null
         return ()=> {
             if (reset) {
-                console.log('scrollUtil: about to cleat all data cause reset is true')
+                // console.log('scrollUtil: about to cleat all data cause reset is true')
                 dispatch(compositeDataClear(stateKey))
             }
         }
@@ -98,14 +98,14 @@ const ScrollUtil = ({
     const fetchScroll = async () => {
         await memorizedFetch('from scroll fetch')
         setSavedIdsLength(ids.length) //inside this function ids isnt updated yet (despite state being updated)
-        console.log('savedIdsLength ', ids.length)
+        // console.log('savedIdsLength ', ids.length)
     }
 
     return (
         <React.Fragment>
-            {console.log('error!!!!!!!!!!!!!!!!!!!!!: ', error)}
-            {console.log('rendering scroll', 'hasmore ', !done, savedIdsLength, 'skip ', skip, 'fetchStatus ', fetchStatus)}
-            {console.log('ids ', ids)}
+            {/* {console.log('error!!!!!!!!!!!!!!!!!!!!!: ', error)} */}
+            {/* {console.log('rendering scroll', 'hasmore ', !done, savedIdsLength, 'skip ', skip, 'fetchStatus ', fetchStatus)} */}
+            {/* {console.log('ids ', ids)} */}
             {headerText && ids.length !== 0 &&
                 <h3>{headerText}</h3>} 
             {ids.length === 0 && fetchStatus === LOADED &&

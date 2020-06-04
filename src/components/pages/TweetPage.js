@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import {useSelector} from 'react-redux'
 import {getConversationRepliesIds, getConversationMainTweetId} from '../../redux-store-2.0/composite-data/selectors'
 import {conversationKey} from '../../redux-store-2.0/utils/compositeDataStateKeys'
@@ -6,7 +6,6 @@ import {getConversationPaginated} from '../../redux-store-2.0/api/tweets'
 import {getTweetStatusById, getTweetErrorById, getTweetById} from '../../redux-store-2.0/entities/tweets/selectors'
 import {LOADED, NOT_FOUND} from '../../redux-store-2.0/constants'
 import {getConversationUpdate} from '../../redux-store-2.0/api/tweets'
-// import useCompositeDataUpdate from '../../Hooks/useCompositeDataUpdate'
 import NewTweet from '../entities/NewTweet'
 import Tweet from '../entities/Tweet'
 import NotFound from '../pages/NotFound'
@@ -23,19 +22,12 @@ const TweetPage = (props) => {
     const mainTweetFetchError = useSelector(getTweetErrorById(tweetId))
     const conversationMainTweetId = useSelector(getConversationMainTweetId(tweetId))
 
-    const repliesSelector = useCallback(getConversationRepliesIds((tweetId)), [])
+    const repliesSelector = getConversationRepliesIds((tweetId))
 
     const dispatchData = {
         tweetId,
         getMainTweet: conversationMainTweetId ? false : true
     }
-
-    // useCompositeDataUpdate({
-    //     take: 1, 
-    //     dispatchData, 
-    //     getUpdateFunc: getConversationUpdate, 
-    //     stateKey: conversationKey(tweetId)
-    // })
     
     if (mainTweetFetchError === NOT_FOUND) {
         return (
@@ -45,10 +37,6 @@ const TweetPage = (props) => {
 
     return (
         <EntityBackgroundContainer>
-
-            {console.log('rendering tweet page', 'mainTweetFetchStatus ', mainTweetFetchStatus)}
-            {console.log('parent tweet', tweetId)}
-            
             {mainTweetFetchStatus === LOADED &&
                 <React.Fragment>
                     <Tweet id={tweetId} stateKey={conversationKey(tweetId)}/>

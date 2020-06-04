@@ -14,10 +14,8 @@
         
         const handleVisibilityChange = () => {
             if (document[hidden]) {
-                console.log('documment is hidden')
                 setPageVisibile(false)
             } else {
-                console.log('documment is visible')
                 setPageVisibile(true)
             }
         }

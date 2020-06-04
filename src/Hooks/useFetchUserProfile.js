@@ -11,7 +11,6 @@ const useFetchUserProfile = ({userId}) => {
 
     React.useEffect(() => {
         if (authedUser && !userFetchStatus) {
-            console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
             dispatch(getUser({
                 userId
             }))

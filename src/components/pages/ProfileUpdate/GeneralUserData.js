@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import {updateProfile} from '../../../redux-store-2.0/api/users'
 import {getAuthedUserProfile} from '../../../redux-store-2.0/entities/users/selectors'
+import {deleteAvatar as deleteAvatarFunc} from '../../../redux-store-2.0/api/users'
 import DragAndDrop from '../../utils/DragAndDrop'
 import DeleteAlert from '../../modals/DeleteAlert'
 import {isValidFisrtOrLastname} from '../../../utils/helpers'
@@ -15,7 +17,7 @@ const dragConfig = {
     previewWidth: 100
 }
 
-const General = (props) => {    
+const General = ({setFormError}) => {    
     const dispatch = useDispatch()
 
     const user = useSelector(getAuthedUserProfile())
@@ -29,29 +31,29 @@ const General = (props) => {
 
     const handleUpdate = (e) => {
         e.preventDefault()
-        const data = {user: {}}
+        const data = {userData: {}}
         if (firstName !== '' && firstName !== user.firstName) {
             if (!isValidFisrtOrLastname(firstName)) {
-                props.setFormError('You can only use alphabetic characters, space and "-" in your name.')
+                setFormError('You can only use alphabetic characters, space and "-" in your name.')
                 return
             }
-            data.user.firstName = firstName
+            data.userData.firstName = firstName
         }
         if (lastName !== '' && lastName !== user.lastName) {
             if (!isValidFisrtOrLastname(lastName)) {
-                props.setFormError('You can only use alphabetic characters, space and "-" in your name.')
+                setFormError('You can only use alphabetic characters, space and "-" in your name.')
                 return
             }
-            data.user.lastName = lastName
+            data.userData.lastName = lastName
         }
         if (avatar !== null) {
             data.file = avatar
-            data.user.avatar = true
-            data.user.crop = crop
+            data.userData.avatar = true
+            data.userData.crop = crop
         }
         console.log(data)
-        if (Object.keys(data.user).length > 0) {
-            props.updateProfileData(data)
+        if (Object.keys(data.userData).length > 0) {
+            dispatch(updateProfile(data))
             setAvatar(null)
             setCrop(null)
             setCropResult(null)
@@ -59,7 +61,7 @@ const General = (props) => {
     }
 
     const handleDeleteAvatar = () => {
-        dispatch(props.handleDelete())
+        dispatch(deleteAvatarFunc())
     }
 
     const handleRemoveImage = (e) => {
@@ -90,7 +92,10 @@ const General = (props) => {
                     onClose={()=>setDeleteAvatar(false)} 
                     message={'Are you sure you want to delete your current avatar image permanently?'}/>}
                     
-            <Form onSubmit={(e)=>handleUpdate(e)} shadow padding={'0 0 20px 0'}>
+            <Form 
+                onSubmit={(e)=>handleUpdate(e)} 
+                data-test='component-general-user-data'
+                shadow padding={'0 0 20px 0'}>
                 {/* prevent for submission on enter, should check how it works in different browsers */}
                 <button type="submit" disabled style={{display:"none"}}></button>
 
@@ -98,18 +103,21 @@ const General = (props) => {
                 <div>
                     <label htmlFor='firstName'>First Name</label>
                     <input 
+                        data-test='input-firstname'
                         value={firstName}
                         maxLength={35}
                         onChange={(e) => setFirstName(e.target.value)}
                         type='text'/>
                     <label htmlFor='lastName'>Last Name</label>
                     <input 
+                        data-test='input-lastname'
                         value={lastName}
                         maxLength={35}
                         onChange={(e) => setLastName(e.target.value)}
                         type='text'/>
                     <label>Profile image</label>
                     <MainButton 
+                        data-test='button-delete-avatar'
                         primary shadow
                         onClick={(e)=>{e.preventDefault(); setDeleteAvatar(true)}}>
                             Delete current avatar
@@ -128,6 +136,7 @@ const General = (props) => {
                 </div>
 
                 <MainButton
+                    data-test='button-submit'
                     blue mediumSmall center disabledLight uppercase shadow
                     disabled={isDisabled()}
                     type='submit'>

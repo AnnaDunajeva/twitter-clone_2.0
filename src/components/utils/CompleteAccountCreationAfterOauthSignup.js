@@ -13,8 +13,8 @@ const CompleteAccountCreationAfterOauthSignin = ({setFormError}) => {
     const userData = getOauthUserData()
 
     const [username, setUsername] = useState('')
-    const [firstName, setFirstName] = useState(userData.firstName)
-    const [lastName, setLastName] = useState(userData.lastName)
+    const [firstName, setFirstName] = useState(userData?.firstName)
+    const [lastName, setLastName] = useState(userData?.lastName)
 
     const CompleteSignUp = async (e) => {
         e.preventDefault()
@@ -41,42 +41,46 @@ const CompleteAccountCreationAfterOauthSignin = ({setFormError}) => {
     }
 
     return (
-        <Form onSubmit={CompleteSignUp} shadow labelColor={'mediumLightGrey'} padding={'0 40px'} data-test='component-complete-oauth'>
-            {console.log(userData)}
-            <h3>Complete Your Registration</h3>
-            <div>
-                <label htmlFor='username'>Username</label>
-                <input 
-                    data-test='input-username'
-                    value={username}
-                    maxLength={20}
-                    onChange={(e) => setUsername(e.target.value)}
-                    type='text'/>
-                <label htmlFor='firstName'>First Name</label>
-                <input 
-                    data-test='input-firstName'
-                    value={firstName}
-                    maxLength={100}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    type='text'/>
-                <label htmlFor='lastName'>Last Name</label>
-                <input 
-                    data-test='input-lastName'
-                    value={lastName}
-                    maxLength={100}
-                    onChange={(e) => setLastName(e.target.value)}
-                    type='text'/>
-            </div>
-            <ThemeProvider theme={light}>
-                <MainButton
-                    data-test='button-complete-oauth'
-                    lasrge blue disabledMediumLight shadow margin={'20px auto 35px auto'}
-                    type='submit'
-                    disabled={username === '' || firstName === '' || lastName === ''}>
-                        Create account
-                </MainButton>
-            </ThemeProvider>
-        </Form>
+        userData 
+            ?<Form 
+                onSubmit={CompleteSignUp} 
+                shadow labelColor={'mediumLightGrey'} padding={'0 40px'} 
+                data-test='component-complete-oauth'>
+                <h3>Complete Your Registration</h3>
+                <div>
+                    <label htmlFor='username'>Username</label>
+                    <input 
+                        data-test='input-username'
+                        value={username}
+                        maxLength={20}
+                        onChange={(e) => setUsername(e.target.value)}
+                        type='text'/>
+                    <label htmlFor='firstName'>First Name</label>
+                    <input 
+                        data-test='input-firstName'
+                        value={firstName}
+                        maxLength={100}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        type='text'/>
+                    <label htmlFor='lastName'>Last Name</label>
+                    <input 
+                        data-test='input-lastName'
+                        value={lastName}
+                        maxLength={100}
+                        onChange={(e) => setLastName(e.target.value)}
+                        type='text'/>
+                </div>
+                <ThemeProvider theme={light}>
+                    <MainButton
+                        data-test='button-complete-oauth'
+                        lasrge blue disabledMediumLight shadow margin={'20px auto 35px auto'}
+                        type='submit'
+                        disabled={username === '' || firstName === '' || lastName === ''}>
+                            Create account
+                    </MainButton>
+                </ThemeProvider>
+            </Form>
+        :null
     )
 }
 

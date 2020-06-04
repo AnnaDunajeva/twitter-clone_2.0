@@ -25,7 +25,7 @@ const Profile = (props) => {
     const [toTweetPageId, setToTweetPageId] = useState(null)
     const [toProfileId, setToProfileId] = useState(null)
 
-    const userTweetsSelector = getUserTweetIds(userId) //not sure if I need it
+    const userTweetsSelector = getUserTweetIds(userId)
     const userTweetLikesSelector = getUserTweetLikesIds(userId)
     const userRepliesSelector = getUserRepliesIds(userId)
 
@@ -38,16 +38,6 @@ const Profile = (props) => {
     useSubscribeToUserUpdate(user)
 
     useFetchUserProfile({userId})
-    // useEffect(() => {
-    //     //in future needs to be redone using Suspense, which is not implemented in react yet
-    //     const asyncDispatch = async () => {
-    //         await dispatch(getUser({userId}))
-    //     }
-    //     if (!userFetchStatus && userId !== authedUserId) {
-    //         console.log('making fetch for profile, userFetchStatus: ', userFetchStatus)
-    //         asyncDispatch();
-    //     }
-    // }, [dispatch, userId, userFetchStatus, authedUserId])
 
     //maybe make hook for it?
     useEffect(() => {
@@ -72,9 +62,6 @@ const Profile = (props) => {
 
     return (
         <Router>
-            {console.log('rendering profile page', 'userFetchStatus ', userFetchStatus)}
-            {console.log('profile: ', user)}
-            {console.log('props.match.url ', props.match.url)}
             {userFetchStatus === ERROR && 
                 <EntityBackgroundContainer>
                     <h3>Oops, could not load profile data. Please try again.</h3>
