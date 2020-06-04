@@ -7,7 +7,6 @@ const useSubscribeToUserUpdate = (user) => {
 
     useEffect(()=>{
         if(user && !user.deleted && socket) {
-            console.log('about to subscribe to user update ', user.userId)
             socket.emit('subscribe_to_user_update', user.userId) 
             // return () => socket.emit('unsubscribe_to_user_update', user.userId) 
             //we actually dont want to unsubscribe from updae when component unmount cause then 

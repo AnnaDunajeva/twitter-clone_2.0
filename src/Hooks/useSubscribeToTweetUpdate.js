@@ -14,7 +14,6 @@ const useSubscribeToTweetUpdate = (tweet) => {
 
     useEffect(()=>{
         if(tweet && !tweet.deleted && socket) {
-            console.log('about to subscribe to tweet update ', tweet.id, )
             socket.emit('subscribe_to_tweet_update', tweet.id) 
             // return () => socket.emit('unsubscribe_to_tweet_update', tweet.id) 
             //problem cause then when tweet is not displayed it also is not updated
