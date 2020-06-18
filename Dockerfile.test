@@ -1,0 +1,8 @@
+FROM node:13.7 as build
+WORKDIR /source
+COPY . ./
+RUN npm install
+
+EXPOSE 3001
+CMD [ "npm", "test:nowatch" ]
+
