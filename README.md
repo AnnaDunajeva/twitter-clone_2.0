@@ -6,6 +6,9 @@ Allows users to create account or login with Google credentials. Users can make 
 This repository contains frontend source code.
 - [Link to backend](https://github.com/AnnaDunajeva/twitter-clone-backend_2.0)
 - [Link to live demo](https://twitter-frontend-4zauvs5bna-uc.a.run.app/login)
+    - if you do not wish to sign up, you can use the following credentials: 
+        - username: `user`
+        - password: `12345`
 
 NB! To make the app fully functional you would also need to set up the backend. More information on how to do it in [backend repository's README.md file](https://github.com/AnnaDunajeva/twitter-clone-backend_2.0)
 
@@ -23,6 +26,7 @@ cp nginx.conf.dev /etc/nginx/sites-available/twitter-clone
 ln -s /etc/nginx/sites-available/twitter-clone /etc/nginx/sites-enabled
 sudo service nginx start  # or restart
 ```
+- if you change nginx configuration, them make sure to check .env files as well
 run application in the development mode:
 ```
 npm start
