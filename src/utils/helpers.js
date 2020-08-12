@@ -54,15 +54,15 @@ export const removeBlacklistChars = (input) => {
 }
 
 export const isValidUsername = (username) => {
-  return /^[0-9a-zA-Z_-]+$/.test(username.trim())
+  return /^[0-9a-zA-Z_-üõöä]+$/.test(username.trim())
 }
 
 export const isValidFisrtOrLastname = (name) => {
-  return /^[a-zA-Z- ]+$/.test(name.trim())
+  return /^[a-zA-Z- üõöä]+$/.test(name.trim())
 }
 
 export const isValidLocation = (location) => {
-  return /^[a-zA-Z- ,]+$/.test(location.trim())
+  return /^[a-zA-Z- ,üõöä]+$/.test(location.trim())
 }
 
 export const truncateText = (text, lenght) => {

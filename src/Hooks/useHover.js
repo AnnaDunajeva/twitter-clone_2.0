@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
 const useHover = () => {
-    const [hovering, setHovering] = React.useState(false)
+    const [hovering, setHovering] = React.useState(false);
     const mouseIn = () => {
-        setHovering(true)
-    }
+        setHovering(true);
+    };
     const mouseOut = () => {
-        setHovering(false)
-    }
+        setHovering(false);
+    };
     const attrs = {
         onMouseOver: mouseIn,
         onMouseOut: mouseOut
-    }
-    return {hovering, ...attrs}
-}
-export default useHover
+    };
+    return { hovering, ...attrs };
+};
+export default useHover;

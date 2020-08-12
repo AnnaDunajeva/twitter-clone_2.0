@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import MainButton from './MainButton'
-
+import styled from "styled-components";
+import MainButton from "./MainButton";
 
 const ButtonWithIconNonTransparent = styled(MainButton)`
     display: flex;
@@ -8,16 +7,15 @@ const ButtonWithIconNonTransparent = styled(MainButton)`
     align-items: center;
 
     svg {
-        fill: ${props => 
-        (props.primary && props.theme.invertedMainColor) || 
-        (props.secondary && props.theme.mainColor) || 
-        (props.blue && 'white') ||
-        props.theme.mainColor};
+        fill: ${(props) =>
+            (props.primary && props.theme.invertedMainColor) ||
+            (props.secondary && props.theme.mainColor) ||
+            (props.blue && "white") ||
+            props.theme.mainColor};
     }
-
-`
+`;
 ButtonWithIconNonTransparent.defaultProps = {
     padding: 0
-}
+};
 
-export default ButtonWithIconNonTransparent
+export default ButtonWithIconNonTransparent;

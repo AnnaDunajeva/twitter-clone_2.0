@@ -68,11 +68,11 @@ export const keyedReducer = ( keyPath, reducer ) => {
 
 		//some action that need to be performed on multiple keys and where we dont want to create key if it wasnt in the store
 		if (action.type === SESSION_END_SUCCESS) {
-			console.log(action)
+			//console.log(action)
 			return {}
 		}
 		if (action.type === TWEET_DELETE) {
-			console.log('inside keyed reducer, about to remove tweet from composite data entities ', action)
+			//console.log('inside keyed reducer, about to remove tweet from composite data entities ', action)
 			return mapValues(state, (value) => ({
 				...value,
 				entities: value.entities.filter(tweet => tweet.id !== parseInt(action.tweetId)),
@@ -80,7 +80,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 			}))
 		}
 		if (action.type === TWEET_DELETE_EXEPT_REPLIES) {
-			console.log('inside keyed reducer, got tweet update that tweet was deleted, about to remove it ', action)
+			//console.log('inside keyed reducer, got tweet update that tweet was deleted, about to remove it ', action)
 			return mapValues(state, (value, key) => {
 				if (key !== conversationKey(action.tweetId)) { //we want deleted parent tweet stay in composite data and be marked as deleted (it will come from update subscription)
 					return {
@@ -100,7 +100,7 @@ export const keyedReducer = ( keyPath, reducer ) => {
 				if (key === userFollowingsKey(authedUser)) {
 					const ids = value.entities.map(user => user.userId) //also contain sortindex
 					if (ids.includes(action.userId)) {
-						console.log('user wants to unfollow')
+						//console.log('user wants to unfollow')
 						return {
 							...value,
 							fetchStatus: value.done ? LOADED : PENDING_UPDATE,

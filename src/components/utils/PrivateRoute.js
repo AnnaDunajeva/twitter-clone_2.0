@@ -12,6 +12,7 @@ const PrivateRoute = ({
 }) => {
   const authedUser = useSelector(getAuthedUserId())
   
+  //this seems like i can remove, works now fine
   if (path === '/tweet/:id') {
     return <Route computedMatch={computedMatch} {...rest} render={(props) => (
       authedUser

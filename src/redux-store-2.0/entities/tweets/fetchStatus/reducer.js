@@ -21,8 +21,6 @@ export default function fetchStatus (state = {}, action){
         case SESSION_END_SUCCESS:
         case TWEETS_REMOVE_ALL: 
             return {}
-        // case TWEET_DELETE:
-        //     return omit(state, action.tweetId)
         default :
             return state
     }
